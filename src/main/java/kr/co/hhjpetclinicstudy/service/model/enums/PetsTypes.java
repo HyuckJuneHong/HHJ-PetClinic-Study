@@ -5,5 +5,5 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum PetTypes {
+public enum PetsTypes {
 }
