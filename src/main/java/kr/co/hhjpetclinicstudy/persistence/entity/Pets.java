@@ -26,7 +26,7 @@ public class Pets extends BaseEntity {
     @Column(name = "birth_date")
     private LocalDate localDate;
 
-    @Column(name = "pet_types", nullable = false)
+    @Column(name = "pets_types", nullable = false)
     private PetsTypes petsTypes;
 
     @ManyToOne(fetch = FetchType.LAZY)
