@@ -1,7 +1,7 @@
 package kr.co.hhjpetclinicstudy.persistence.entity;
 
 import jakarta.persistence.*;
-import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
+import kr.co.hhjpetclinicstudy.service.model.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

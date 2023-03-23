@@ -4,7 +4,7 @@ import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
+import kr.co.hhjpetclinicstudy.service.model.BaseEntity;
 import kr.co.hhjpetclinicstudy.service.model.enums.VetsSpecialties;
 import lombok.AccessLevel;
 import lombok.Builder;
