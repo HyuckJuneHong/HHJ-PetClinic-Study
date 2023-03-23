@@ -7,6 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class OwnersController {
-
     private final OwnersService ownersService;
 }

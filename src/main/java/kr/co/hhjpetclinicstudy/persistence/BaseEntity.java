@@ -1,4 +1,4 @@
-package kr.co.hhjpetclinicstudy.service.model;
+package kr.co.hhjpetclinicstudy.persistence;
 
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
