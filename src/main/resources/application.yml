@@ -6,7 +6,7 @@ spring:
 
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/{petclinic-db};AUTO_SERVER=TRUE
+    url: jdbc:h2:file:./{petclinicdb};AUTO_SERVER=TRUE
     username: sa
     password:
 
