@@ -8,12 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tbl_owners")
+@Table(name = "tbl_owner")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @AttributeOverride(
         name = "id",
-        column = @Column(name = "owners_id", length = 4)
+        column = @Column(name = "owner_id", length = 4)
 )
 public class Owners extends BaseEntity {
 
