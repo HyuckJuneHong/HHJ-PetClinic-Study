@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
         name = "id",
         column = @Column(name = "owner_id", length = 4)
 )
-public class Owners extends BaseEntity {
+public class Owner extends BaseEntity {
 
     @Column(name = "first_name", length = 30)
     private String firstName;
@@ -33,11 +33,11 @@ public class Owners extends BaseEntity {
     private String telephone;
 
     @Builder
-    public Owners(String firstName,
-                  String lastName,
-                  String address,
-                  String city,
-                  String telephone) {
+    public Owner(String firstName,
+                 String lastName,
+                 String address,
+                 String city,
+                 String telephone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;

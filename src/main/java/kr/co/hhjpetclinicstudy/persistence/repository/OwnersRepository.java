@@ -1,9 +1,9 @@
 package kr.co.hhjpetclinicstudy.persistence.repository;
 
-import kr.co.hhjpetclinicstudy.persistence.entity.Owners;
+import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OwnersRepository extends JpaRepository<Owners, Long> {
+public interface OwnersRepository extends JpaRepository<Owner, Long> {
 }

@@ -16,20 +16,20 @@ import lombok.NoArgsConstructor;
         name = "id",
         column = @Column(name = "vet_id", length = 4)
 )
-public class Vets extends BaseEntity {
+public class Vet extends BaseEntity {
     @Column(name = "first_name", length = 30)
     private String firstName;
 
     @Column(name = "last_name", length = 30)
     private String lastName;
 
-    @Column(name = "vets_specialties", nullable = false)
+    @Column(name = "vet_specialty", nullable = false)
     @Enumerated(EnumType.STRING)
     private VetsSpecialties vetsSpecialties;
 
     @Builder
-    public Vets(String firstName,
-                String lastName) {
+    public Vet(String firstName,
+               String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }

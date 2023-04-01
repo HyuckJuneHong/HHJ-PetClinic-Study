@@ -18,7 +18,7 @@ import java.time.LocalDate;
         name = "id",
         column = @Column(name = "pet_id", length = 4)
 )
-public class Pets extends BaseEntity {
+public class Pet extends BaseEntity {
 
     @Column(name = "name", length = 30)
     private String name;
@@ -31,14 +31,14 @@ public class Pets extends BaseEntity {
     private PetsTypes petsTypes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owners_id")
-    private Owners owners;
+    @JoinColumn(name = "owner_id")
+    private Owner owners;
 
     @Builder
-    public Pets(String name,
-                LocalDate localDate,
-                PetsTypes petsTypes,
-                Owners owners) {
+    public Pet(String name,
+               LocalDate localDate,
+               PetsTypes petsTypes,
+               Owner owners) {
         this.name = name;
         this.localDate = localDate;
         this.petsTypes = petsTypes;
