@@ -2,7 +2,7 @@ package kr.co.hhjpetclinicstudy.persistence.entity;
 
 import jakarta.persistence.*;
 import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
-import kr.co.hhjpetclinicstudy.service.model.enums.VetsSpecialties;
+import kr.co.hhjpetclinicstudy.service.model.enums.VetSpecialty;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class Vet extends BaseEntity {
 
     @Column(name = "vet_specialty", nullable = false)
     @Enumerated(EnumType.STRING)
-    private VetsSpecialties vetsSpecialties;
+    private VetSpecialty vetsSpecialties;
 
     @Builder
     public Vet(String firstName,

@@ -2,7 +2,7 @@ package kr.co.hhjpetclinicstudy.persistence.entity;
 
 import jakarta.persistence.*;
 import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
-import kr.co.hhjpetclinicstudy.service.model.enums.PetsTypes;
+import kr.co.hhjpetclinicstudy.service.model.enums.PetType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class Pet extends BaseEntity {
 
     @Column(name = "pets_types", nullable = false)
     @Enumerated(EnumType.STRING)
-    private PetsTypes petsTypes;
+    private PetType petType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
@@ -37,11 +37,11 @@ public class Pet extends BaseEntity {
     @Builder
     public Pet(String name,
                LocalDate localDate,
-               PetsTypes petsTypes,
+               PetType petType,
                Owner owners) {
         this.name = name;
         this.localDate = localDate;
-        this.petsTypes = petsTypes;
+        this.petType = petType;
         this.owners = owners;
     }
 }
