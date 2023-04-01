@@ -2,6 +2,7 @@ package kr.co.hhjpetclinicstudy.persistence.entity;
 
 import jakarta.persistence.*;
 import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,5 +42,14 @@ public class Vet extends BaseEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         this.specialtyList = specialtyList;
+    }
+
+    public static Vet dtoToEntity(VetReqDTO.CREATE create,
+                                  List<Specialty> specialtyList) {
+        return Vet.builder()
+                .firstName(create.getFirstName())
+                .lastName(create.getLastName())
+                .specialtyList(specialtyList)
+                .build();
     }
 }

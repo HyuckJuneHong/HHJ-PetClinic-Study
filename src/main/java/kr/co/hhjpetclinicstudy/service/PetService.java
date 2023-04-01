@@ -18,7 +18,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PetService {
+
     private final PetRepository petRepository;
+
     private final OwnerRepository ownerRepository;
 
     /**
