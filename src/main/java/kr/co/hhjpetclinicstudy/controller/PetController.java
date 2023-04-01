@@ -50,13 +50,28 @@ public class PetController {
     /**
      * Pet Update API
      * @param update : Info for Update a Pet
-     * @return String
+     * @return : String
 0     */
     @PutMapping
     public ResponseEntity<String> updatePet(@RequestBody @Valid PetReqDTO.UPDATE update){
         try {
             petService.updatePet(update);
             return ResponseEntity.ok().body("Success Pet Update");
+        }catch (Exception e){
+            return ResponseEntity.ok().body("error : " + e);
+        }
+    }
+
+    /**
+     * Pet Delete API
+     * @param petId : id for Delete a Pet
+     * @return : String
+     */
+    @DeleteMapping("/{pet_id}")
+    public ResponseEntity<String> deletePet(@PathVariable(name = "pet_id") Long petId){
+        try {
+            petService.deletePet(petId);
+            return ResponseEntity.ok().body("Success Pet Delete");
         }catch (Exception e){
             return ResponseEntity.ok().body("error : " + e);
         }

@@ -27,6 +27,7 @@ public class PetService {
      */
     @Transactional
     public void createPet(PetReqDTO.CREATE create) {
+
         final Owner owner = ownerRepository.findById(create.getOwnerId())
                 .orElseThrow(() -> new RuntimeException("Not Found Owner"));
 
@@ -40,6 +41,7 @@ public class PetService {
      * @return List PetResDTO.READ
      */
     public List<PetResDTO.READ> getPetsByAll() {
+
         return petRepository.findAll().stream().map(Pet::entityToDto).collect(Collectors.toList());
     }
 
@@ -49,11 +51,25 @@ public class PetService {
      */
     @Transactional
     public void updatePet(PetReqDTO.UPDATE update) {
+
         Pet pet = petRepository.findById(update.getPetId())
                 .orElseThrow(() -> new RuntimeException("Not Found Pet"));
 
         pet.updatePetInfo(update);
 
         petRepository.save(pet);
+    }
+
+    /**
+     * pet delete service
+     * @param petId : id for delete pet
+     */
+    @Transactional
+    public void deletePet(Long petId) {
+
+        final Pet pet = petRepository.findById(petId)
+                .orElseThrow(() -> new RuntimeException("Not Found Pet"));
+
+        petRepository.delete(pet);
     }
 }
