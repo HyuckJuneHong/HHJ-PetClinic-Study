@@ -2,6 +2,7 @@ package kr.co.hhjpetclinicstudy.persistence.entity;
 
 import jakarta.persistence.*;
 import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.enums.PetType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,9 +25,9 @@ public class Pet extends BaseEntity {
     private String name;
 
     @Column(name = "birth_date")
-    private LocalDate localDate;
+    private LocalDate birthDate;
 
-    @Column(name = "pets_types", nullable = false)
+    @Column(name = "pet_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private PetType petType;
 
@@ -36,12 +37,22 @@ public class Pet extends BaseEntity {
 
     @Builder
     public Pet(String name,
-               LocalDate localDate,
+               LocalDate birthDate,
                PetType petType,
                Owner owners) {
         this.name = name;
-        this.localDate = localDate;
+        this.birthDate = birthDate;
         this.petType = petType;
         this.owners = owners;
+    }
+
+    public static Pet dtoToEntity(PetReqDTO.CREATE create,
+                           Owner owners){
+        return Pet.builder()
+                .name(create.getName())
+                .birthDate(create.getBirthDate())
+                .petType(PetType.of(create.getPetType()))
+                .owners(owners)
+                .build();
     }
 }
