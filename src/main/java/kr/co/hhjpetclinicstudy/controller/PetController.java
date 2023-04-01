@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/pets")
 @RequiredArgsConstructor
 public class PetController {
+
     private final PetService petService;
 
     /**
