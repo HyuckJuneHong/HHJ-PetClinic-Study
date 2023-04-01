@@ -15,6 +15,7 @@ public class PetResDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class READ {
+
         private String name;
 
         private PetType petType;

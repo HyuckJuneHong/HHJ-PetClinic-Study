@@ -34,6 +34,7 @@ public class PetReqDTO {
     @AllArgsConstructor
     @Builder
     public static class UPDATE {
+
         @NotNull(message = "Need a pet")
         private Long petId;
 
