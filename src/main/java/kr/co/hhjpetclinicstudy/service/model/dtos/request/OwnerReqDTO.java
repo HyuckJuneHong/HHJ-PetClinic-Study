@@ -30,4 +30,23 @@ public class OwnerReqDTO {
         @NotBlank(message = "need a telephone")
         private String telephone;
     }
+
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public class UPDATE {
+        @NotNull(message = "need an owner")
+        private Long ownerId;
+
+        private String firstName;
+
+        private String lastName;
+
+        private String address;
+
+        private String city;
+
+        private String telephone;
+    }
 }

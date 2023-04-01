@@ -66,4 +66,12 @@ public class Owner extends BaseEntity {
                 .telephone(owner.telephone)
                 .build();
     }
+
+    public void updateOwner(OwnerReqDTO.UPDATE update) {
+        this.firstName = update.getFirstName();
+        this.lastName = update.getLastName();
+        this.address = update.getAddress();
+        this.city = update.getCity();
+        this.telephone = update.getTelephone();
+    }
 }
