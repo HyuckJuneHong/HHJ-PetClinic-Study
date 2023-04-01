@@ -65,4 +65,10 @@ public class Pet extends BaseEntity {
                 .petType(pet.petType)
                 .build();
     }
+
+    public void updatePetInfo(PetReqDTO.UPDATE update) {
+        this.name = update.getName();
+        this.birthDate = update.getBirthDate();
+        this.petType = PetType.of(update.getPetType());
+    }
 }

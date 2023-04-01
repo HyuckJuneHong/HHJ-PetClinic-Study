@@ -46,4 +46,19 @@ public class PetController {
             throw new Exception("error : " + e);
         }
     }
+
+    /**
+     * Pet Update API
+     * @param update : Info for Update a Pet
+     * @return String
+0     */
+    @PutMapping
+    public ResponseEntity<String> updatePet(@RequestBody @Valid PetReqDTO.UPDATE update){
+        try {
+            petService.updatePet(update);
+            return ResponseEntity.ok().body("Success Pet Update");
+        }catch (Exception e){
+            return ResponseEntity.ok().body("error : " + e);
+        }
+    }
 }

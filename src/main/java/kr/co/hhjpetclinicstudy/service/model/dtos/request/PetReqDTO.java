@@ -16,6 +16,7 @@ public class PetReqDTO {
     @Builder
     @NoArgsConstructor
     public static class CREATE{
+
         @NotBlank(message = "Need a Pet Name")
         private String name;
 
@@ -26,5 +27,20 @@ public class PetReqDTO {
 
         @NotNull(message = "Need a Owner")
         private Long ownerId;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class UPDATE {
+        @NotNull(message = "Need a pet")
+        private Long petId;
+
+        private String name;
+
+        private LocalDate birthDate;
+
+        private String petType;
     }
 }

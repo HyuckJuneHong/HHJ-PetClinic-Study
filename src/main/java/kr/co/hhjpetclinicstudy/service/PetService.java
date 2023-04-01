@@ -42,4 +42,18 @@ public class PetService {
     public List<PetResDTO.READ> getPetsByAll() {
         return petRepository.findAll().stream().map(Pet::entityToDto).collect(Collectors.toList());
     }
+
+    /**
+     * pet update service
+     * @param update : Info for Update a Pet
+     */
+    @Transactional
+    public void updatePet(PetReqDTO.UPDATE update) {
+        Pet pet = petRepository.findById(update.getPetId())
+                .orElseThrow(() -> new RuntimeException("Not Found Pet"));
+
+        pet.updatePetInfo(update);
+
+        petRepository.save(pet);
+    }
 }
