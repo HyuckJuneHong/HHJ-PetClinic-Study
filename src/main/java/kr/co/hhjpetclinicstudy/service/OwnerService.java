@@ -54,4 +54,17 @@ public class OwnerService {
 
         ownerRepository.save(owner);
     }
+
+    /**
+     * owner delete service
+     * @param ownerId : id for delete owner
+     */
+    @Transactional
+    public void deleteService(Long ownerId) {
+
+        final Owner owner = ownerRepository.findById(ownerId)
+                .orElseThrow(() -> new RuntimeException("Not Found Owner"));
+
+        ownerRepository.delete(owner);
+    }
 }

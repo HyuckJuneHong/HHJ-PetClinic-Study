@@ -58,4 +58,19 @@ public class OwnerController {
             return ResponseEntity.ok().body("error : " + e);
         }
     }
+
+    /**
+     * owner delete api
+     * @param ownerId : id for delete on owner
+     * @return : String
+     */
+    @DeleteMapping("/{owner_id}")
+    public ResponseEntity<String> deleteOwner(@PathVariable(name = "owner_id") Long ownerId){
+        try {
+            ownerService.deleteService(ownerId);
+            return ResponseEntity.ok().body("Success Owner Delete");
+        }catch (Exception e){
+            return ResponseEntity.ok().body("error : " + e);
+        }
+    }
 }
