@@ -3,6 +3,7 @@ package kr.co.hhjpetclinicstudy.persistence.entity;
 import jakarta.persistence.*;
 import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
+import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
 import kr.co.hhjpetclinicstudy.service.model.enums.PetType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -53,6 +54,15 @@ public class Pet extends BaseEntity {
                 .birthDate(create.getBirthDate())
                 .petType(PetType.of(create.getPetType()))
                 .owners(owners)
+                .build();
+    }
+
+    public static PetResDTO.READ entityToDto(Pet pet){
+        return PetResDTO.READ.builder()
+                .name(pet.getName())
+                .ownerName(pet.owners.getFirstName() + pet.getOwners().getLastName())
+                .birthDate(pet.birthDate)
+                .petType(pet.petType)
                 .build();
     }
 }

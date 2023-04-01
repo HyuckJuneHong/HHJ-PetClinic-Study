@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -13,6 +14,7 @@ public class PetReqDTO {
     @Getter
     @AllArgsConstructor
     @Builder
+    @NoArgsConstructor
     public static class CREATE{
         @NotBlank(message = "Need a Pet Name")
         private String name;
