@@ -2,6 +2,8 @@ package kr.co.hhjpetclinicstudy.persistence.entity;
 
 import jakarta.persistence.*;
 import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
+import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
 import kr.co.hhjpetclinicstudy.service.model.enums.PetType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,9 +26,9 @@ public class Pet extends BaseEntity {
     private String name;
 
     @Column(name = "birth_date")
-    private LocalDate localDate;
+    private LocalDate birthDate;
 
-    @Column(name = "pets_types", nullable = false)
+    @Column(name = "pet_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private PetType petType;
 
@@ -36,12 +38,37 @@ public class Pet extends BaseEntity {
 
     @Builder
     public Pet(String name,
-               LocalDate localDate,
+               LocalDate birthDate,
                PetType petType,
                Owner owners) {
         this.name = name;
-        this.localDate = localDate;
+        this.birthDate = birthDate;
         this.petType = petType;
         this.owners = owners;
+    }
+
+    public static Pet dtoToEntity(PetReqDTO.CREATE create,
+                           Owner owners){
+        return Pet.builder()
+                .name(create.getName())
+                .birthDate(create.getBirthDate())
+                .petType(PetType.of(create.getPetType()))
+                .owners(owners)
+                .build();
+    }
+
+    public static PetResDTO.READ entityToDto(Pet pet){
+        return PetResDTO.READ.builder()
+                .name(pet.getName())
+                .ownerName(pet.owners.getFirstName() + pet.getOwners().getLastName())
+                .birthDate(pet.birthDate)
+                .petType(pet.petType)
+                .build();
+    }
+
+    public void updatePetInfo(PetReqDTO.UPDATE update) {
+        this.name = update.getName();
+        this.birthDate = update.getBirthDate();
+        this.petType = PetType.of(update.getPetType());
     }
 }
