@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/pets")
 @RequiredArgsConstructor
 public class PetController {
+
     private final PetService petService;
 
     /**
@@ -38,10 +39,10 @@ public class PetController {
      * Pet Read API
      * @return : PetResDtp.READ
      */
-    @GetMapping
-    public ResponseEntity<List<PetResDTO.READ>> getPetsByAll() throws Exception {
+    @GetMapping("/{owner_id}")
+    public ResponseEntity<List<PetResDTO.READ>> getPetsByOwner(@PathVariable(name = "owner_id") Long ownerId) throws Exception {
         try {
-            return ResponseEntity.ok().body(petService.getPetsByAll());
+            return ResponseEntity.ok().body(petService.getPetsByOwner(ownerId));
         }catch (Exception e){
             throw new Exception("error : " + e);
         }

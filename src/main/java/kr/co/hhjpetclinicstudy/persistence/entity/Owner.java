@@ -2,6 +2,8 @@ package kr.co.hhjpetclinicstudy.persistence.entity;
 
 import jakarta.persistence.*;
 import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
+import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,5 +45,33 @@ public class Owner extends BaseEntity {
         this.address = address;
         this.city = city;
         this.telephone = telephone;
+    }
+
+    public static Owner dtoToEntity(OwnerReqDTO.CREATE create) {
+        return Owner.builder()
+                .firstName(create.getFirstName())
+                .lastName(create.getLastName())
+                .address(create.getAddress())
+                .city(create.getCity())
+                .telephone(create.getTelephone())
+                .build();
+    }
+
+    public static OwnerResDTO.READ entityToDto(Owner owner) {
+        return OwnerResDTO.READ.builder()
+                .firstName(owner.getFirstName())
+                .lastName(owner.getLastName())
+                .address(owner.address)
+                .city(owner.city)
+                .telephone(owner.telephone)
+                .build();
+    }
+
+    public void updateOwner(OwnerReqDTO.UPDATE update) {
+        this.firstName = update.getFirstName();
+        this.lastName = update.getLastName();
+        this.address = update.getAddress();
+        this.city = update.getCity();
+        this.telephone = update.getTelephone();
     }
 }

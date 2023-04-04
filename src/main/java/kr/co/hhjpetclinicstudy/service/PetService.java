@@ -37,12 +37,15 @@ public class PetService {
     }
 
     /**
-     * pet get by all service
+     * pets get by owner service
      * @return List PetResDTO.READ
      */
-    public List<PetResDTO.READ> getPetsByAll() {
+    public List<PetResDTO.READ> getPetsByOwner(Long ownerId) {
 
-        return petRepository.findAll().stream().map(Pet::entityToDto).collect(Collectors.toList());
+        final Owner owner = ownerRepository.findById(ownerId)
+                .orElseThrow(() -> new RuntimeException("Not Found Owner"));
+
+        return petRepository.findByOwner(owner).stream().map(Pet::entityToDto).collect(Collectors.toList());
     }
 
     /**
