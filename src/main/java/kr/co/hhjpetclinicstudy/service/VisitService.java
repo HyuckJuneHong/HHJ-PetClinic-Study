@@ -1,12 +1,11 @@
 package kr.co.hhjpetclinicstudy.service;
 
-import kr.co.hhjpetclinicstudy.persistence.repository.OwnersRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.VisitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OwnersService {
-
-    private final OwnersRepository ownersRepository;
+public class VisitService {
+    private final VisitRepository visitRepository;
 }

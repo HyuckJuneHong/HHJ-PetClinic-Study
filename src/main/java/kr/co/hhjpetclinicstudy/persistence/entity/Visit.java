@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tbl_visits")
+@Table(name = "tbl_visit")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @AttributeOverride(
         name = "id",
         column = @Column(name = "visits_id", length = 4)
 )
-public class Visits extends BaseEntity {
+public class Visit extends BaseEntity {
 
     @Column(name = "visit_date")
     private LocalDate visitDate;
@@ -26,15 +26,15 @@ public class Visits extends BaseEntity {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pets_id")
-    private Pets pets;
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
 
     @Builder
-    public Visits(LocalDate visitDate,
-                  String description,
-                  Pets pets) {
+    public Visit(LocalDate visitDate,
+                 String description,
+                 Pet pet) {
         this.visitDate = visitDate;
         this.description = description;
-        this.pets = pets;
+        this.pet = pet;
     }
 }
