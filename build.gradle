@@ -30,6 +30,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     //test
+    testImplementation 'org.mockito:mockito-inline:3.4.4'
+    testImplementation group: 'junit', name: 'junit'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     //validation

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/api/v1/owners")
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class OwnerController {
      */
     @PostMapping
     public ResponseEntity<String> createOwner(@RequestBody @Valid OwnerReqDTO.CREATE create){
+
         try {
             ownerService.createOwner(create);
             return ResponseEntity.ok().body("Success Owner Create");
@@ -37,6 +39,7 @@ public class OwnerController {
      */
     @GetMapping("/{owner_id}")
     public ResponseEntity<OwnerResDTO.READ> getOwnerById(@PathVariable(name = "owner_id") Long ownerId) throws Exception {
+
         try {
             return ResponseEntity.ok().body(ownerService.getOwnerById(ownerId));
         }catch (Exception e){
@@ -51,8 +54,9 @@ public class OwnerController {
      */
     @PutMapping
     public ResponseEntity<String> updateOwner(@RequestBody @Valid OwnerReqDTO.UPDATE update){
+
         try {
-            ownerService.updateService(update);
+            ownerService.updateOwner(update);
             return ResponseEntity.ok().body("Success Owner Update");
         }catch (Exception e){
             return ResponseEntity.ok().body("error : " + e);
@@ -65,9 +69,10 @@ public class OwnerController {
      * @return : String
      */
     @DeleteMapping("/{owner_id}")
-    public ResponseEntity<String> deleteOwner(@PathVariable(name = "owner_id") Long ownerId){
+    public ResponseEntity<String> deleteOwnerById(@PathVariable(name = "owner_id") Long ownerId){
+
         try {
-            ownerService.deleteService(ownerId);
+            ownerService.deleteOwnerById(ownerId);
             return ResponseEntity.ok().body("Success Owner Delete");
         }catch (Exception e){
             return ResponseEntity.ok().body("error : " + e);

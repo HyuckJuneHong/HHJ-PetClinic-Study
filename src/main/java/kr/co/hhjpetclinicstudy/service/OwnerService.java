@@ -45,7 +45,7 @@ public class OwnerService {
      * @param update : info for update an owner
      */
     @Transactional
-    public void updateService(OwnerReqDTO.UPDATE update) {
+    public void updateOwner(OwnerReqDTO.UPDATE update) {
 
         Owner owner = ownerRepository.findById(update.getOwnerId())
                 .orElseThrow(() -> new RuntimeException("Not Found Owner"));
@@ -60,7 +60,7 @@ public class OwnerService {
      * @param ownerId : id for delete owner
      */
     @Transactional
-    public void deleteService(Long ownerId) {
+    public void deleteOwnerById(Long ownerId) {
 
         final Owner owner = ownerRepository.findById(ownerId)
                 .orElseThrow(() -> new RuntimeException("Not Found Owner"));

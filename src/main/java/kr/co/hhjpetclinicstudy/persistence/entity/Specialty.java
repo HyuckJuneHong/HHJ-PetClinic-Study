@@ -25,6 +25,14 @@ public class Specialty extends BaseEntity {
 
     @Builder
     public Specialty(String name) {
+
         this.name = name;
+    }
+
+    public static Specialty paramToEntity(String name){
+
+        return Specialty.builder()
+                .name(name)
+                .build();
     }
 }

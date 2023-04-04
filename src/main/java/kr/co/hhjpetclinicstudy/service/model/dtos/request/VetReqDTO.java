@@ -25,6 +25,22 @@ public class VetReqDTO {
         private String lastName;
 
         @NotEmpty(message = "Need a specialty")
-        private List<Long> specialtiesId;
+        private List<String> specialtiesName;
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @Getter
+    public static class UPDATE {
+
+        @NotNull(message = "need a vet")
+        private Long vetId;
+
+        private String firstName;
+
+        private String lastName;
+
+        private List<String> specialtiesName;
     }
 }

@@ -35,7 +35,8 @@ public class OwnerReqDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public class UPDATE {
+    public static class UPDATE {
+
         @NotNull(message = "need an owner")
         private Long ownerId;
 

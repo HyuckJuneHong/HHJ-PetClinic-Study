@@ -27,6 +27,7 @@ public class PetController {
      */
     @PostMapping
     public ResponseEntity<String> createPet(@RequestBody @Valid PetReqDTO.CREATE create){
+
         try{
             petService.createPet(create);
             return ResponseEntity.ok().body("Success Pet Create");
@@ -41,6 +42,7 @@ public class PetController {
      */
     @GetMapping("/{owner_id}")
     public ResponseEntity<List<PetResDTO.READ>> getPetsByOwner(@PathVariable(name = "owner_id") Long ownerId) throws Exception {
+
         try {
             return ResponseEntity.ok().body(petService.getPetsByOwner(ownerId));
         }catch (Exception e){
@@ -55,6 +57,7 @@ public class PetController {
 0     */
     @PutMapping
     public ResponseEntity<String> updatePet(@RequestBody @Valid PetReqDTO.UPDATE update){
+
         try {
             petService.updatePet(update);
             return ResponseEntity.ok().body("Success Pet Update");
@@ -69,9 +72,10 @@ public class PetController {
      * @return : String
      */
     @DeleteMapping("/{pet_id}")
-    public ResponseEntity<String> deletePet(@PathVariable(name = "pet_id") Long petId){
+    public ResponseEntity<String> deletePetById(@PathVariable(name = "pet_id") Long petId){
+
         try {
-            petService.deletePet(petId);
+            petService.deletePetById(petId);
             return ResponseEntity.ok().body("Success Pet Delete");
         }catch (Exception e){
             return ResponseEntity.ok().body("error : " + e);

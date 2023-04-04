@@ -70,7 +70,7 @@ public class PetService {
      * @param petId : id for delete pet
      */
     @Transactional
-    public void deletePet(Long petId) {
+    public void deletePetById(Long petId) {
 
         final Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new RuntimeException("Not Found Pet"));

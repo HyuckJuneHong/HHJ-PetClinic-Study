@@ -28,6 +28,7 @@ public class VetSpecialty extends BaseEntity {
     @Builder
     public VetSpecialty(Vet vet,
                         Specialty specialty) {
+
         this.vet = vet;
         this.specialty = specialty;
     }
