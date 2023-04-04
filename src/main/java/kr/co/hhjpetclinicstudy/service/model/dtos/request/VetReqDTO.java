@@ -1,53 +1,46 @@
 package kr.co.hhjpetclinicstudy.service.model.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class OwnerReqDTO {
+import java.util.List;
+
+public class VetReqDTO {
 
     @NoArgsConstructor
-    @Getter
     @AllArgsConstructor
     @Builder
+    @Getter
     public static class CREATE {
 
-        @NotBlank(message = "need a first name")
+        @NotBlank(message = "Need a First Name")
         private String firstName;
 
-        @NotBlank(message = "need a last name")
+        @NotBlank(message = "Need a Last Name")
         private String lastName;
 
-        @NotBlank(message = "need a address")
-        private String address;
-
-        @NotBlank(message = "need a city")
-        private String city;
-
-        @NotBlank(message = "need a telephone")
-        private String telephone;
+        @NotEmpty(message = "Need a specialty")
+        private List<String> specialtiesName;
     }
 
-    @Builder
-    @AllArgsConstructor
     @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     @Getter
     public static class UPDATE {
 
-        @NotNull(message = "need an owner")
-        private Long ownerId;
+        @NotNull(message = "need a vet")
+        private Long vetId;
 
         private String firstName;
 
         private String lastName;
 
-        private String address;
-
-        private String city;
-
-        private String telephone;
+        private List<String> specialtiesName;
     }
 }

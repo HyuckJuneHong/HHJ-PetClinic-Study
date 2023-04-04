@@ -40,6 +40,7 @@ public class Owner extends BaseEntity {
                  String address,
                  String city,
                  String telephone) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -48,6 +49,7 @@ public class Owner extends BaseEntity {
     }
 
     public static Owner dtoToEntity(OwnerReqDTO.CREATE create) {
+
         return Owner.builder()
                 .firstName(create.getFirstName())
                 .lastName(create.getLastName())
@@ -58,6 +60,7 @@ public class Owner extends BaseEntity {
     }
 
     public static OwnerResDTO.READ entityToDto(Owner owner) {
+
         return OwnerResDTO.READ.builder()
                 .firstName(owner.getFirstName())
                 .lastName(owner.getLastName())
@@ -68,6 +71,7 @@ public class Owner extends BaseEntity {
     }
 
     public void updateOwner(OwnerReqDTO.UPDATE update) {
+
         this.firstName = update.getFirstName();
         this.lastName = update.getLastName();
         this.address = update.getAddress();

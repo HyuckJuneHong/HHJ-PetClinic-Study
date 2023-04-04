@@ -18,7 +18,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PetService {
+
     private final PetRepository petRepository;
+
     private final OwnerRepository ownerRepository;
 
     /**
@@ -68,7 +70,7 @@ public class PetService {
      * @param petId : id for delete pet
      */
     @Transactional
-    public void deletePet(Long petId) {
+    public void deletePetById(Long petId) {
 
         final Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new RuntimeException("Not Found Pet"));

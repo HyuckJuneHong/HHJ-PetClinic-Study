@@ -34,39 +34,43 @@ public class Pet extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
-    private Owner owners;
+    private Owner owner;
 
     @Builder
     public Pet(String name,
                LocalDate birthDate,
                PetType petType,
                Owner owners) {
+
         this.name = name;
         this.birthDate = birthDate;
         this.petType = petType;
-        this.owners = owners;
+        this.owner = owner;
     }
 
     public static Pet dtoToEntity(PetReqDTO.CREATE create,
-                           Owner owners){
+                                  Owner owner){
+
         return Pet.builder()
                 .name(create.getName())
                 .birthDate(create.getBirthDate())
                 .petType(PetType.of(create.getPetType()))
-                .owners(owners)
+                .owners(owner)
                 .build();
     }
 
     public static PetResDTO.READ entityToDto(Pet pet){
+
         return PetResDTO.READ.builder()
                 .name(pet.getName())
-                .ownerName(pet.owners.getFirstName() + pet.getOwners().getLastName())
+                .ownerName(pet.getOwner().getFirstName() + pet.getOwner().getLastName())
                 .birthDate(pet.birthDate)
                 .petType(pet.petType)
                 .build();
     }
 
     public void updatePetInfo(PetReqDTO.UPDATE update) {
+
         this.name = update.getName();
         this.birthDate = update.getBirthDate();
         this.petType = PetType.of(update.getPetType());

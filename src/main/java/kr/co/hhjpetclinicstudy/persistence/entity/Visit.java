@@ -33,6 +33,7 @@ public class Visit extends BaseEntity {
     public Visit(LocalDate visitDate,
                  String description,
                  Pet pet) {
+
         this.visitDate = visitDate;
         this.description = description;
         this.pet = pet;
