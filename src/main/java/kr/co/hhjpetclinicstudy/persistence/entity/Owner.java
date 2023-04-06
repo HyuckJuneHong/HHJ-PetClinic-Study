@@ -1,9 +1,11 @@
 package kr.co.hhjpetclinicstudy.persistence.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
-import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

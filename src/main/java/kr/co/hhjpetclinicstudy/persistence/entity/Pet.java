@@ -22,8 +22,8 @@ import java.time.LocalDate;
 )
 public class Pet extends BaseEntity {
 
-    @Column(name = "name", length = 30)
-    private String name;
+    @Column(name = "pet_name", length = 30)
+    private String petName;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
@@ -37,12 +37,12 @@ public class Pet extends BaseEntity {
     private Owner owner;
 
     @Builder
-    public Pet(String name,
+    public Pet(String petName,
                LocalDate birthDate,
                PetType petType,
                Owner owner) {
 
-        this.name = name;
+        this.petName = petName;
         this.birthDate = birthDate;
         this.petType = petType;
         this.owner = owner;
@@ -50,7 +50,7 @@ public class Pet extends BaseEntity {
 
     public void updatePetInfo(PetReqDTO.UPDATE update) {
 
-        this.name = update.getName();
+        this.petName = update.getPetName();
         this.birthDate = update.getBirthDate();
         this.petType = PetType.of(update.getPetType());
     }

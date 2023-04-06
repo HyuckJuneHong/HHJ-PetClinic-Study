@@ -20,12 +20,12 @@ import lombok.NoArgsConstructor;
 )
 public class Specialty extends BaseEntity {
 
-    @Column(name = "name", length = 80)
-    private String name;
+    @Column(name = "specialty_name", length = 80)
+    private String specialtyName;
 
     @Builder
-    public Specialty(String name) {
+    public Specialty(String specialtyName) {
 
-        this.name = name;
+        this.specialtyName = specialtyName;
     }
 }

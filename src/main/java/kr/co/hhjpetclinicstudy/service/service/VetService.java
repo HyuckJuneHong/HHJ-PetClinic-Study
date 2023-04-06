@@ -99,7 +99,7 @@ public class VetService {
 
         return vet.getVetSpecialties().stream()
                 .map(VetSpecialty::getSpecialty)
-                .map(Specialty::getName)
+                .map(Specialty::getSpecialtyName)
                 .collect(Collectors.toList());
     }
 
@@ -113,7 +113,7 @@ public class VetService {
         List<Specialty> specialties = specialtyRepository.findAllByName(names);
 
         final Set<String> existNames = specialties.stream()
-                .map(Specialty::getName)
+                .map(Specialty::getSpecialtyName)
                 .collect(Collectors.toSet());
 
         final List<Specialty> createSpecialties = names.stream()
