@@ -1,4 +1,4 @@
-package kr.co.hhjpetclinicstudy.service;
+package kr.co.hhjpetclinicstudy.service.service;
 
 import kr.co.hhjpetclinicstudy.persistence.repository.VisitRepository;
 import lombok.RequiredArgsConstructor;

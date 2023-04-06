@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tbl_vet")
+@Table(name = "tbl_vets")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @AttributeOverride(
@@ -45,25 +45,6 @@ public class Vet extends BaseEntity {
         this.vetSpecialties = vetSpecialties;
     }
 
-    public static Vet dtoToEntity(VetReqDTO.CREATE create,
-                                  List<VetSpecialty> vetSpecialties) {
-
-        return Vet.builder()
-                .firstName(create.getFirstName())
-                .lastName(create.getLastName())
-                .vetSpecialties(vetSpecialties)
-                .build();
-    }
-
-    public static VetResDTO.READ entityToDto(Vet vet,
-                                             List<String> specialtiesName) {
-
-        return VetResDTO.READ.builder()
-                .firstName(vet.getFirstName())
-                .lastName(vet.getLastName())
-                .specialtiesName(specialtiesName)
-                .build();
-    }
 
     public void updateVetSpecialties(List<VetSpecialty> vetSpecialties){
 

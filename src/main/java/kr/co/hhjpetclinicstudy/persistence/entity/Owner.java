@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tbl_owner")
+@Table(name = "tbl_owners")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @AttributeOverride(
@@ -46,28 +46,6 @@ public class Owner extends BaseEntity {
         this.address = address;
         this.city = city;
         this.telephone = telephone;
-    }
-
-    public static Owner dtoToEntity(OwnerReqDTO.CREATE create) {
-
-        return Owner.builder()
-                .firstName(create.getFirstName())
-                .lastName(create.getLastName())
-                .address(create.getAddress())
-                .city(create.getCity())
-                .telephone(create.getTelephone())
-                .build();
-    }
-
-    public static OwnerResDTO.READ entityToDto(Owner owner) {
-
-        return OwnerResDTO.READ.builder()
-                .firstName(owner.getFirstName())
-                .lastName(owner.getLastName())
-                .address(owner.address)
-                .city(owner.city)
-                .telephone(owner.telephone)
-                .build();
     }
 
     public void updateOwner(OwnerReqDTO.UPDATE update) {

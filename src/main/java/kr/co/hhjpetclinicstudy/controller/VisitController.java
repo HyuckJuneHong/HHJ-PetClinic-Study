@@ -1,6 +1,6 @@
 package kr.co.hhjpetclinicstudy.controller;
 
-import kr.co.hhjpetclinicstudy.service.VisitService;
+import kr.co.hhjpetclinicstudy.service.service.VisitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 

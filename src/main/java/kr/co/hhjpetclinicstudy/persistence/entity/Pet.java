@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tbl_pet")
+@Table(name = "tbl_pets")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @AttributeOverride(
@@ -40,33 +40,12 @@ public class Pet extends BaseEntity {
     public Pet(String name,
                LocalDate birthDate,
                PetType petType,
-               Owner owners) {
+               Owner owner) {
 
         this.name = name;
         this.birthDate = birthDate;
         this.petType = petType;
         this.owner = owner;
-    }
-
-    public static Pet dtoToEntity(PetReqDTO.CREATE create,
-                                  Owner owner){
-
-        return Pet.builder()
-                .name(create.getName())
-                .birthDate(create.getBirthDate())
-                .petType(PetType.of(create.getPetType()))
-                .owners(owner)
-                .build();
-    }
-
-    public static PetResDTO.READ entityToDto(Pet pet){
-
-        return PetResDTO.READ.builder()
-                .name(pet.getName())
-                .ownerName(pet.getOwner().getFirstName() + pet.getOwner().getLastName())
-                .birthDate(pet.birthDate)
-                .petType(pet.petType)
-                .build();
     }
 
     public void updatePetInfo(PetReqDTO.UPDATE update) {

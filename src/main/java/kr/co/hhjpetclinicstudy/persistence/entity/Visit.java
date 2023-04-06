@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tbl_visit")
+@Table(name = "tbl_visits")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @AttributeOverride(

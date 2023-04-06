@@ -1,16 +1,13 @@
 package kr.co.hhjpetclinicstudy.controller;
 
 import jakarta.validation.Valid;
-import kr.co.hhjpetclinicstudy.service.PetService;
+import kr.co.hhjpetclinicstudy.service.service.PetService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
