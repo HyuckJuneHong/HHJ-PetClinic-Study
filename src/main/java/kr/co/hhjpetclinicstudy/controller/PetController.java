@@ -51,7 +51,7 @@ public class PetController {
      * Pet Update API
      * @param update : Info for Update a Pet
      * @return : String
-0     */
+     */
     @PutMapping
     public ResponseEntity<String> updatePet(@RequestBody @Valid PetReqDTO.UPDATE update){
 

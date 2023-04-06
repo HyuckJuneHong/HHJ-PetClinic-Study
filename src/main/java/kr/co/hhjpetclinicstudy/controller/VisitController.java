@@ -5,6 +5,7 @@ import kr.co.hhjpetclinicstudy.service.model.dtos.response.VisitResDTO;
 import kr.co.hhjpetclinicstudy.service.service.VisitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class VisitController {
      * @return : String
      */
     @PostMapping
-    public ResponseEntity<String> createVisit(VisitReqDTO.CREATE create){
+    public ResponseEntity<String> createVisit(@RequestBody @Validated VisitReqDTO.CREATE create){
 
         try {
             visitService.createVisit(create);
@@ -61,4 +62,20 @@ public class VisitController {
         }
     }
 
+    /**
+     * Visit Update API
+     * @param update : Info for Update a Visit
+     * @return : String
+     */
+    @PutMapping
+    public ResponseEntity<String> updateVisit(@RequestBody @Validated VisitReqDTO.UPDATE update){
+
+        try {
+            visitService.updateVisit(update);
+            return ResponseEntity.ok().body("Success Update Visit");
+        }catch (Exception e){
+            return ResponseEntity.ok().body("error : " + e);
+        }
+
+    }
 }

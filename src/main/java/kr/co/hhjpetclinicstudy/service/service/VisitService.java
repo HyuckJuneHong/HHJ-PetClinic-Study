@@ -9,12 +9,14 @@ import kr.co.hhjpetclinicstudy.service.model.dtos.response.VisitResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mappers.VisitMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class VisitService {
 
     private final VisitRepository visitRepository;
@@ -27,6 +29,7 @@ public class VisitService {
      * Visit Create Service
      * @param create : Info for create a visit
      */
+    @Transactional
     public void createVisit(VisitReqDTO.CREATE create) {
 
         final Pet pet = petRepository.findById(create.getPetId())
@@ -61,5 +64,18 @@ public class VisitService {
         return visitRepository.findByPet(pet).stream()
                 .map(visitMappers::toReadDto)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * visit update service
+     * @param update : Info for Update a visit
+     */
+    @Transactional
+    public void updateVisit(VisitReqDTO.UPDATE update) {
+
+        Visit visit = visitRepository.findById(update.getVisitId())
+                .orElseThrow(() -> new RuntimeException("Not Found Visit"));
+
+        visit.updateVisit(update);
     }
 }

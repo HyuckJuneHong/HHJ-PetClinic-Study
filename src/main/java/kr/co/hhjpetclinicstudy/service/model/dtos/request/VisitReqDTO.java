@@ -26,4 +26,18 @@ public class VisitReqDTO {
         @NotNull(message = "need a pet")
         private Long petId;
     }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Builder
+    public static class UPDATE {
+
+        @NotNull(message = "Need a visit")
+        private Long visitId;
+
+        private LocalDate visitDate;
+
+        private String description;
+    }
 }
