@@ -66,8 +66,6 @@ public class PetService {
                 .orElseThrow(() -> new RuntimeException("Not Found Pet"));
 
         pet.updatePetInfo(update);
-
-        petRepository.save(pet);
     }
 
     /**

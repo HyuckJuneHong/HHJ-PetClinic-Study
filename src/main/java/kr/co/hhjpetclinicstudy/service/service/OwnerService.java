@@ -54,8 +54,6 @@ public class OwnerService {
                 .orElseThrow(() -> new RuntimeException("Not Found Owner"));
 
         owner.updateOwner(update);
-
-        ownerRepository.save(owner);
     }
 
     /**

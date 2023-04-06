@@ -9,6 +9,7 @@ import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mappers.SpecialtyMappers;
 import kr.co.hhjpetclinicstudy.service.model.mappers.VetMappers;
+import kr.co.hhjpetclinicstudy.service.model.mappers.VetSpecialtyMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,8 @@ public class VetService {
     private final VetMappers vetMappers;
 
     private final SpecialtyMappers specialtyMappers;
+
+    private final VetSpecialtyMappers vetSpecialtyMappers;
 
     /**
      * vet create service
@@ -74,8 +77,6 @@ public class VetService {
         final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(update.getSpecialtiesName(), vet);
 
         vet.updateVetSpecialties(vetSpecialties);
-
-        vetRepository.save(vet);
     }
 
     /**
@@ -137,10 +138,7 @@ public class VetService {
         final List<Specialty> specialties = getOrCreateSpecialtiesByNames(names);
 
         return specialties.stream()
-                .map(specialty -> VetSpecialty.builder()
-                        .specialty(specialty)
-                        .vet(vet)
-                        .build())
+                .map(specialty -> vetSpecialtyMappers.toVetSepcialtyEntity(specialty, vet))
                 .collect(Collectors.toList());
     }
 }
