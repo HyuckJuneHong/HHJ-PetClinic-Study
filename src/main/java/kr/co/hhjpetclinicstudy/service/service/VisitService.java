@@ -78,4 +78,17 @@ public class VisitService {
 
         visit.updateVisit(update);
     }
+
+    /**
+     * visit delete service
+     * @param visitId : id for delete a visit
+     */
+    @Transactional
+    public void deleteVisitById(Long visitId) {
+
+        final Visit visit = visitRepository.findById(visitId)
+                .orElseThrow(() -> new RuntimeException("Not Found Visit"));
+
+        visitRepository.delete(visit);
+    }
 }

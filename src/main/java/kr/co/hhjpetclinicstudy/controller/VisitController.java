@@ -28,7 +28,7 @@ public class VisitController {
         try {
             visitService.createVisit(create);
             return ResponseEntity.ok().body("Success create visit");
-        }catch (Exception e){
+        } catch (Exception e){
             return ResponseEntity.ok().body("error : " + e);
         }
     }
@@ -42,7 +42,7 @@ public class VisitController {
 
         try {
             return ResponseEntity.ok().body(visitService.getVisitsByPet(petId));
-        }catch (Exception e){
+        } catch (Exception e){
             throw new Exception("error : " + e);
         }
     }
@@ -57,7 +57,7 @@ public class VisitController {
 
         try {
             return ResponseEntity.ok().body(visitService.getVisitById(visitId));
-        }catch (Exception e){
+        } catch (Exception e){
             throw new Exception("error : " + e);
         }
     }
@@ -73,9 +73,25 @@ public class VisitController {
         try {
             visitService.updateVisit(update);
             return ResponseEntity.ok().body("Success Update Visit");
-        }catch (Exception e){
+        } catch (Exception e){
             return ResponseEntity.ok().body("error : " + e);
         }
+    }
 
+
+    /**
+     * Visit Delete API
+     * @param visitId : id for delete a visit
+     * @return : String
+     */
+    @DeleteMapping("/{visit_id}")
+    public ResponseEntity<String> deleteVisitById(@PathVariable(name = "visit_id") Long visitId){
+
+        try {
+            visitService.deleteVisitById(visitId);
+            return ResponseEntity.ok().body("Success Delete Visit");
+        } catch (Exception e) {
+            return ResponseEntity.ok().body("error : " + e);
+        }
     }
 }
