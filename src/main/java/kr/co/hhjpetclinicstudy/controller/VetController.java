@@ -19,6 +19,10 @@ public class VetController {
 
     private final VetService vetService;
 
+    /**
+     * Vet Create API
+     * @param create : info for Create a Vet
+     */
     @PostMapping
     public ResponseFormat<Void> createVet(@RequestBody @Valid VetReqDTO.CREATE create){
 
@@ -30,6 +34,10 @@ public class VetController {
         }
     }
 
+    /**
+     * vet By id Read API
+     * @return : VetResDTO.READ
+     */
     @GetMapping("/{vet_id}")
     public ResponseFormat<VetResDTO.READ> getVetById(@PathVariable(name = "vet_id") Long vetId) {
 
@@ -37,9 +45,15 @@ public class VetController {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetById(vetId));
         } catch (NotFountException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
+    /**
+     * Vet Update API
+     * @param update : Info for Update a Vet
+     */
     @PutMapping
     public ResponseFormat<Void> updateVet(@RequestBody VetReqDTO.UPDATE update){
 
@@ -48,9 +62,15 @@ public class VetController {
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFountException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
+    /**
+     * Vet Delete API
+     * @param vetId : id for delete a vet
+     */
     @DeleteMapping("/{vet_id}")
     public ResponseFormat<Void> deleteVetById(@PathVariable(name = "vet_id") Long vetId){
 
@@ -59,6 +79,8 @@ public class VetController {
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFountException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 }
