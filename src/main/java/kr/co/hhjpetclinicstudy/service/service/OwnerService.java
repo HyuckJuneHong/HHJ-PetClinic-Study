@@ -1,5 +1,8 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
@@ -25,6 +28,8 @@ public class OwnerService {
     @Transactional
     public void createOwner(OwnerReqDTO.CREATE create) {
 
+        isTelephone(create.getTelephone());
+
         final Owner owner = ownerMappers.toOwnerEntity(create);
 
         ownerRepository.save(owner);
@@ -38,7 +43,7 @@ public class OwnerService {
     public OwnerResDTO.READ getOwnerById(Long ownerId) {
 
         final Owner owner = ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException("Not Found Owner"));
+                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
 
         return ownerMappers.toReadDto(owner);
     }
@@ -50,8 +55,10 @@ public class OwnerService {
     @Transactional
     public void updateOwner(OwnerReqDTO.UPDATE update) {
 
+        isTelephone(update.getTelephone());
+
         Owner owner = ownerRepository.findById(update.getOwnerId())
-                .orElseThrow(() -> new RuntimeException("Not Found Owner"));
+                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
 
         owner.updateOwner(update);
     }
@@ -64,8 +71,14 @@ public class OwnerService {
     public void deleteOwnerById(Long ownerId) {
 
         final Owner owner = ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException("Not Found Owner"));
+                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
 
         ownerRepository.delete(owner);
+    }
+
+    private void isTelephone(String telephone){
+
+        if(ownerRepository.existsByTelephone(telephone))
+            throw new DuplicatedException(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
     }
 }
