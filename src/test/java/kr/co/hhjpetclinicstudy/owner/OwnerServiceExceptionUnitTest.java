@@ -36,15 +36,12 @@ public class OwnerServiceExceptionUnitTest {
     @Mock
     private OwnerRepository ownerRepository;
 
-    @Mock
-    private OwnerMappers ownerMappers;
-
     @Test
     @DisplayName("Owner 등록 실패 - 전화번호 중복 - DuplicatedException")
     public void createOwner_error_telephone_DuplicatedException() {
 
         //given
-        OwnerReqDTO.CREATE create = OwnerDtoCreators.ownerReqDto_create_creators();
+        final OwnerReqDTO.CREATE create = OwnerDtoCreators.ownerReqDto_create_creators();
         given(ownerRepository.existsByTelephone(any(String.class))).willReturn(true);
 
         //when, then
@@ -57,7 +54,7 @@ public class OwnerServiceExceptionUnitTest {
     public void createOwner_error_dto_NullPointerException() {
 
         //given
-        OwnerReqDTO.CREATE create = null;
+        final OwnerReqDTO.CREATE create = null;
 
         //when, then
         NullPointerException exception = assertThrows(NullPointerException.class, () -> ownerService.createOwner(create));
