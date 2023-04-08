@@ -3,18 +3,15 @@ package kr.co.hhjpetclinicstudy.owner;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.owner.model.OwnerDtoCreators;
-import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.mappers.OwnerMappers;
 import kr.co.hhjpetclinicstudy.service.service.OwnerService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
