@@ -41,7 +41,7 @@ public class OwnerServiceExceptionUnitTest {
 
     @Test
     @DisplayName("Owner 등록 실패 - 전화번호 중복 - DuplicatedException")
-    public void createOwner_telephone_DuplicatedException() {
+    public void createOwner_error_telephone_DuplicatedException() {
 
         //given
         OwnerReqDTO.CREATE create = OwnerDtoCreators.ownerReqDto_create_creators();
@@ -54,7 +54,7 @@ public class OwnerServiceExceptionUnitTest {
 
     @Test
     @DisplayName("Owner 등록 실패 - OwnerReqDTO.CREATE == Null - NullPointerException")
-    public void createOwner_dto_NullPointerException() {
+    public void createOwner_error_dto_NullPointerException() {
 
         //given
         OwnerReqDTO.CREATE create = null;
