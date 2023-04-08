@@ -1,5 +1,6 @@
 package kr.co.hhjpetclinicstudy.owner;
 
+import jakarta.validation.constraints.Null;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.owner.model.OwnerDtoCreators;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,5 +50,17 @@ public class OwnerServiceExceptionUnitTest {
         //when, then
         DuplicatedException exception = assertThrows(DuplicatedException.class, () -> ownerService.createOwner(create));
         assertEquals(ResponseStatus.FAIL_TELEPHONE_DUPLICATED.getMessage(), exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Owner 등록 실패 - OwnerReqDTO.CREATE == Null - NullPointerException")
+    public void createOwner_dto_NullPointerException() {
+
+        //given
+        OwnerReqDTO.CREATE create = null;
+
+        //when, then
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> ownerService.createOwner(create));
+        assertNotNull(exception);
     }
 }
