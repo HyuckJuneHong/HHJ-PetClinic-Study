@@ -1,5 +1,7 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Specialty;
 import kr.co.hhjpetclinicstudy.persistence.entity.Vet;
 import kr.co.hhjpetclinicstudy.persistence.entity.VetSpecialty;
@@ -57,7 +59,7 @@ public class VetService {
     public VetResDTO.READ getVetById(Long vetId) {
 
         final Vet vet = vetRepository.findById(vetId)
-                .orElseThrow(() -> new RuntimeException("Not Found Vet"));
+                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
 
         final List<String> specialtiesName = getSpecialtiesNameByVet(vet);
 
@@ -72,7 +74,7 @@ public class VetService {
     public void updateVet(VetReqDTO.UPDATE update) {
 
         Vet vet = vetRepository.findById(update.getVetId())
-                .orElseThrow(() -> new RuntimeException("Not Found Vet"));
+                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
 
         final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(update.getSpecialtiesName(), vet);
 
@@ -86,7 +88,7 @@ public class VetService {
     public void deleteVetById(Long vetId) {
 
         final Vet vet = vetRepository.findById(vetId)
-                .orElseThrow(() -> new RuntimeException("Not Found Vet"));
+                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
 
         vetRepository.delete(vet);
     }

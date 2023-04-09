@@ -1,6 +1,9 @@
 package kr.co.hhjpetclinicstudy.controller;
 
 import jakarta.validation.Valid;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
+import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.service.service.PetService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
@@ -20,16 +23,17 @@ public class PetController {
     /**
      * Pet Create API
      * @param create : Info for Create a Pet
-     * @return : String
      */
     @PostMapping
-    public ResponseEntity<String> createPet(@RequestBody @Valid PetReqDTO.CREATE create){
+    public ResponseFormat<Void> createPet(@RequestBody @Valid PetReqDTO.CREATE create){
 
         try{
             petService.createPet(create);
-            return ResponseEntity.ok().body("Success Pet Create");
-        }catch (Exception e){
-            return ResponseEntity.ok().body("error : " + e);
+            return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
+        } catch (NotFountException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
@@ -38,44 +42,48 @@ public class PetController {
      * @return : PetResDtp.READ
      */
     @GetMapping("/{owner_id}")
-    public ResponseEntity<List<PetResDTO.READ>> getPetsByOwner(@PathVariable(name = "owner_id") Long ownerId) throws Exception {
+    public ResponseFormat<List<PetResDTO.READ>> getPetsByOwner(@PathVariable(name = "owner_id") Long ownerId) {
 
         try {
-            return ResponseEntity.ok().body(petService.getPetsByOwner(ownerId));
-        }catch (Exception e){
-            throw new Exception("error : " + e);
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetsByOwner(ownerId));
+        } catch (NotFountException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * Pet Update API
      * @param update : Info for Update a Pet
-     * @return : String
      */
     @PutMapping
-    public ResponseEntity<String> updatePet(@RequestBody @Valid PetReqDTO.UPDATE update){
+    public ResponseFormat<Void> updatePet(@RequestBody @Valid PetReqDTO.UPDATE update){
 
         try {
             petService.updatePet(update);
-            return ResponseEntity.ok().body("Success Pet Update");
-        }catch (Exception e){
-            return ResponseEntity.ok().body("error : " + e);
+            return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
+        } catch (NotFountException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * Pet Delete API
      * @param petId : id for Delete a Pet
-     * @return : String
      */
     @DeleteMapping("/{pet_id}")
-    public ResponseEntity<String> deletePetById(@PathVariable(name = "pet_id") Long petId){
+    public ResponseFormat<Void> deletePetById(@PathVariable(name = "pet_id") Long petId){
 
         try {
             petService.deletePetById(petId);
-            return ResponseEntity.ok().body("Success Pet Delete");
-        }catch (Exception e){
-            return ResponseEntity.ok().body("error : " + e);
+            return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
+        } catch (NotFountException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 }

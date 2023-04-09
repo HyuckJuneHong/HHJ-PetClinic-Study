@@ -1,5 +1,8 @@
 package kr.co.hhjpetclinicstudy.controller;
 
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
+import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VisitReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VisitResDTO;
 import kr.co.hhjpetclinicstudy.service.service.VisitService;
@@ -20,16 +23,17 @@ public class VisitController {
     /**
      * Visit Create API
      * @param create : info for Create a visit
-     * @return : String
      */
     @PostMapping
-    public ResponseEntity<String> createVisit(@RequestBody @Validated VisitReqDTO.CREATE create){
+    public ResponseFormat<Void> createVisit(@RequestBody @Validated VisitReqDTO.CREATE create){
 
         try {
             visitService.createVisit(create);
-            return ResponseEntity.ok().body("Success create visit");
-        } catch (Exception e){
-            return ResponseEntity.ok().body("error : " + e);
+            return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
+        } catch (NotFountException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
@@ -38,12 +42,14 @@ public class VisitController {
      * @return : List VisitResDTO.READ
      */
     @GetMapping("/{pet_id}")
-    public ResponseEntity<List<VisitResDTO.READ>> getVisitsByPet(@PathVariable(name = "pet_id") Long petId) throws Exception{
+    public ResponseFormat<List<VisitResDTO.READ>> getVisitsByPet(@PathVariable(name = "pet_id") Long petId) {
 
         try {
-            return ResponseEntity.ok().body(visitService.getVisitsByPet(petId));
-        } catch (Exception e){
-            throw new Exception("error : " + e);
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByPet(petId));
+        } catch (NotFountException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
@@ -52,29 +58,32 @@ public class VisitController {
      * @return : VisitResDTO.READ
      */
     @GetMapping("/{pet_id}/{visit_id}")
-    public ResponseEntity<VisitResDTO.READ> getVisitById(@PathVariable(name = "visit_id") Long visitId,
-                                                         @PathVariable(name = "pet_id") Long petId) throws Exception{
+    public ResponseFormat<VisitResDTO.READ> getVisitById(@PathVariable(name = "visit_id") Long visitId,
+                                                         @PathVariable(name = "pet_id") Long petId) {
 
         try {
-            return ResponseEntity.ok().body(visitService.getVisitById(visitId));
-        } catch (Exception e){
-            throw new Exception("error : " + e);
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitById(visitId));
+        } catch (NotFountException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * Visit Update API
      * @param update : Info for Update a Visit
-     * @return : String
      */
     @PutMapping
-    public ResponseEntity<String> updateVisit(@RequestBody @Validated VisitReqDTO.UPDATE update){
+    public ResponseFormat<Void> updateVisit(@RequestBody @Validated VisitReqDTO.UPDATE update){
 
         try {
             visitService.updateVisit(update);
-            return ResponseEntity.ok().body("Success Update Visit");
-        } catch (Exception e){
-            return ResponseEntity.ok().body("error : " + e);
+            return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
+        } catch (NotFountException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
@@ -82,16 +91,17 @@ public class VisitController {
     /**
      * Visit Delete API
      * @param visitId : id for delete a visit
-     * @return : String
      */
     @DeleteMapping("/{visit_id}")
-    public ResponseEntity<String> deleteVisitById(@PathVariable(name = "visit_id") Long visitId){
+    public ResponseFormat<Void> deleteVisitById(@PathVariable(name = "visit_id") Long visitId){
 
         try {
             visitService.deleteVisitById(visitId);
-            return ResponseEntity.ok().body("Success Delete Visit");
-        } catch (Exception e) {
-            return ResponseEntity.ok().body("error : " + e);
+            return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
+        } catch (NotFountException e) {
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 }

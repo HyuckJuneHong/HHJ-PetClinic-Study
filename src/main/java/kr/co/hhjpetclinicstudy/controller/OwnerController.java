@@ -1,6 +1,11 @@
 package kr.co.hhjpetclinicstudy.controller;
 
 import jakarta.validation.Valid;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.InvalidRequestException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
+import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.service.service.OwnerService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
@@ -20,16 +25,17 @@ public class OwnerController {
     /**
      * owner create api
      * @param create : Info for create an owner
-     * @return : String
      */
     @PostMapping
-    public ResponseEntity<String> createOwner(@RequestBody @Validated OwnerReqDTO.CREATE create){
+    public ResponseFormat<Void> createOwner(@RequestBody @Validated OwnerReqDTO.CREATE create){
 
         try {
             ownerService.createOwner(create);
-            return ResponseEntity.ok().body("Success Owner Create");
-        }catch (Exception e){
-            return ResponseEntity.ok().body("error : " + e);
+            return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
+        } catch (DuplicatedException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
@@ -39,44 +45,50 @@ public class OwnerController {
      * @return : OwnerResDTO.READ
      */
     @GetMapping("/{owner_id}")
-    public ResponseEntity<OwnerResDTO.READ> getOwnerById(@PathVariable(name = "owner_id") Long ownerId) throws Exception {
+    public ResponseFormat<OwnerResDTO.READ> getOwnerById(@PathVariable(name = "owner_id") Long ownerId) {
 
         try {
-            return ResponseEntity.ok().body(ownerService.getOwnerById(ownerId));
-        }catch (Exception e){
-            throw new Exception("error : " + e);
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnerById(ownerId));
+        } catch (NotFountException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * owner update api
      * @param update : info for update an owner
-     * @return : String
      */
     @PutMapping
-    public ResponseEntity<String> updateOwner(@RequestBody @Valid OwnerReqDTO.UPDATE update){
+    public ResponseFormat<Void> updateOwner(@RequestBody @Valid OwnerReqDTO.UPDATE update){
 
         try {
             ownerService.updateOwner(update);
-            return ResponseEntity.ok().body("Success Owner Update");
-        }catch (Exception e){
-            return ResponseEntity.ok().body("error : " + e);
+            return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
+        } catch (DuplicatedException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
+        } catch (NotFountException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * owner delete api
      * @param ownerId : id for delete on owner
-     * @return : String
      */
     @DeleteMapping("/{owner_id}")
-    public ResponseEntity<String> deleteOwnerById(@PathVariable(name = "owner_id") Long ownerId){
+    public ResponseFormat<Void> deleteOwnerById(@PathVariable(name = "owner_id") Long ownerId){
 
         try {
             ownerService.deleteOwnerById(ownerId);
-            return ResponseEntity.ok().body("Success Owner Delete");
-        }catch (Exception e){
-            return ResponseEntity.ok().body("error : " + e);
+            return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
+        } catch (NotFountException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e){
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 }

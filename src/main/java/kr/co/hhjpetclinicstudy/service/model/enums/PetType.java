@@ -1,5 +1,7 @@
 package kr.co.hhjpetclinicstudy.service.model.enums;
 
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -25,6 +27,6 @@ public enum PetType {
 
         return Arrays.stream(PetType.values())
                 .filter(type -> type.toString().equalsIgnoreCase(petType))
-                .findAny().orElseThrow(() -> new RuntimeException("Not Fount Pet Type"));
+                .findAny().orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
     }
 }
