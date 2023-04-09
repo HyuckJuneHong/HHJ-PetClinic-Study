@@ -34,7 +34,7 @@ public class Vet extends BaseEntity {
     private List<VetSpecialty> vetSpecialties = new ArrayList<>();
 
     @Builder
-    public Vet(String firstName,
+    private Vet(String firstName,
                String lastName,
                List<VetSpecialty> vetSpecialties) {
 

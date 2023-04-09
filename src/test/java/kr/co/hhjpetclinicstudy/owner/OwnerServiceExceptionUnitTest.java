@@ -1,9 +1,10 @@
 package kr.co.hhjpetclinicstudy.owner;
 
-import jakarta.validation.constraints.Null;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
-import kr.co.hhjpetclinicstudy.owner.model.OwnerDtoCreators;
+import kr.co.hhjpetclinicstudy.owner.model.OwnerCreators;
+import kr.co.hhjpetclinicstudy.owner.model.OwnerMappersImpl;
+import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.mappers.OwnerMappers;
@@ -36,13 +37,18 @@ public class OwnerServiceExceptionUnitTest {
     @Mock
     private OwnerRepository ownerRepository;
 
+    @Mock
+    private OwnerMappers ownerMappers;
+
     @Test
     @DisplayName("Owner 등록 실패 - 전화번호 중복 - DuplicatedException")
     public void createOwner_error_telephone_DuplicatedException() {
 
         //given
-        final OwnerReqDTO.CREATE create = OwnerDtoCreators.ownerReqDto_create_creators();
+        final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
+        final Owner owner = OwnerMappersImpl.toOwnerEntity(create);
         given(ownerRepository.existsByTelephone(any(String.class))).willReturn(true);
+        given(ownerMappers.toOwnerEntity(any(OwnerReqDTO.CREATE.class))).willReturn(owner);
 
         //when, then
         DuplicatedException exception = assertThrows(DuplicatedException.class, () -> ownerService.createOwner(create));

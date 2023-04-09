@@ -37,7 +37,7 @@ public class Owner extends BaseEntity {
     private String telephone;
 
     @Builder
-    public Owner(String firstName,
+    private Owner(String firstName,
                  String lastName,
                  String address,
                  String city,

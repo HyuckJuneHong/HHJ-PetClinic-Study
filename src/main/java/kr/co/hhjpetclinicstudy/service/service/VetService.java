@@ -140,7 +140,7 @@ public class VetService {
         final List<Specialty> specialties = getOrCreateSpecialtiesByNames(names);
 
         return specialties.stream()
-                .map(specialty -> vetSpecialtyMappers.toVetSepcialtyEntity(specialty, vet))
+                .map(specialty -> vetSpecialtyMappers.toVetSpecialtyEntity(specialty, vet))
                 .collect(Collectors.toList());
     }
 }

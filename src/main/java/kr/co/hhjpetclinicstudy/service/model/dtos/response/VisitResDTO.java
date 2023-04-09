@@ -1,7 +1,5 @@
 package kr.co.hhjpetclinicstudy.service.model.dtos.response;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import kr.co.hhjpetclinicstudy.service.model.enums.PetType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,8 +24,12 @@ public class VisitResDTO {
 
         private PetType petType;
 
-        private String firstName;
+        private LocalDate petBirthDate;
 
-        private String lastName;
+        private String ownerFirstName;
+
+        private String ownerLastName;
+
+        private String ownerTelephone;
     }
 }

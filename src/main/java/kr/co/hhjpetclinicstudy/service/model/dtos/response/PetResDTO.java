@@ -20,10 +20,12 @@ public class PetResDTO {
 
         private PetType petType;
 
-        private String firstName;
-
-        private String lastName;
-
         private LocalDate birthDate;
+
+        private String ownerFirstName;
+
+        private String ownerLastName;
+
+        private String ownerTelephone;
     }
 }

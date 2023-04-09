@@ -1,58 +1,56 @@
 package kr.co.hhjpetclinicstudy.owner;
 
-import kr.co.hhjpetclinicstudy.persistence.repository.SpecialtyRepository;
-import kr.co.hhjpetclinicstudy.persistence.repository.VetRepository;
-import kr.co.hhjpetclinicstudy.service.service.VetService;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
+import kr.co.hhjpetclinicstudy.owner.model.OwnerCreators;
+import kr.co.hhjpetclinicstudy.owner.model.OwnerMappersImpl;
+import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
+import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
+import kr.co.hhjpetclinicstudy.service.model.mappers.OwnerMappers;
+import kr.co.hhjpetclinicstudy.service.service.OwnerService;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+
+/**
+ * JUnit 5와 Mockito 프레임워크를 사용하여 OwnerService 클래스의 예외 처리에 대한 단위 테스트를 작성
+ * @ExtendWith(MockitoExtension.class) : MockitoExtension 클래스를 사용하여 Mockito 프레임워크를 JUnit 5에 통합.
+ * @InjectMocks : 의존성 주입을 수행하는 Mockito 어노테이션.
+ * @Mock : mock 객체를 생성하는 Mockito 어노테이션.
+ */
 @ExtendWith(MockitoExtension.class)
 public class OwnerServiceUnitTest {
 
     @InjectMocks
-    private VetService vetService;
+    private OwnerService ownerService;
 
     @Mock
-    private VetRepository vetRepository;
+    private OwnerRepository ownerRepository;
 
     @Mock
-    private SpecialtyRepository specialtyRepository;
+    private OwnerMappers ownerMappers;
 
-//    @Test
-//    @DisplayName("Create Vet - Success")
-//    public void createVet_success(){
-//
-//        //given
-//        String firstName = "test1";
-//        String lastName = "test2";
-//        List<Long> specialtiesId = new ArrayList<>(Arrays.asList(1L, 2L));
-//        VetReqDTO.CREATE create = VetCreators.createVetReqDto(firstName, lastName, specialtiesId);
-//
-//        String name1 = "specName1";
-//        String name2 = "specName2";
-//        List<Specialty> specialties = SpecialtyCreators.createSpecialties(name1, name2);
-//        when(specialtyRepository.findAllById(anyList())).thenReturn(specialties);
-//
-//        //when
-//        vetService.createVet(create);
-//
-//        //then
-//        Vet vet = vetRepository.findByFirstNameAndLastName(firstName, lastName);
-//        assertNotNull(vet);
-//        assertEquals(firstName, vet.getFirstName());
-//        assertEquals(lastName, vet.getFirstName());
-//
-//        List<VetSpecialty> vetSpecialties = vet.getVetSpecialties();
-//        assertNotNull(vetSpecialties);
-//        assertEquals(2, vetSpecialties.size());
-//
-//        List<Specialty> specialtyList = vetSpecialties
-//                .stream()
-//                .map(VetSpecialty::getSpecialty)
-//                .collect(Collectors.toList());
-//        assertTrue(specialtyList.stream().anyMatch(s -> s.getName().equals(name1)));
-//        assertTrue(specialtyList.stream().anyMatch(s -> s.getName().equals(name2)));
-//    }
+    @Test
+    @DisplayName("Owner 등록 - 성공")
+    void createUser_success() {
+
+        //given
+        final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
+        final Owner owner = OwnerMappersImpl.toOwnerEntity(create);
+        given(ownerMappers.toOwnerEntity(any(OwnerReqDTO.CREATE.class))).willReturn(owner);
+        given(ownerRepository.save(any(Owner.class))).willReturn(owner);
+        given(ownerRepository.existsByTelephone(any(String.class))).willReturn(false);
+
+        //when, then
+        assertDoesNotThrow(() -> ownerService.createOwner(create));
+    }
 }

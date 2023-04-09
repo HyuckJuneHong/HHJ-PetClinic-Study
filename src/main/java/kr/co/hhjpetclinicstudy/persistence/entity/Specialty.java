@@ -24,7 +24,7 @@ public class Specialty extends BaseEntity {
     private String specialtyName;
 
     @Builder
-    public Specialty(String specialtyName) {
+    private Specialty(String specialtyName) {
 
         this.specialtyName = specialtyName;
     }

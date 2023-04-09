@@ -37,7 +37,7 @@ public class Pet extends BaseEntity {
     private Owner owner;
 
     @Builder
-    public Pet(String petName,
+    private Pet(String petName,
                LocalDate birthDate,
                PetType petType,
                Owner owner) {

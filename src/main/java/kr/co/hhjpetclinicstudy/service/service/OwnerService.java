@@ -28,9 +28,9 @@ public class OwnerService {
     @Transactional
     public void createOwner(OwnerReqDTO.CREATE create) {
 
-        isTelephone(create.getTelephone());
-
         final Owner owner = ownerMappers.toOwnerEntity(create);
+
+        isTelephone(owner.getTelephone());
 
         ownerRepository.save(owner);
     }
