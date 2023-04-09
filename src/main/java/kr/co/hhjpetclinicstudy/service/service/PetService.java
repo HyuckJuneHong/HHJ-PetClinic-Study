@@ -1,6 +1,6 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
@@ -35,7 +35,7 @@ public class PetService {
     public void createPet(PetReqDTO.CREATE create) {
 
         final Owner owner = ownerRepository.findById(create.getOwnerId())
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         final Pet pet = petMappers.toPetEntity(create, owner);
 
@@ -49,7 +49,7 @@ public class PetService {
     public List<PetResDTO.READ> getPetsByOwner(Long ownerId) {
 
         final Owner owner = ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return petRepository.findByOwner(owner).stream()
                 .map(petMappers::toReadDto)
@@ -64,7 +64,7 @@ public class PetService {
     public void updatePet(PetReqDTO.UPDATE update) {
 
         Pet pet = petRepository.findById(update.getPetId())
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         pet.updatePetInfo(update);
     }
@@ -77,7 +77,7 @@ public class PetService {
     public void deletePetById(Long petId) {
 
         final Pet pet = petRepository.findById(petId)
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         petRepository.delete(pet);
     }

@@ -3,19 +3,16 @@ package kr.co.hhjpetclinicstudy.service.model.dtos.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 public class VetReqDTO {
 
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
     @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class CREATE {
 
         @NotBlank(message = "Need a First Name")
@@ -28,10 +25,10 @@ public class VetReqDTO {
         private List<String> specialtiesName;
     }
 
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
     @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class UPDATE {
 
         @NotNull(message = "need a vet")

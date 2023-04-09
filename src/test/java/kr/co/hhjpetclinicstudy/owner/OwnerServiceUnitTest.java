@@ -1,7 +1,5 @@
 package kr.co.hhjpetclinicstudy.owner;
 
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
-import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.owner.model.OwnerCreators;
 import kr.co.hhjpetclinicstudy.owner.model.OwnerMappersImpl;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;

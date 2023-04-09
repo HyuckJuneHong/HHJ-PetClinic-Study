@@ -1,14 +1,13 @@
 package kr.co.hhjpetclinicstudy.controller;
 
 import jakarta.validation.Valid;
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.service.service.PetService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class PetController {
         try{
             petService.createPet(create);
             return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
@@ -46,7 +45,7 @@ public class PetController {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetsByOwner(ownerId));
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
@@ -63,7 +62,7 @@ public class PetController {
         try {
             petService.updatePet(update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
@@ -80,7 +79,7 @@ public class PetController {
         try {
             petService.deletePetById(petId);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);

@@ -1,13 +1,12 @@
 package kr.co.hhjpetclinicstudy.controller;
 
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VisitReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VisitResDTO;
 import kr.co.hhjpetclinicstudy.service.service.VisitService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +29,7 @@ public class VisitController {
         try {
             visitService.createVisit(create);
             return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
@@ -46,7 +45,7 @@ public class VisitController {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByPet(petId));
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
@@ -63,7 +62,7 @@ public class VisitController {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitById(visitId));
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
@@ -80,7 +79,7 @@ public class VisitController {
         try {
             visitService.updateVisit(update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
@@ -98,7 +97,7 @@ public class VisitController {
         try {
             visitService.deleteVisitById(visitId);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFountException e) {
+        } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);

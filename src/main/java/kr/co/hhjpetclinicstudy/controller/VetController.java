@@ -1,15 +1,13 @@
 package kr.co.hhjpetclinicstudy.controller;
 
 import jakarta.validation.Valid;
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.service.service.VetService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,7 +41,7 @@ public class VetController {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetById(vetId));
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
@@ -60,7 +58,7 @@ public class VetController {
         try {
             vetService.updateVet(update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
@@ -77,7 +75,7 @@ public class VetController {
         try {
             vetService.deleteVetById(vetId);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);

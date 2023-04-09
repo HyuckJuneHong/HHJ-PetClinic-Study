@@ -1,6 +1,7 @@
 package kr.co.hhjpetclinicstudy.owner;
 
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.owner.model.OwnerCreators;
 import kr.co.hhjpetclinicstudy.owner.model.OwnerMappersImpl;
@@ -15,6 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,14 +59,25 @@ public class OwnerServiceExceptionUnitTest {
     }
 
     @Test
-    @DisplayName("Owner 등록 실패 - OwnerReqDTO.CREATE == Null - NullPointerException")
-    public void createOwner_error_dto_NullPointerException() {
+    @DisplayName("Owner 등록 실패 - 필수 입력 값 미입력 - NullPointerException")
+    public void createOwner_error_null_NullPointerException() {
 
         //given
-        final OwnerReqDTO.CREATE create = null;
+        final OwnerReqDTO.CREATE create = OwnerReqDTO.CREATE.builder().build();
 
         //when, then
         NullPointerException exception = assertThrows(NullPointerException.class, () -> ownerService.createOwner(create));
         assertNotNull(exception);
+    }
+
+    @Test
+    @DisplayName("Owner 조회 실패 - 해당 ID에 대한 조회 실패 - NotFoundException")
+    public void getOwnerById_error_NotFoundException(){
+
+        //given
+        given(ownerRepository.findById(any(Long.class))).willReturn(Optional.empty());
+
+        //when, then
+        assertThrows(NotFoundException.class, () -> ownerService.getOwnerById(1L));
     }
 }

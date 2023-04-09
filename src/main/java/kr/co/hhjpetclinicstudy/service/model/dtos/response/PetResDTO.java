@@ -1,19 +1,16 @@
 package kr.co.hhjpetclinicstudy.service.model.dtos.response;
 
 import kr.co.hhjpetclinicstudy.service.model.enums.PetType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 public class PetResDTO {
 
-    @Builder
     @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class READ {
 
         private String petName;

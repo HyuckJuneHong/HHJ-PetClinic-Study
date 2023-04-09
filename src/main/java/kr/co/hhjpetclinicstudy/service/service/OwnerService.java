@@ -1,7 +1,7 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedException;
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
@@ -43,7 +43,7 @@ public class OwnerService {
     public OwnerResDTO.READ getOwnerById(Long ownerId) {
 
         final Owner owner = ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return ownerMappers.toReadDto(owner);
     }
@@ -58,7 +58,7 @@ public class OwnerService {
         isTelephone(update.getTelephone());
 
         Owner owner = ownerRepository.findById(update.getOwnerId())
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         owner.updateOwner(update);
     }
@@ -71,7 +71,7 @@ public class OwnerService {
     public void deleteOwnerById(Long ownerId) {
 
         final Owner owner = ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         ownerRepository.delete(owner);
     }
