@@ -19,8 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -105,5 +104,20 @@ public class OwnerServiceUnitTest {
         assertEquals(owner.getAddress(), updatedOwner.getAddress());
         assertEquals(owner.getCity(), updatedOwner.getCity());
         assertEquals(owner.getTelephone(), updatedOwner.getTelephone());
+    }
+
+    @Test
+    @DisplayName("Owner 삭제 - 성공")
+    void deleteOwnerById_success() {
+
+        // given
+        final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
+        Owner owner = OwnerMappersImpl.toOwnerEntity(create);
+        ownerRepository.save(owner);
+
+        given(ownerRepository.findById(any(Long.class))).willReturn(Optional.of(owner));
+
+        // when, then
+        assertDoesNotThrow(() -> ownerService.deleteOwnerById(1L));
     }
 }

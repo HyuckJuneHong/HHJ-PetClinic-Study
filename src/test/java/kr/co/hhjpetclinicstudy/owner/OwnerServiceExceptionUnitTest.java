@@ -19,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -72,7 +71,7 @@ public class OwnerServiceExceptionUnitTest {
 
     @Test
     @DisplayName("Owner 조회 실패 - 해당 ID에 대한 조회 실패 - NotFoundException")
-    public void getOwnerById_error_NotFoundException(){
+    public void getOwnerById_error_id_NotFoundException(){
 
         //given
         given(ownerRepository.findById(any(Long.class))).willReturn(Optional.empty());
@@ -84,7 +83,7 @@ public class OwnerServiceExceptionUnitTest {
 
     @Test
     @DisplayName("Owner 변경 실패 - 해당 ID에 대한 조회 실패 - NotFoundException")
-    public void updateOwner_error_NotFoundException(){
+    public void updateOwner_error_id_NotFoundException(){
 
         //given
         final OwnerReqDTO.UPDATE update = OwnerCreators.ownerReqDto_update_creators("01077777777");
@@ -97,7 +96,7 @@ public class OwnerServiceExceptionUnitTest {
 
     @Test
     @DisplayName("Owner 변경 실패 - 전화번호 중복 - DuplicatedException")
-    public void updateOwner_error_DuplicatedException(){
+    public void updateOwner_error_telephone_DuplicatedException(){
 
         //given
         final OwnerReqDTO.CREATE create1 = OwnerCreators.ownerReqDto_create_creators("01011111111");
@@ -117,5 +116,16 @@ public class OwnerServiceExceptionUnitTest {
         //when, then
         DuplicatedException exception = assertThrows(DuplicatedException.class, () -> ownerService.updateOwner(update));
         assertEquals(ResponseStatus.FAIL_TELEPHONE_DUPLICATED.getMessage(), exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Owner 삭제 실패 - 해당 ID에 대한 조회 실패 - NotFoundException")
+    void deleteOwnerById_error_id_NotFoundException() {
+
+        // given
+        given(ownerRepository.findById(any(Long.class))).willReturn(Optional.empty());
+
+        // when, then
+        assertThrows(NotFoundException.class, () -> ownerService.deleteOwnerById(1L));
     }
 }
