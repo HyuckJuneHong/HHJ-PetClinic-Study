@@ -1,21 +1,16 @@
 package kr.co.hhjpetclinicstudy.service.model.dtos.response;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import kr.co.hhjpetclinicstudy.service.model.enums.PetType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 public class VisitResDTO {
 
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
     @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class READ {
 
         private LocalDate visitDate;
@@ -26,8 +21,12 @@ public class VisitResDTO {
 
         private PetType petType;
 
-        private String firstName;
+        private LocalDate petBirthDate;
 
-        private String lastName;
+        private String ownerFirstName;
+
+        private String ownerLastName;
+
+        private String ownerTelephone;
     }
 }

@@ -1,6 +1,6 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Specialty;
 import kr.co.hhjpetclinicstudy.persistence.entity.Vet;
@@ -59,7 +59,7 @@ public class VetService {
     public VetResDTO.READ getVetById(Long vetId) {
 
         final Vet vet = vetRepository.findById(vetId)
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         final List<String> specialtiesName = getSpecialtiesNameByVet(vet);
 
@@ -74,7 +74,7 @@ public class VetService {
     public void updateVet(VetReqDTO.UPDATE update) {
 
         Vet vet = vetRepository.findById(update.getVetId())
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(update.getSpecialtiesName(), vet);
 
@@ -88,7 +88,7 @@ public class VetService {
     public void deleteVetById(Long vetId) {
 
         final Vet vet = vetRepository.findById(vetId)
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         vetRepository.delete(vet);
     }
@@ -140,7 +140,7 @@ public class VetService {
         final List<Specialty> specialties = getOrCreateSpecialtiesByNames(names);
 
         return specialties.stream()
-                .map(specialty -> vetSpecialtyMappers.toVetSepcialtyEntity(specialty, vet))
+                .map(specialty -> vetSpecialtyMappers.toVetSpecialtyEntity(specialty, vet))
                 .collect(Collectors.toList());
     }
 }

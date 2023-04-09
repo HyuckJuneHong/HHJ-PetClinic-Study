@@ -2,13 +2,11 @@ package kr.co.hhjpetclinicstudy.service.model.mappers;
 
 import kr.co.hhjpetclinicstudy.persistence.entity.Specialty;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface SpecialtyMappers {
 
-    SpecialtyMappers INSTANCE = Mappers.getMapper(SpecialtyMappers.class);
-
-    //String -> Specialty Entity
+    @Mapping(target = "specialtyName", source = "name")
     Specialty toSpecialtyEntity(String name);
 }

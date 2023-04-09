@@ -4,12 +4,12 @@ import kr.co.hhjpetclinicstudy.persistence.entity.Specialty;
 import kr.co.hhjpetclinicstudy.persistence.entity.Vet;
 import kr.co.hhjpetclinicstudy.persistence.entity.VetSpecialty;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface VetSpecialtyMappers {
 
-    VetSpecialtyMappers INSTANCE = Mappers.getMapper(VetSpecialtyMappers.class);
-
-    VetSpecialty toVetSepcialtyEntity(Specialty specialty, Vet vet);
+    @Mapping(target = "vet", source = "vet")
+    @Mapping(target = "specialty", source = "specialty")
+    VetSpecialty toVetSpecialtyEntity(Specialty specialty, Vet vet);
 }

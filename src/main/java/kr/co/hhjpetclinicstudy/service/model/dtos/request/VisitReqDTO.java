@@ -2,19 +2,16 @@ package kr.co.hhjpetclinicstudy.service.model.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 public class VisitReqDTO {
 
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
     @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class CREATE{
 
         @NotNull(message = "Need a Visit date")
@@ -27,10 +24,10 @@ public class VisitReqDTO {
         private Long petId;
     }
 
-    @NoArgsConstructor
-    @AllArgsConstructor
     @Getter
     @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class UPDATE {
 
         @NotNull(message = "Need a visit")

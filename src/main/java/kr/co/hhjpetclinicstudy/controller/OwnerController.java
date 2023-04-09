@@ -2,15 +2,13 @@ package kr.co.hhjpetclinicstudy.controller;
 
 import jakarta.validation.Valid;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedException;
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.InvalidRequestException;
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.service.service.OwnerService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +47,7 @@ public class OwnerController {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnerById(ownerId));
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
@@ -68,7 +66,7 @@ public class OwnerController {
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (DuplicatedException e){
             return ResponseFormat.error(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
@@ -85,7 +83,7 @@ public class OwnerController {
         try {
             ownerService.deleteOwnerById(ownerId);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFountException e){
+        } catch (NotFoundException e){
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e){
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);

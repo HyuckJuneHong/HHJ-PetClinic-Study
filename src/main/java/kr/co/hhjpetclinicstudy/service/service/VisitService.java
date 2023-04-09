@@ -1,6 +1,6 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
 import kr.co.hhjpetclinicstudy.persistence.entity.Visit;
@@ -35,7 +35,7 @@ public class VisitService {
     public void createVisit(VisitReqDTO.CREATE create) {
 
         final Pet pet = petRepository.findById(create.getPetId())
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         final Visit visit = visitMappers.toVisitEntity(create, pet);
 
@@ -49,7 +49,7 @@ public class VisitService {
     public List<VisitResDTO.READ> getVisitsByPet(Long petId) {
 
         final Pet pet = petRepository.findById(petId)
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return visitRepository.findByPet(pet).stream()
                 .map(visitMappers::toReadDto)
@@ -63,7 +63,7 @@ public class VisitService {
     public VisitResDTO.READ getVisitById(Long visitId) {
 
         final Visit visit = visitRepository.findById(visitId)
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return visitMappers.toReadDto(visit);
     }
@@ -76,7 +76,7 @@ public class VisitService {
     public void updateVisit(VisitReqDTO.UPDATE update) {
 
         Visit visit = visitRepository.findById(update.getVisitId())
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         visit.updateVisit(update);
     }
@@ -89,7 +89,7 @@ public class VisitService {
     public void deleteVisitById(Long visitId) {
 
         final Visit visit = visitRepository.findById(visitId)
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         visitRepository.delete(visit);
     }

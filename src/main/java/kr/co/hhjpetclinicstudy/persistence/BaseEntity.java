@@ -8,6 +8,7 @@ import lombok.Getter;
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Getter
 public abstract class BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;

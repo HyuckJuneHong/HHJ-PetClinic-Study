@@ -2,19 +2,16 @@ package kr.co.hhjpetclinicstudy.service.model.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 public class PetReqDTO {
 
     @Getter
-    @AllArgsConstructor
     @Builder
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class CREATE{
 
         @NotBlank(message = "Need a Pet Name")
@@ -30,9 +27,9 @@ public class PetReqDTO {
     }
 
     @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
     @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class UPDATE {
 
         @NotNull(message = "Need a pet")

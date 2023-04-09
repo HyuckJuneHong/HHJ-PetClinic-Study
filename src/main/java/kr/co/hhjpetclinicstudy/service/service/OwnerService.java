@@ -1,7 +1,7 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedException;
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFountException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
@@ -28,9 +28,9 @@ public class OwnerService {
     @Transactional
     public void createOwner(OwnerReqDTO.CREATE create) {
 
-        isTelephone(create.getTelephone());
-
         final Owner owner = ownerMappers.toOwnerEntity(create);
+
+        isTelephone(owner.getTelephone());
 
         ownerRepository.save(owner);
     }
@@ -43,7 +43,7 @@ public class OwnerService {
     public OwnerResDTO.READ getOwnerById(Long ownerId) {
 
         final Owner owner = ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return ownerMappers.toReadDto(owner);
     }
@@ -55,10 +55,10 @@ public class OwnerService {
     @Transactional
     public void updateOwner(OwnerReqDTO.UPDATE update) {
 
-        isTelephone(update.getTelephone());
-
         Owner owner = ownerRepository.findById(update.getOwnerId())
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+
+        isTelephone(owner.getTelephone(), update.getTelephone());
 
         owner.updateOwner(update);
     }
@@ -71,7 +71,7 @@ public class OwnerService {
     public void deleteOwnerById(Long ownerId) {
 
         final Owner owner = ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new NotFountException(ResponseStatus.FAIL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         ownerRepository.delete(owner);
     }
@@ -80,5 +80,13 @@ public class OwnerService {
 
         if(ownerRepository.existsByTelephone(telephone))
             throw new DuplicatedException(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
+    }
+
+    private void isTelephone(String telephone,
+                             String updateTelephone){
+
+        if(!telephone.equals(updateTelephone)){
+            isTelephone(updateTelephone);
+        }
     }
 }
