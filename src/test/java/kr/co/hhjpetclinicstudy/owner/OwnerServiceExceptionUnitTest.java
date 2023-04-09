@@ -50,6 +50,7 @@ public class OwnerServiceExceptionUnitTest {
         //given
         final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
         final Owner owner = OwnerMappersImpl.toOwnerEntity(create);
+
         given(ownerRepository.existsByTelephone(any(String.class))).willReturn(true);
         given(ownerMappers.toOwnerEntity(any(OwnerReqDTO.CREATE.class))).willReturn(owner);
 

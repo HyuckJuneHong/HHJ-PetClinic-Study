@@ -5,6 +5,7 @@ import kr.co.hhjpetclinicstudy.owner.model.OwnerMappersImpl;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
+import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mappers.OwnerMappers;
 import kr.co.hhjpetclinicstudy.service.service.OwnerService;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -44,11 +47,35 @@ public class OwnerServiceUnitTest {
         //given
         final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
         final Owner owner = OwnerMappersImpl.toOwnerEntity(create);
+
         given(ownerMappers.toOwnerEntity(any(OwnerReqDTO.CREATE.class))).willReturn(owner);
         given(ownerRepository.save(any(Owner.class))).willReturn(owner);
         given(ownerRepository.existsByTelephone(any(String.class))).willReturn(false);
 
         //when, then
         assertDoesNotThrow(() -> ownerService.createOwner(create));
+    }
+
+    @Test
+    @DisplayName("Owner 조회 - 성공")
+    void getOwnerById_success(){
+
+        //given
+        final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
+        final Owner owner = OwnerMappersImpl.toOwnerEntity(create);
+        final OwnerResDTO.READ read = OwnerMappersImpl.toReadDto(owner);
+
+        given(ownerRepository.findById(any(Long.class))).willReturn(Optional.of(owner));
+        given(ownerMappers.toReadDto(any(Owner.class))).willReturn(read);
+
+        //when
+        OwnerResDTO.READ findRead = ownerService.getOwnerById(1L);
+
+        //then
+        assertEquals(owner.getFirstName(), findRead.getFirstName());
+        assertEquals(owner.getLastName(), findRead.getLastName());
+        assertEquals(owner.getAddress(), findRead.getAddress());
+        assertEquals(owner.getCity(), findRead.getCity());
+        assertEquals(owner.getTelephone(), findRead.getTelephone());
     }
 }
