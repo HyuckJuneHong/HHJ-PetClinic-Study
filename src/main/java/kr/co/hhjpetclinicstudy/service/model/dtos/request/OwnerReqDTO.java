@@ -45,6 +45,7 @@ public class OwnerReqDTO {
 
         private String city;
 
+        @NotBlank(message = "need a telephone")
         private String telephone;
     }
 }

@@ -55,10 +55,10 @@ public class OwnerService {
     @Transactional
     public void updateOwner(OwnerReqDTO.UPDATE update) {
 
-        isTelephone(update.getTelephone());
-
         Owner owner = ownerRepository.findById(update.getOwnerId())
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+
+        isTelephone(owner.getTelephone(), update.getTelephone());
 
         owner.updateOwner(update);
     }
@@ -80,5 +80,13 @@ public class OwnerService {
 
         if(ownerRepository.existsByTelephone(telephone))
             throw new DuplicatedException(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
+    }
+
+    private void isTelephone(String telephone,
+                             String updateTelephone){
+
+        if(!telephone.equals(updateTelephone)){
+            isTelephone(updateTelephone);
+        }
     }
 }

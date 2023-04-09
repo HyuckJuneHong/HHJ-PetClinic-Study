@@ -67,8 +67,7 @@ public class OwnerServiceExceptionUnitTest {
         final OwnerReqDTO.CREATE create = OwnerReqDTO.CREATE.builder().build();
 
         //when, then
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> ownerService.createOwner(create));
-        assertNotNull(exception);
+        assertThrows(NullPointerException.class, () -> ownerService.createOwner(create));
     }
 
     @Test
@@ -79,6 +78,44 @@ public class OwnerServiceExceptionUnitTest {
         given(ownerRepository.findById(any(Long.class))).willReturn(Optional.empty());
 
         //when, then
-        assertThrows(NotFoundException.class, () -> ownerService.getOwnerById(1L));
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> ownerService.getOwnerById(1L));
+        assertEquals(ResponseStatus.FAIL_NOT_FOUND.getMessage(), exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Owner 변경 실패 - 해당 ID에 대한 조회 실패 - NotFoundException")
+    public void updateOwner_error_NotFoundException(){
+
+        //given
+        final OwnerReqDTO.UPDATE update = OwnerCreators.ownerReqDto_update_creators("01077777777");
+        given(ownerRepository.findById(any(Long.class))).willReturn(Optional.empty());
+
+        //when, then
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> ownerService.updateOwner(update));
+        assertEquals(ResponseStatus.FAIL_NOT_FOUND.getMessage(), exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Owner 변경 실패 - 전화번호 중복 - DuplicatedException")
+    public void updateOwner_error_DuplicatedException(){
+
+        //given
+        final OwnerReqDTO.CREATE create1 = OwnerCreators.ownerReqDto_create_creators("01011111111");
+        final OwnerReqDTO.CREATE create2 = OwnerCreators.ownerReqDto_create_creators("01022222222");
+
+        Owner owner1 = OwnerMappersImpl.toOwnerEntity(create1);
+        Owner owner2 = OwnerMappersImpl.toOwnerEntity(create2);
+
+        ownerRepository.save(owner1);
+        ownerRepository.save(owner2);
+
+        final OwnerReqDTO.UPDATE update = OwnerCreators.ownerReqDto_update_creators("01022222222");
+
+        given(ownerRepository.findById(any(Long.class))).willReturn(Optional.of(owner1));
+        given(ownerRepository.existsByTelephone(any(String.class))).willReturn(true);
+
+        //when, then
+        DuplicatedException exception = assertThrows(DuplicatedException.class, () -> ownerService.updateOwner(update));
+        assertEquals(ResponseStatus.FAIL_TELEPHONE_DUPLICATED.getMessage(), exception.getMessage());
     }
 }

@@ -49,7 +49,6 @@ public class OwnerServiceUnitTest {
         final Owner owner = OwnerMappersImpl.toOwnerEntity(create);
 
         given(ownerMappers.toOwnerEntity(any(OwnerReqDTO.CREATE.class))).willReturn(owner);
-        given(ownerRepository.save(any(Owner.class))).willReturn(owner);
         given(ownerRepository.existsByTelephone(any(String.class))).willReturn(false);
 
         //when, then
