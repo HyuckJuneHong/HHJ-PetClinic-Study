@@ -1,11 +1,12 @@
 package kr.co.hhjpetclinicstudy.controller;
 
 import jakarta.validation.Valid;
-import kr.co.hhjpetclinicstudy.service.OwnerService;
+import kr.co.hhjpetclinicstudy.service.service.OwnerService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -22,7 +23,7 @@ public class OwnerController {
      * @return : String
      */
     @PostMapping
-    public ResponseEntity<String> createOwner(@RequestBody @Valid OwnerReqDTO.CREATE create){
+    public ResponseEntity<String> createOwner(@RequestBody @Validated OwnerReqDTO.CREATE create){
 
         try {
             ownerService.createOwner(create);

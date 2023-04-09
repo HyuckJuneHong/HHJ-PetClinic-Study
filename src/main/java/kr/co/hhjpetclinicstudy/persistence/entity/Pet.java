@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tbl_pet")
+@Table(name = "tbl_pets")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @AttributeOverride(
@@ -22,8 +22,8 @@ import java.time.LocalDate;
 )
 public class Pet extends BaseEntity {
 
-    @Column(name = "name", length = 30)
-    private String name;
+    @Column(name = "pet_name", length = 30)
+    private String petName;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
@@ -37,41 +37,20 @@ public class Pet extends BaseEntity {
     private Owner owner;
 
     @Builder
-    public Pet(String name,
+    public Pet(String petName,
                LocalDate birthDate,
                PetType petType,
-               Owner owners) {
+               Owner owner) {
 
-        this.name = name;
+        this.petName = petName;
         this.birthDate = birthDate;
         this.petType = petType;
         this.owner = owner;
     }
 
-    public static Pet dtoToEntity(PetReqDTO.CREATE create,
-                                  Owner owner){
-
-        return Pet.builder()
-                .name(create.getName())
-                .birthDate(create.getBirthDate())
-                .petType(PetType.of(create.getPetType()))
-                .owners(owner)
-                .build();
-    }
-
-    public static PetResDTO.READ entityToDto(Pet pet){
-
-        return PetResDTO.READ.builder()
-                .name(pet.getName())
-                .ownerName(pet.getOwner().getFirstName() + pet.getOwner().getLastName())
-                .birthDate(pet.birthDate)
-                .petType(pet.petType)
-                .build();
-    }
-
     public void updatePetInfo(PetReqDTO.UPDATE update) {
 
-        this.name = update.getName();
+        this.petName = update.getPetName();
         this.birthDate = update.getBirthDate();
         this.petType = PetType.of(update.getPetType());
     }

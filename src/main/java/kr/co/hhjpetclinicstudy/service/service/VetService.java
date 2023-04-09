@@ -1,4 +1,4 @@
-package kr.co.hhjpetclinicstudy.service;
+package kr.co.hhjpetclinicstudy.service.service;
 
 import kr.co.hhjpetclinicstudy.persistence.entity.Specialty;
 import kr.co.hhjpetclinicstudy.persistence.entity.Vet;
@@ -7,6 +7,9 @@ import kr.co.hhjpetclinicstudy.persistence.repository.SpecialtyRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
+import kr.co.hhjpetclinicstudy.service.model.mappers.SpecialtyMappers;
+import kr.co.hhjpetclinicstudy.service.model.mappers.VetMappers;
+import kr.co.hhjpetclinicstudy.service.model.mappers.VetSpecialtyMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,12 @@ public class VetService {
 
     private final SpecialtyRepository specialtyRepository;
 
+    private final VetMappers vetMappers;
+
+    private final SpecialtyMappers specialtyMappers;
+
+    private final VetSpecialtyMappers vetSpecialtyMappers;
+
     /**
      * vet create service
      * @param create : Info for create a vet
@@ -32,7 +41,7 @@ public class VetService {
     @Transactional
     public void createVet(VetReqDTO.CREATE create) {
 
-        Vet vet = Vet.dtoToEntity(create, Collections.emptyList());
+        Vet vet = vetMappers.toVetEntity(create, Collections.emptyList());
 
         final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(create.getSpecialtiesName(), vet);
 
@@ -52,7 +61,7 @@ public class VetService {
 
         final List<String> specialtiesName = getSpecialtiesNameByVet(vet);
 
-        return Vet.entityToDto(vet, specialtiesName);
+        return vetMappers.toReadDto(vet, specialtiesName);
     }
 
     /**
@@ -68,8 +77,18 @@ public class VetService {
         final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(update.getSpecialtiesName(), vet);
 
         vet.updateVetSpecialties(vetSpecialties);
+    }
 
-        vetRepository.save(vet);
+    /**
+     * vet delete service
+     * @param vetId : id for delete
+     */
+    public void deleteVetById(Long vetId) {
+
+        final Vet vet = vetRepository.findById(vetId)
+                .orElseThrow(() -> new RuntimeException("Not Found Vet"));
+
+        vetRepository.delete(vet);
     }
 
     /**
@@ -77,9 +96,10 @@ public class VetService {
      * @return String List
      */
     private List<String> getSpecialtiesNameByVet(Vet vet){
+
         return vet.getVetSpecialties().stream()
                 .map(VetSpecialty::getSpecialty)
-                .map(Specialty::getName)
+                .map(Specialty::getSpecialtyName)
                 .collect(Collectors.toList());
     }
 
@@ -92,11 +112,13 @@ public class VetService {
 
         List<Specialty> specialties = specialtyRepository.findAllByName(names);
 
-        final Set<String> existNames = specialties.stream().map(Specialty::getName).collect(Collectors.toSet());
+        final Set<String> existNames = specialties.stream()
+                .map(Specialty::getSpecialtyName)
+                .collect(Collectors.toSet());
 
         final List<Specialty> createSpecialties = names.stream()
                 .filter(name -> !existNames.contains(name))
-                .map(Specialty::paramToEntity)
+                .map(specialtyMappers::toSpecialtyEntity)
                 .collect(Collectors.toList());
 
         specialties.addAll(createSpecialties);
@@ -116,22 +138,7 @@ public class VetService {
         final List<Specialty> specialties = getOrCreateSpecialtiesByNames(names);
 
         return specialties.stream()
-                .map(specialty -> VetSpecialty.builder()
-                        .specialty(specialty)
-                        .vet(vet)
-                        .build())
+                .map(specialty -> vetSpecialtyMappers.toVetSepcialtyEntity(specialty, vet))
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * vet delete service
-     * @param vetId : id for delete
-     */
-    public void deleteVetById(Long vetId) {
-
-        final Vet vet = vetRepository.findById(vetId)
-                .orElseThrow(() -> new RuntimeException("Not Found Vet"));
-
-        vetRepository.delete(vet);
     }
 }

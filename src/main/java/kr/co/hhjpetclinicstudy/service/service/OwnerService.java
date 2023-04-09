@@ -1,9 +1,10 @@
-package kr.co.hhjpetclinicstudy.service;
+package kr.co.hhjpetclinicstudy.service.service;
 
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
+import kr.co.hhjpetclinicstudy.service.model.mappers.OwnerMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,8 @@ public class OwnerService {
 
     private final OwnerRepository ownerRepository;
 
+    private final OwnerMappers ownerMappers;
+
     /**
      * owner create service
      * @param create : Info for Create an Owner
@@ -22,7 +25,7 @@ public class OwnerService {
     @Transactional
     public void createOwner(OwnerReqDTO.CREATE create) {
 
-        final Owner owner = Owner.dtoToEntity(create);
+        final Owner owner = ownerMappers.toOwnerEntity(create);
 
         ownerRepository.save(owner);
     }
@@ -37,7 +40,7 @@ public class OwnerService {
         final Owner owner = ownerRepository.findById(ownerId)
                 .orElseThrow(() -> new RuntimeException("Not Found Owner"));
 
-        return Owner.entityToDto(owner);
+        return ownerMappers.toReadDto(owner);
     }
 
     /**
@@ -51,8 +54,6 @@ public class OwnerService {
                 .orElseThrow(() -> new RuntimeException("Not Found Owner"));
 
         owner.updateOwner(update);
-
-        ownerRepository.save(owner);
     }
 
     /**

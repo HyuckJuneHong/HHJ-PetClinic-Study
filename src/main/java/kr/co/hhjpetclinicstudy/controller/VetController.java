@@ -1,7 +1,7 @@
 package kr.co.hhjpetclinicstudy.controller;
 
 import jakarta.validation.Valid;
-import kr.co.hhjpetclinicstudy.service.VetService;
+import kr.co.hhjpetclinicstudy.service.service.VetService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
 import lombok.RequiredArgsConstructor;

@@ -2,6 +2,7 @@ package kr.co.hhjpetclinicstudy.persistence.entity;
 
 import jakarta.persistence.*;
 import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.VisitReqDTO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tbl_visit")
+@Table(name = "tbl_visits")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @AttributeOverride(
@@ -37,5 +38,11 @@ public class Visit extends BaseEntity {
         this.visitDate = visitDate;
         this.description = description;
         this.pet = pet;
+    }
+
+    public void updateVisit(VisitReqDTO.UPDATE update) {
+
+        this.visitDate = update.getVisitDate();
+        this.description = update.getDescription();
     }
 }

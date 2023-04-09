@@ -18,7 +18,7 @@ public class PetReqDTO {
     public static class CREATE{
 
         @NotBlank(message = "Need a Pet Name")
-        private String name;
+        private String petName;
 
         private LocalDate birthDate;
 
@@ -38,7 +38,7 @@ public class PetReqDTO {
         @NotNull(message = "Need a pet")
         private Long petId;
 
-        private String name;
+        private String petName;
 
         private LocalDate birthDate;
 

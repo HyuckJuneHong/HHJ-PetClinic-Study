@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tbl_specialty")
+@Table(name = "tbl_specialties")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @AttributeOverride(
@@ -20,19 +20,12 @@ import lombok.NoArgsConstructor;
 )
 public class Specialty extends BaseEntity {
 
-    @Column(name = "name", length = 80)
-    private String name;
+    @Column(name = "specialty_name", length = 80)
+    private String specialtyName;
 
     @Builder
-    public Specialty(String name) {
+    public Specialty(String specialtyName) {
 
-        this.name = name;
-    }
-
-    public static Specialty paramToEntity(String name){
-
-        return Specialty.builder()
-                .name(name)
-                .build();
+        this.specialtyName = specialtyName;
     }
 }
