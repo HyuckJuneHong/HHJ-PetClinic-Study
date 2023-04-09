@@ -1,5 +1,7 @@
 package kr.co.hhjpetclinicstudy.owner;
 
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
+import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.owner.model.OwnerCreators;
 import kr.co.hhjpetclinicstudy.owner.model.OwnerMappersImpl;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
@@ -76,5 +78,32 @@ public class OwnerServiceUnitTest {
         assertEquals(owner.getAddress(), findRead.getAddress());
         assertEquals(owner.getCity(), findRead.getCity());
         assertEquals(owner.getTelephone(), findRead.getTelephone());
+    }
+
+    @Test
+    @DisplayName("Owner 수정 - 성공")
+    void updateOwner_success() {
+
+        //given
+        final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
+        Owner owner = OwnerMappersImpl.toOwnerEntity(create);
+        ownerRepository.save(owner);
+
+        final OwnerReqDTO.UPDATE update = OwnerCreators.ownerReqDto_update_creators("010-7777-7777");
+
+        given(ownerRepository.findById(any(Long.class))).willReturn(Optional.of(owner));
+        given(ownerRepository.existsByTelephone(any(String.class))).willReturn(false);
+
+        //when
+        ownerService.updateOwner(update);
+        final Owner updatedOwner = ownerRepository.findById(1L)
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+
+        //then
+        assertEquals(owner.getFirstName(), updatedOwner.getFirstName());
+        assertEquals(owner.getLastName(), updatedOwner.getLastName());
+        assertEquals(owner.getAddress(), updatedOwner.getAddress());
+        assertEquals(owner.getCity(), updatedOwner.getCity());
+        assertEquals(owner.getTelephone(), updatedOwner.getTelephone());
     }
 }
