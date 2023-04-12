@@ -17,7 +17,7 @@ public class OwnerRepositoryTest {
     private OwnerRepository ownerRepository;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
 
         Owner owner = Owner.builder()
                 .telephone("010-1234-5678")
@@ -28,7 +28,7 @@ public class OwnerRepositoryTest {
 
     @Test
     @DisplayName("전화번호가 존재하는 경우")
-    void existsByTelephone_TelephoneExists_ReturnsTrue() {
+    public void existsByTelephone_TelephoneExists_ReturnsTrue() {
 
         //given
         String telephone = "010-1234-5678";
@@ -42,7 +42,7 @@ public class OwnerRepositoryTest {
 
     @Test
     @DisplayName("전화번호가 존재하지 않는 경우")
-    void existsByTelephone_TelephoneDoesNotExist_ReturnsFalse() {
+    public void existsByTelephone_TelephoneDoesNotExist_ReturnsFalse() {
 
         //given
         String telephone = "010-1111-2222";
