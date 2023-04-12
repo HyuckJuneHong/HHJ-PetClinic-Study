@@ -9,9 +9,9 @@ import kr.co.hhjpetclinicstudy.persistence.repository.SpecialtyRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
-import kr.co.hhjpetclinicstudy.service.model.mappers.SpecialtyMappers;
-import kr.co.hhjpetclinicstudy.service.model.mappers.VetMappers;
-import kr.co.hhjpetclinicstudy.service.model.mappers.VetSpecialtyMappers;
+import kr.co.hhjpetclinicstudy.service.model.mappers.SpecialtyMapper;
+import kr.co.hhjpetclinicstudy.service.model.mappers.VetMapper;
+import kr.co.hhjpetclinicstudy.service.model.mappers.VetSpecialtyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,20 +30,21 @@ public class VetService {
 
     private final SpecialtyRepository specialtyRepository;
 
-    private final VetMappers vetMappers;
+    private final VetMapper vetMapper;
 
-    private final SpecialtyMappers specialtyMappers;
+    private final SpecialtyMapper specialtyMapper;
 
-    private final VetSpecialtyMappers vetSpecialtyMappers;
+    private final VetSpecialtyMapper vetspecialtyMapper;
 
     /**
      * vet create service
+     *
      * @param create : Info for create a vet
      */
     @Transactional
     public void createVet(VetReqDTO.CREATE create) {
 
-        Vet vet = vetMappers.toVetEntity(create, Collections.emptyList());
+        Vet vet = vetMapper.toVetEntity(create, Collections.emptyList());
 
         final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(create.getSpecialtiesName(), vet);
 
@@ -54,6 +55,7 @@ public class VetService {
 
     /**
      * vet get by id service
+     *
      * @return : Vet
      */
     public VetResDTO.READ getVetById(Long vetId) {
@@ -63,11 +65,12 @@ public class VetService {
 
         final List<String> specialtiesName = getSpecialtiesNameByVet(vet);
 
-        return vetMappers.toReadDto(vet, specialtiesName);
+        return vetMapper.toReadDto(vet, specialtiesName);
     }
 
     /**
      * vet update service
+     *
      * @param update : info for update a vet
      */
     @Transactional
@@ -83,6 +86,7 @@ public class VetService {
 
     /**
      * vet delete service
+     *
      * @param vetId : id for delete
      */
     public void deleteVetById(Long vetId) {
@@ -95,9 +99,10 @@ public class VetService {
 
     /**
      * specialties name by vet service
+     *
      * @return String List
      */
-    private List<String> getSpecialtiesNameByVet(Vet vet){
+    private List<String> getSpecialtiesNameByVet(Vet vet) {
 
         return vet.getVetSpecialties().stream()
                 .map(VetSpecialty::getSpecialty)
@@ -107,20 +112,21 @@ public class VetService {
 
     /**
      * specialty get or create service
-     * @param names : find names
+     *
+     * @param specialtiesName : find names
      * @return : Specialties
      */
-    private List<Specialty> getOrCreateSpecialtiesByNames(List<String> names){
+    private List<Specialty> getOrCreateSpecialtiesByNames(List<String> specialtiesName) {
 
-        List<Specialty> specialties = specialtyRepository.findAllByName(names);
+        List<Specialty> specialties = specialtyRepository.findAllBySpecialtyName(specialtiesName);
 
         final Set<String> existNames = specialties.stream()
                 .map(Specialty::getSpecialtyName)
                 .collect(Collectors.toSet());
 
-        final List<Specialty> createSpecialties = names.stream()
+        final List<Specialty> createSpecialties = specialtiesName.stream()
                 .filter(name -> !existNames.contains(name))
-                .map(specialtyMappers::toSpecialtyEntity)
+                .map(specialtyMapper::toSpecialtyEntity)
                 .collect(Collectors.toList());
 
         specialties.addAll(createSpecialties);
@@ -130,17 +136,18 @@ public class VetService {
 
     /**
      * vetSpecialty get or create service
-     * @param names : find names
-     * @param vet : vet
+     *
+     * @param specialtiesName : find names
+     * @param vet             : vet
      * @return : vetSpecialties
      */
-    private List<VetSpecialty> getOrCreateVetSpecialties(List<String> names,
-                                                         Vet vet){
+    private List<VetSpecialty> getOrCreateVetSpecialties(List<String> specialtiesName,
+                                                         Vet vet) {
 
-        final List<Specialty> specialties = getOrCreateSpecialtiesByNames(names);
+        final List<Specialty> specialties = getOrCreateSpecialtiesByNames(specialtiesName);
 
         return specialties.stream()
-                .map(specialty -> vetSpecialtyMappers.toVetSpecialtyEntity(specialty, vet))
+                .map(specialty -> vetspecialtyMapper.toVetSpecialtyEntity(specialty, vet))
                 .collect(Collectors.toList());
     }
 }

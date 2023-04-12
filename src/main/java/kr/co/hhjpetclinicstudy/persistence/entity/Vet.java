@@ -35,8 +35,8 @@ public class Vet extends BaseEntity {
 
     @Builder
     private Vet(String firstName,
-               String lastName,
-               List<VetSpecialty> vetSpecialties) {
+                String lastName,
+                List<VetSpecialty> vetSpecialties) {
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -44,7 +44,7 @@ public class Vet extends BaseEntity {
     }
 
 
-    public void updateVetSpecialties(List<VetSpecialty> vetSpecialties){
+    public void updateVetSpecialties(List<VetSpecialty> vetSpecialties) {
 
         this.vetSpecialties = vetSpecialties;
     }

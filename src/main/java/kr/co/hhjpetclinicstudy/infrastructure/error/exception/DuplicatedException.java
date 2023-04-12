@@ -8,10 +8,12 @@ import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 public class DuplicatedException extends BusinessLogicException{
 
     public DuplicatedException(ResponseStatus responseStatus) {
+
         super(responseStatus);
     }
 
     public DuplicatedException(String message) {
+
         super(message);
     }
 }

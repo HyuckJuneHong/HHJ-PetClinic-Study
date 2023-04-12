@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface VetMappers {
+public interface VetMapper {
 
     @Mapping(target = "firstName", source = "create.firstName")
     @Mapping(target = "lastName", source = "create.lastName")

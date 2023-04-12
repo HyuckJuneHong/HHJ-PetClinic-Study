@@ -8,10 +8,12 @@ import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 public class ForbiddenException extends BusinessLogicException{
 
     public ForbiddenException(ResponseStatus responseStatus) {
+
         super(responseStatus);
     }
 
     public ForbiddenException(String message) {
+
         super(message);
     }
 }

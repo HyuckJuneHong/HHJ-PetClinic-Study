@@ -8,10 +8,12 @@ import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 public class UnauthorizedException extends BusinessLogicException{
 
     public UnauthorizedException(ResponseStatus responseStatus) {
+
         super(responseStatus);
     }
 
     public UnauthorizedException(String message) {
+
         super(message);
     }
 }

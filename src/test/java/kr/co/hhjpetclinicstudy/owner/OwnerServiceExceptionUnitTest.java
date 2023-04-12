@@ -4,11 +4,11 @@ import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedExceptio
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.owner.model.OwnerCreators;
-import kr.co.hhjpetclinicstudy.owner.model.OwnerMappersImpl;
+import kr.co.hhjpetclinicstudy.owner.model.OwnerMapperImpl;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
-import kr.co.hhjpetclinicstudy.service.model.mappers.OwnerMappers;
+import kr.co.hhjpetclinicstudy.service.model.mappers.OwnerMapper;
 import kr.co.hhjpetclinicstudy.service.service.OwnerService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ public class OwnerServiceExceptionUnitTest {
     private OwnerRepository ownerRepository;
 
     @Mock
-    private OwnerMappers ownerMappers;
+    private OwnerMapper ownerMapper;
 
     @Test
     @DisplayName("Owner 등록 실패 - 전화번호 중복 - DuplicatedException")
@@ -48,10 +48,10 @@ public class OwnerServiceExceptionUnitTest {
 
         //given
         final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
-        final Owner owner = OwnerMappersImpl.toOwnerEntity(create);
+        final Owner owner = OwnerMapperImpl.toOwnerEntity(create);
 
         given(ownerRepository.existsByTelephone(any(String.class))).willReturn(true);
-        given(ownerMappers.toOwnerEntity(any(OwnerReqDTO.CREATE.class))).willReturn(owner);
+        given(ownerMapper.toOwnerEntity(any(OwnerReqDTO.CREATE.class))).willReturn(owner);
 
         //when, then
         DuplicatedException exception = assertThrows(DuplicatedException.class, () -> ownerService.createOwner(create));
@@ -102,11 +102,8 @@ public class OwnerServiceExceptionUnitTest {
         final OwnerReqDTO.CREATE create1 = OwnerCreators.ownerReqDto_create_creators("01011111111");
         final OwnerReqDTO.CREATE create2 = OwnerCreators.ownerReqDto_create_creators("01022222222");
 
-        Owner owner1 = OwnerMappersImpl.toOwnerEntity(create1);
-        Owner owner2 = OwnerMappersImpl.toOwnerEntity(create2);
-
-        ownerRepository.save(owner1);
-        ownerRepository.save(owner2);
+        Owner owner1 = OwnerMapperImpl.toOwnerEntity(create1);
+        Owner owner2 = OwnerMapperImpl.toOwnerEntity(create2);
 
         final OwnerReqDTO.UPDATE update = OwnerCreators.ownerReqDto_update_creators("01022222222");
 

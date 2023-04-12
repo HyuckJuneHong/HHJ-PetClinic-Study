@@ -38,10 +38,10 @@ public class Owner extends BaseEntity {
 
     @Builder
     private Owner(String firstName,
-                 String lastName,
-                 String address,
-                 String city,
-                 String telephone) {
+                  String lastName,
+                  String address,
+                  String city,
+                  String telephone) {
 
         this.firstName = firstName;
         this.lastName = lastName;

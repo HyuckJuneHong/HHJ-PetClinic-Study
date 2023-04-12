@@ -8,7 +8,7 @@ import kr.co.hhjpetclinicstudy.persistence.repository.PetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VisitRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VisitReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VisitResDTO;
-import kr.co.hhjpetclinicstudy.service.model.mappers.VisitMappers;
+import kr.co.hhjpetclinicstudy.service.model.mappers.VisitMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +25,11 @@ public class VisitService {
 
     private final PetRepository petRepository;
 
-    private final VisitMappers visitMappers;
+    private final VisitMapper visitMapper;
 
     /**
      * Visit Create Service
+     *
      * @param create : Info for create a visit
      */
     @Transactional
@@ -37,13 +38,14 @@ public class VisitService {
         final Pet pet = petRepository.findById(create.getPetId())
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
-        final Visit visit = visitMappers.toVisitEntity(create, pet);
+        final Visit visit = visitMapper.toVisitEntity(create, pet);
 
         visitRepository.save(visit);
     }
 
     /**
      * visit get by pet service
+     *
      * @return : List VisitResDTO.READ
      */
     public List<VisitResDTO.READ> getVisitsByPet(Long petId) {
@@ -52,12 +54,13 @@ public class VisitService {
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return visitRepository.findByPet(pet).stream()
-                .map(visitMappers::toReadDto)
+                .map(visitMapper::toReadDto)
                 .collect(Collectors.toList());
     }
 
     /**
      * visit get by id service
+     *
      * @return : VisitResDTO.READ
      */
     public VisitResDTO.READ getVisitById(Long visitId) {
@@ -65,11 +68,12 @@ public class VisitService {
         final Visit visit = visitRepository.findById(visitId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
-        return visitMappers.toReadDto(visit);
+        return visitMapper.toReadDto(visit);
     }
 
     /**
      * visit update service
+     *
      * @param update : Info for Update a visit
      */
     @Transactional
@@ -83,6 +87,7 @@ public class VisitService {
 
     /**
      * visit delete service
+     *
      * @param visitId : id for delete a visit
      */
     @Transactional

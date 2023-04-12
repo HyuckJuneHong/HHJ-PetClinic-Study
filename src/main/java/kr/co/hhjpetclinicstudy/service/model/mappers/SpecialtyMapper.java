@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface SpecialtyMappers {
+public interface SpecialtyMapper {
 
     @Mapping(target = "specialtyName", source = "name")
     Specialty toSpecialtyEntity(String name);

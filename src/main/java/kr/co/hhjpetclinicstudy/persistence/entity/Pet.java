@@ -38,9 +38,9 @@ public class Pet extends BaseEntity {
 
     @Builder
     private Pet(String petName,
-               LocalDate birthDate,
-               PetType petType,
-               Owner owner) {
+                LocalDate birthDate,
+                PetType petType,
+                Owner owner) {
 
         this.petName = petName;
         this.birthDate = birthDate;

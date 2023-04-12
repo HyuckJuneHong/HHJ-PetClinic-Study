@@ -12,7 +12,7 @@ public class VisitReqDTO {
     @Builder
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class CREATE{
+    public static class CREATE {
 
         @NotNull(message = "Need a Visit date")
         private LocalDate visitDate;
