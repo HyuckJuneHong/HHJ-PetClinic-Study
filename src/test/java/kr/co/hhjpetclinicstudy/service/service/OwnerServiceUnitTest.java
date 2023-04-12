@@ -2,6 +2,7 @@ package kr.co.hhjpetclinicstudy.service.service;
 
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
+import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.service.model.OwnerCreators;
 import kr.co.hhjpetclinicstudy.service.model.OwnerMapperImpl;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
@@ -23,6 +24,7 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * JUnit 5와 Mockito 프레임워크를 사용하여 OwnerService 클래스의 예외 처리에 대한 단위 테스트를 작성
+ *
  * @ExtendWith(MockitoExtension.class) : MockitoExtension 클래스를 사용하여 Mockito 프레임워크를 JUnit 5에 통합.
  * @InjectMocks : 의존성 주입을 수행하는 Mockito 어노테이션.
  * @Mock : mock 객체를 생성하는 Mockito 어노테이션.
@@ -56,7 +58,7 @@ public class OwnerServiceUnitTest {
 
     @Test
     @DisplayName("Owner 조회 - 성공")
-    void getOwnerById_success(){
+    void getOwnerById_success() {
 
         //given
         final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();

@@ -3,6 +3,7 @@ package kr.co.hhjpetclinicstudy.service.service;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
+import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.service.model.OwnerCreators;
 import kr.co.hhjpetclinicstudy.service.model.OwnerMapperImpl;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
@@ -24,6 +25,7 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * JUnit 5와 Mockito 프레임워크를 사용하여 OwnerService 클래스의 예외 처리에 대한 단위 테스트를 작성
+ *
  * @ExtendWith(MockitoExtension.class) : MockitoExtension 클래스를 사용하여 Mockito 프레임워크를 JUnit 5에 통합.
  * @InjectMocks : 의존성 주입을 수행하는 Mockito 어노테이션.
  * @Mock : mock 객체를 생성하는 Mockito 어노테이션.
@@ -69,7 +71,7 @@ public class OwnerServiceExceptionUnitTest {
 
     @Test
     @DisplayName("Owner 조회 실패 - 해당 ID에 대한 조회 실패 - NotFoundException")
-    public void getOwnerById_error_id_NotFoundException(){
+    public void getOwnerById_error_id_NotFoundException() {
 
         //given
         given(ownerRepository.findById(any(Long.class))).willReturn(Optional.empty());
@@ -81,7 +83,7 @@ public class OwnerServiceExceptionUnitTest {
 
     @Test
     @DisplayName("Owner 변경 실패 - 해당 ID에 대한 조회 실패 - NotFoundException")
-    public void updateOwner_error_id_NotFoundException(){
+    public void updateOwner_error_id_NotFoundException() {
 
         //given
         final OwnerReqDTO.UPDATE update = OwnerCreators.ownerReqDto_update_creators("01077777777");
@@ -94,7 +96,7 @@ public class OwnerServiceExceptionUnitTest {
 
     @Test
     @DisplayName("Owner 변경 실패 - 전화번호 중복 - DuplicatedException")
-    public void updateOwner_error_telephone_DuplicatedException(){
+    public void updateOwner_error_telephone_DuplicatedException() {
 
         //given
         final OwnerReqDTO.CREATE create1 = OwnerCreators.ownerReqDto_create_creators("01011111111");

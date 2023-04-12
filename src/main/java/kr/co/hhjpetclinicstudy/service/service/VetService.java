@@ -118,7 +118,7 @@ public class VetService {
      */
     private List<Specialty> getOrCreateSpecialtiesByNames(List<String> specialtiesName) {
 
-        List<Specialty> specialties = specialtyRepository.findAllBySpecialtyName(specialtiesName);
+        List<Specialty> specialties = specialtyRepository.findAllBySpecialtyNameIn(specialtiesName);
 
         final Set<String> existNames = specialties.stream()
                 .map(Specialty::getSpecialtyName)

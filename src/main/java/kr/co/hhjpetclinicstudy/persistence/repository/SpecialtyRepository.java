@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
 
-    List<Specialty> findAllBySpecialtyName(List<String> specialtiesNames);
+    List<Specialty> findAllBySpecialtyNameIn(List<String> specialtiesNames);
 
     boolean existsBySpecialtyName(String specialtyName);
 }
