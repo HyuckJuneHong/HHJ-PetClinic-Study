@@ -10,8 +10,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * @DataJpaTest : 스프링 부트 애플리케이션 컨텍스트의 일부만 로드되므로 레포지토리와 관련된 빈만 로드
+ */
 @DataJpaTest
-public class OwnerRepositoryTest {
+public class OwnerRepositoryUnitTest {
 
     @Autowired
     private OwnerRepository ownerRepository;

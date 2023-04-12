@@ -1,8 +1,6 @@
 package kr.co.hhjpetclinicstudy.persistence.repository;
 
-import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.Specialty;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -12,7 +10,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-public class PetRepositoryTest {
+public class PetRepositoryUnitTest {
 
     @Autowired
     private SpecialtyRepository specialtyRepository;
@@ -47,13 +45,14 @@ public class PetRepositoryTest {
     @Test
     void existsBySpecialtyName_shouldReturnTrueIfSpecialtyExists() {
 
+        //given
         final Specialty specialty = Specialty.builder()
                 .specialtyName("testSpec")
                 .build();
 
         specialtyRepository.save(specialty);
 
-        // given, when
+        //when
         boolean exists = specialtyRepository.existsBySpecialtyName("testSpec");
 
         // then
