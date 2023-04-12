@@ -22,23 +22,25 @@ public class OwnerController {
 
     /**
      * owner create api
+     *
      * @param create : Info for create an owner
      */
     @PostMapping
-    public ResponseFormat<Void> createOwner(@RequestBody @Validated OwnerReqDTO.CREATE create){
+    public ResponseFormat<Void> createOwner(@RequestBody @Validated OwnerReqDTO.CREATE create) {
 
         try {
             ownerService.createOwner(create);
             return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
-        } catch (DuplicatedException e){
+        } catch (DuplicatedException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * owner get api
+     *
      * @param ownerId : id for get an owner
      * @return : OwnerResDTO.READ
      */
@@ -47,45 +49,47 @@ public class OwnerController {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnerById(ownerId));
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * owner update api
+     *
      * @param update : info for update an owner
      */
     @PutMapping
-    public ResponseFormat<Void> updateOwner(@RequestBody @Valid OwnerReqDTO.UPDATE update){
+    public ResponseFormat<Void> updateOwner(@RequestBody @Valid OwnerReqDTO.UPDATE update) {
 
         try {
             ownerService.updateOwner(update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (DuplicatedException e){
+        } catch (DuplicatedException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * owner delete api
+     *
      * @param ownerId : id for delete on owner
      */
     @DeleteMapping("/{owner_id}")
-    public ResponseFormat<Void> deleteOwnerById(@PathVariable(name = "owner_id") Long ownerId){
+    public ResponseFormat<Void> deleteOwnerById(@PathVariable(name = "owner_id") Long ownerId) {
 
         try {
             ownerService.deleteOwnerById(ownerId);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }

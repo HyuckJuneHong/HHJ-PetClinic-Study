@@ -1,4 +1,4 @@
-package kr.co.hhjpetclinicstudy.owner.model;
+package kr.co.hhjpetclinicstudy.service.model;
 
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;

@@ -1,15 +1,13 @@
-package kr.co.hhjpetclinicstudy.owner;
+package kr.co.hhjpetclinicstudy.service.service;
 
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
-import kr.co.hhjpetclinicstudy.owner.model.OwnerCreators;
-import kr.co.hhjpetclinicstudy.owner.model.OwnerMapperImpl;
+import kr.co.hhjpetclinicstudy.service.model.OwnerCreators;
+import kr.co.hhjpetclinicstudy.service.model.OwnerMapperImpl;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
-import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mappers.OwnerMapper;
-import kr.co.hhjpetclinicstudy.service.service.OwnerService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
