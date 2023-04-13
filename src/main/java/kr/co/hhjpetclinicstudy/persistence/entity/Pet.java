@@ -3,7 +3,6 @@ package kr.co.hhjpetclinicstudy.persistence.entity;
 import jakarta.persistence.*;
 import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
-import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
 import kr.co.hhjpetclinicstudy.service.model.enums.PetType;
 import lombok.AccessLevel;
 import lombok.Builder;

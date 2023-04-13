@@ -18,6 +18,19 @@ public class PetResDTO {
         private PetType petType;
 
         private LocalDate birthDate;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class READ_DETAIL {
+
+        private String petName;
+
+        private PetType petType;
+
+        private LocalDate birthDate;
 
         private String ownerFirstName;
 
@@ -25,4 +38,5 @@ public class PetResDTO {
 
         private String ownerTelephone;
     }
+
 }

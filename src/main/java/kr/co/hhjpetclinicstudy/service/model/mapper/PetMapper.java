@@ -1,4 +1,4 @@
-package kr.co.hhjpetclinicstudy.service.model.mappers;
+package kr.co.hhjpetclinicstudy.service.model.mapper;
 
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
@@ -21,10 +21,15 @@ public interface PetMapper {
     @Mapping(target = "petName", source = "pet.petName")
     @Mapping(target = "petType", source = "pet.petType")
     @Mapping(target = "birthDate", source = "pet.birthDate")
+    PetResDTO.READ toReadDto(Pet pet);
+
+    @Mapping(target = "petName", source = "pet.petName")
+    @Mapping(target = "petType", source = "pet.petType")
+    @Mapping(target = "birthDate", source = "pet.birthDate")
     @Mapping(target = "ownerFirstName", source = "pet.owner.firstName")
     @Mapping(target = "ownerLastName", source = "pet.owner.lastName")
     @Mapping(target = "ownerTelephone", source = "pet.owner.telephone")
-    PetResDTO.READ toReadDto(Pet pet);
+    PetResDTO.READ_DETAIL toReadDetailDto(Pet pet);
 
     @Named("toPetTypeEnum")
     static PetType toPetTypeEnum(String petType) {
