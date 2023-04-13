@@ -45,5 +45,9 @@ public class VisitResDTO {
         private String ownerLastName;
 
         private String ownerTelephone;
+
+        private String vetFirstName;
+
+        private String vetLastName;
     }
 }

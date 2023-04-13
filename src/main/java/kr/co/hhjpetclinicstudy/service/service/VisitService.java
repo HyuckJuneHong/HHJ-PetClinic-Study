@@ -43,43 +43,63 @@ public class VisitService {
     @Transactional
     public void createVisit(VisitReqDTO.CREATE create) {
 
-        final Pet pet = petRepository.findById(create.getPetId())
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_PET_NOT_FOUND));
+        final Pet pet = petRepository
+                .findById(create.getPetId())
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
-        final Vet vet = vetRepository.findById(create.getVetId())
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_VET_NOT_FOUND));
+        final Vet vet = vetRepository
+                .findById(create.getVetId())
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
-        final Owner owner = ownerRepository.findById(create.getOwnerId())
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_OWNER_NOT_FOUND));
+        final Owner owner = ownerRepository
+                .findById(create.getOwnerId())
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
-        final Visit visit = visitMapper.toVisitEntity(create, pet, vet, owner);
+        final Visit visit = visitMapper
+                .toVisitEntity(create, pet, vet, owner);
 
         visitRepository.save(visit);
     }
 
     /**
      * visit get by pet service
-     *
-     * @return : List VisitResDTO.READ
      */
     public List<VisitResDTO.READ> getVisitsByPet(Long petId) {
 
-        final Pet pet = petRepository.findById(petId)
+        final Pet pet = petRepository
+                .findById(petId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
-        return visitRepository.findByPet(pet).stream()
+        return visitRepository
+                .findByPet(pet)
+                .stream()
+                .map(visitMapper::toReadDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * visit get by owner service
+     */
+    public List<VisitResDTO.READ> getVisitsByOwner(Long ownerId) {
+
+        final Owner owner = ownerRepository
+                .findById(ownerId)
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+
+        return visitRepository
+                .findByOwner(owner)
+                .stream()
                 .map(visitMapper::toReadDto)
                 .collect(Collectors.toList());
     }
 
     /**
      * visit get by id service
-     *
-     * @return : VisitResDTO.READ
      */
     public VisitResDTO.READ_DETAIL getVisitById(Long visitId) {
 
-        final Visit visit = visitRepository.findById(visitId)
+        final Visit visit = visitRepository
+                .findById(visitId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return visitMapper.toReadDetailDto(visit);
@@ -93,7 +113,8 @@ public class VisitService {
     @Transactional
     public void updateVisit(VisitReqDTO.UPDATE update) {
 
-        Visit visit = visitRepository.findById(update.getVisitId())
+        Visit visit = visitRepository
+                .findById(update.getVisitId())
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         visit.updateVisit(update);
@@ -107,7 +128,8 @@ public class VisitService {
     @Transactional
     public void deleteVisitById(Long visitId) {
 
-        final Visit visit = visitRepository.findById(visitId)
+        final Visit visit = visitRepository
+                .findById(visitId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         visitRepository.delete(visit);

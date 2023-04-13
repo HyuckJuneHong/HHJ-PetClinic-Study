@@ -39,28 +39,24 @@ public class VisitController {
 
     /**
      * 소유자에 대한 방문 기록들 조회
-     *
-     * @param ownerId
-     * @return
      */
-    @GetMapping("/{owner_id}")
-    public ResponseFormat<Void> getVisitsByOwner(@PathVariable(name = "owner_id") Long ownerId) {
+    @GetMapping("/owners/{owner_id}")
+    public ResponseFormat<List<VisitResDTO.READ>> getVisitsByOwner(@PathVariable(name = "owner_id") Long ownerId) {
 
         try {
-            return ResponseFormat.success(null);
-        } catch (Exception e) {
-            return ResponseFormat.error(null);
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByOwner(ownerId));
+        } catch (NotFoundException e) {
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e) {
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * 애완동물에 대해 방문 기록들 조회
-     *
-     * @return : List VisitResDTO.READ
      */
-    @GetMapping("/{owner_id}/{pet_id}")
-    public ResponseFormat<List<VisitResDTO.READ>> getVisitsByPet(@PathVariable(name = "pet_id") Long petId,
-                                                                 @PathVariable(name = "owner_id") Long ownerId) {
+    @GetMapping("/pets/{pet_id}")
+    public ResponseFormat<List<VisitResDTO.READ>> getVisitsByPet(@PathVariable(name = "pet_id") Long petId) {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByPet(petId));
@@ -73,13 +69,9 @@ public class VisitController {
 
     /**
      * 방문 기록 상세 조회
-     *
-     * @return : VisitResDTO.READ
      */
-    @GetMapping("/{owner_id}/{pet_id}/{visit_id}")
-    public ResponseFormat<VisitResDTO.READ_DETAIL> getVisitById(@PathVariable(name = "visit_id") Long visitId,
-                                                                @PathVariable(name = "pet_id") Long petId,
-                                                                @PathVariable(name = "owner_id") Long ownerId) {
+    @GetMapping("/{visit_id}")
+    public ResponseFormat<VisitResDTO.READ_DETAIL> getVisitById(@PathVariable(name = "visit_id") Long visitId) {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitById(visitId));
