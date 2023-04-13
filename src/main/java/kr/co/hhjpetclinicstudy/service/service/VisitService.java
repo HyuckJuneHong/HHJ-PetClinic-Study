@@ -71,7 +71,7 @@ public class VisitService {
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return visitRepository
-                .findByPet(pet)
+                .findByPetId(pet.getId())
                 .stream()
                 .map(visitMapper::toReadDto)
                 .collect(Collectors.toList());
@@ -87,7 +87,7 @@ public class VisitService {
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return visitRepository
-                .findByOwner(owner)
+                .findByOwnerId(owner.getId())
                 .stream()
                 .map(visitMapper::toReadDto)
                 .collect(Collectors.toList());
@@ -100,7 +100,7 @@ public class VisitService {
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return visitRepository
-                .findByVet(vet)
+                .findByVetId(vet.getId())
                 .stream()
                 .map(visitMapper::toReadDto)
                 .collect(Collectors.toList());

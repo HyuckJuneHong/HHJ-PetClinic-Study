@@ -10,7 +10,7 @@ public class VisitResDTO {
     @Getter
     @Builder
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class READ {
 
         private LocalDate visitDate;
