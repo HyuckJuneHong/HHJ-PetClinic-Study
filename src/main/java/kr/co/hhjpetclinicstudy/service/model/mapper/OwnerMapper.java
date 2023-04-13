@@ -1,11 +1,10 @@
-package kr.co.hhjpetclinicstudy.service.model.mappers;
+package kr.co.hhjpetclinicstudy.service.model.mapper;
 
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 /**
  * Mapper를 사용하면서 느낀점

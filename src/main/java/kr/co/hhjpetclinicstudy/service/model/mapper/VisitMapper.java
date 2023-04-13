@@ -1,4 +1,4 @@
-package kr.co.hhjpetclinicstudy.service.model.mappers;
+package kr.co.hhjpetclinicstudy.service.model.mapper;
 
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;

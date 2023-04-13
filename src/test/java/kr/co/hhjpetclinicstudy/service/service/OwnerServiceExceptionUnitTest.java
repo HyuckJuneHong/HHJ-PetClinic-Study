@@ -5,10 +5,10 @@ import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.service.model.OwnerCreators;
-import kr.co.hhjpetclinicstudy.service.model.OwnerMapperImpl;
+import kr.co.hhjpetclinicstudy.service.model.OwnerMapperImplTest;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
-import kr.co.hhjpetclinicstudy.service.model.mappers.OwnerMapper;
+import kr.co.hhjpetclinicstudy.service.model.mapper.OwnerMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +48,7 @@ public class OwnerServiceExceptionUnitTest {
 
         //given
         final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
-        final Owner owner = OwnerMapperImpl.toOwnerEntity(create);
+        final Owner owner = OwnerMapperImplTest.toOwnerEntity(create);
 
         given(ownerRepository.existsByTelephone(any(String.class))).willReturn(true);
         given(ownerMapper.toOwnerEntity(any(OwnerReqDTO.CREATE.class))).willReturn(owner);
@@ -102,8 +102,8 @@ public class OwnerServiceExceptionUnitTest {
         final OwnerReqDTO.CREATE create1 = OwnerCreators.ownerReqDto_create_creators("01011111111");
         final OwnerReqDTO.CREATE create2 = OwnerCreators.ownerReqDto_create_creators("01022222222");
 
-        Owner owner1 = OwnerMapperImpl.toOwnerEntity(create1);
-        Owner owner2 = OwnerMapperImpl.toOwnerEntity(create2);
+        Owner owner1 = OwnerMapperImplTest.toOwnerEntity(create1);
+        Owner owner2 = OwnerMapperImplTest.toOwnerEntity(create2);
 
         final OwnerReqDTO.UPDATE update = OwnerCreators.ownerReqDto_update_creators("01022222222");
 
