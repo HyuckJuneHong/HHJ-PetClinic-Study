@@ -38,12 +38,29 @@ public class VisitController {
     }
 
     /**
-     * Visit By Pet Read API
+     * 소유자에 대한 방문 기록들 조회
+     *
+     * @param ownerId
+     * @return
+     */
+    @GetMapping("/{owner_id}")
+    public ResponseFormat<Void> getVisitsByOwner(@PathVariable(name = "owner_id") Long ownerId) {
+
+        try {
+            return ResponseFormat.success(null);
+        } catch (Exception e) {
+            return ResponseFormat.error(null);
+        }
+    }
+
+    /**
+     * 애완동물에 대해 방문 기록들 조회
      *
      * @return : List VisitResDTO.READ
      */
-    @GetMapping("/{pet_id}")
-    public ResponseFormat<List<VisitResDTO.READ>> getVisitsByPet(@PathVariable(name = "pet_id") Long petId) {
+    @GetMapping("/{owner_id}/{pet_id}")
+    public ResponseFormat<List<VisitResDTO.READ>> getVisitsByPet(@PathVariable(name = "pet_id") Long petId,
+                                                                 @PathVariable(name = "owner_id") Long ownerId) {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByPet(petId));
@@ -55,13 +72,14 @@ public class VisitController {
     }
 
     /**
-     * Visit By id Read API
+     * 방문 기록 상세 조회
      *
      * @return : VisitResDTO.READ
      */
-    @GetMapping("/{pet_id}/{visit_id}")
-    public ResponseFormat<VisitResDTO.READ> getVisitById(@PathVariable(name = "visit_id") Long visitId,
-                                                         @PathVariable(name = "pet_id") Long petId) {
+    @GetMapping("/{owner_id}/{pet_id}/{visit_id}")
+    public ResponseFormat<VisitResDTO.READ_DETAIL> getVisitById(@PathVariable(name = "visit_id") Long visitId,
+                                                                @PathVariable(name = "pet_id") Long petId,
+                                                                @PathVariable(name = "owner_id") Long ownerId) {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitById(visitId));

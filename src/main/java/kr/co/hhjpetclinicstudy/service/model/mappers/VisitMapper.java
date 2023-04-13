@@ -16,6 +16,13 @@ public interface VisitMapper {
     Visit toVisitEntity(VisitReqDTO.CREATE create, Pet pet);
 
     @Mapping(target = "visitDate", source = "visit.visitDate")
+    @Mapping(target = "petName", source = "visit.pet.petName")
+    @Mapping(target = "petType", source = "visit.pet.petType")
+    @Mapping(target = "ownerFirstName", source = "visit.pet.owner.firstName")
+    @Mapping(target = "ownerLastName", source = "visit.pet.owner.lastName")
+    VisitResDTO.READ toReadDto(Visit visit);
+
+    @Mapping(target = "visitDate", source = "visit.visitDate")
     @Mapping(target = "description", source = "visit.description")
     @Mapping(target = "petName", source = "visit.pet.petName")
     @Mapping(target = "petType", source = "visit.pet.petType")
@@ -23,5 +30,5 @@ public interface VisitMapper {
     @Mapping(target = "ownerFirstName", source = "visit.pet.owner.firstName")
     @Mapping(target = "ownerLastName", source = "visit.pet.owner.lastName")
     @Mapping(target = "ownerTelephone", source = "visit.pet.owner.telephone")
-    VisitResDTO.READ toReadDto(Visit visit);
+    VisitResDTO.READ_DETAIL toReadDetailDto(Visit visit);
 }

@@ -63,12 +63,12 @@ public class VisitService {
      *
      * @return : VisitResDTO.READ
      */
-    public VisitResDTO.READ getVisitById(Long visitId) {
+    public VisitResDTO.READ_DETAIL getVisitById(Long visitId) {
 
         final Visit visit = visitRepository.findById(visitId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
-        return visitMapper.toReadDto(visit);
+        return visitMapper.toReadDetailDto(visit);
     }
 
     /**

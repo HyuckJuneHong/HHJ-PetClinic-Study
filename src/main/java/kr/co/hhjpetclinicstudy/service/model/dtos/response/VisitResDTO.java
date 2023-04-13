@@ -15,6 +15,23 @@ public class VisitResDTO {
 
         private LocalDate visitDate;
 
+        private String petName;
+
+        private PetType petType;
+
+        private String ownerFirstName;
+
+        private String ownerLastName;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class READ_DETAIL {
+
+        private LocalDate visitDate;
+
         private String description;
 
         private String petName;
