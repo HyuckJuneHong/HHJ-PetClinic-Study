@@ -1,6 +1,8 @@
 package kr.co.hhjpetclinicstudy.service.model.mappers;
 
+import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
+import kr.co.hhjpetclinicstudy.persistence.entity.Vet;
 import kr.co.hhjpetclinicstudy.persistence.entity.Visit;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VisitReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VisitResDTO;
@@ -13,7 +15,9 @@ public interface VisitMapper {
     @Mapping(target = "visitDate", source = "create.visitDate")
     @Mapping(target = "description", source = "create.description")
     @Mapping(target = "pet", source = "pet")
-    Visit toVisitEntity(VisitReqDTO.CREATE create, Pet pet);
+    @Mapping(target = "vet", source = "vet")
+    @Mapping(target = "owner", source = "owner")
+    Visit toVisitEntity(VisitReqDTO.CREATE create, Pet pet, Vet vet, Owner owner);
 
     @Mapping(target = "visitDate", source = "visit.visitDate")
     @Mapping(target = "petName", source = "visit.pet.petName")

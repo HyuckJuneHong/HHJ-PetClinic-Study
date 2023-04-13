@@ -22,6 +22,12 @@ public class VisitReqDTO {
 
         @NotNull(message = "need a pet")
         private Long petId;
+
+        @NotNull(message = "need a vet")
+        private Long vetId;
+
+        @NotNull(message = "need a owner")
+        private Long ownerId;
     }
 
     @Getter

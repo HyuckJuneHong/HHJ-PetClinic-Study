@@ -18,11 +18,20 @@ public enum ResponseStatus {
 
     //fail Status
     FAIL_BAD_REQUEST("클라이언트의 요청이 잘못되었습니다.", HttpStatus.BAD_REQUEST),
-    FAIL_TELEPHONE_DUPLICATED("클라이언트의 전화번호가 중복되었습니다.", HttpStatus.BAD_REQUEST),
     FAIL_UNAUTHORIZED("클라이언트가 인증되지 않았습니다.", HttpStatus.UNAUTHORIZED),
     FAIL_FORBIDDEN("클라이언트가 요청한 리소스에 접근할 권한이 없습니다.", HttpStatus.FORBIDDEN),
     FAIL_NOT_FOUND("클라이언트가 요청한 리소스를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-    FAIL_METHOD_NOT_ALLOWED("클라이언트가 요청한 HTTP 메소드가 허용되지 않았습니다.", HttpStatus.METHOD_NOT_ALLOWED);
+    FAIL_METHOD_NOT_ALLOWED("클라이언트가 요청한 HTTP 메소드가 허용되지 않았습니다.", HttpStatus.METHOD_NOT_ALLOWED),
+
+    //owner
+    FAIL_TELEPHONE_DUPLICATED("클라이언트의 전화번호가 중복되었습니다.", HttpStatus.BAD_REQUEST),
+    FAIL_OWNER_NOT_FOUND("클라이언트가 요청한 Owner를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
+    //vet
+    FAIL_VET_NOT_FOUND("클라이언트가 요청한 Vet을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
+    //pet
+    FAIL_PET_NOT_FOUND("클라이언트가 요청한 Pet을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
 
     private String message;
 
