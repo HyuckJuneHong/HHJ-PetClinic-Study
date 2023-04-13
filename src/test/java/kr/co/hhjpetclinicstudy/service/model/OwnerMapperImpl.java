@@ -1,11 +1,11 @@
-package kr.co.hhjpetclinicstudy.owner.model;
+package kr.co.hhjpetclinicstudy.service.model;
 
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import org.springframework.stereotype.Component;
 
-public class OwnerMappersImpl {
+public class OwnerMapperImpl {
 
     public static Owner toOwnerEntity(OwnerReqDTO.CREATE create) {
         if (create == null) {

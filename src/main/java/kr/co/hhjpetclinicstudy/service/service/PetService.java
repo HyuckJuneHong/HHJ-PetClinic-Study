@@ -8,7 +8,7 @@ import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.PetRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
-import kr.co.hhjpetclinicstudy.service.model.mappers.PetMappers;
+import kr.co.hhjpetclinicstudy.service.model.mappers.PetMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +25,7 @@ public class PetService {
 
     private final OwnerRepository ownerRepository;
 
-    private final PetMappers petMappers;
+    private final PetMapper petMapper;
 
     /**
      * pet create service
@@ -37,7 +37,7 @@ public class PetService {
         final Owner owner = ownerRepository.findById(create.getOwnerId())
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
-        final Pet pet = petMappers.toPetEntity(create, owner);
+        final Pet pet = petMapper.toPetEntity(create, owner);
 
         petRepository.save(pet);
     }
@@ -52,7 +52,7 @@ public class PetService {
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return petRepository.findByOwner(owner).stream()
-                .map(petMappers::toReadDto)
+                .map(petMapper::toReadDto)
                 .collect(Collectors.toList());
     }
 

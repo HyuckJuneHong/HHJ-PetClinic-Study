@@ -8,10 +8,12 @@ import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 public class InvalidRequestException extends BusinessLogicException{
 
     public InvalidRequestException(ResponseStatus responseStatus) {
+
         super(responseStatus);
     }
 
     public InvalidRequestException(String message) {
+
         super(message);
     }
 }

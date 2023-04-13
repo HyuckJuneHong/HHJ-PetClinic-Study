@@ -1,15 +1,14 @@
-package kr.co.hhjpetclinicstudy.owner;
+package kr.co.hhjpetclinicstudy.service.service;
 
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
-import kr.co.hhjpetclinicstudy.owner.model.OwnerCreators;
-import kr.co.hhjpetclinicstudy.owner.model.OwnerMappersImpl;
-import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
+import kr.co.hhjpetclinicstudy.service.model.OwnerCreators;
+import kr.co.hhjpetclinicstudy.service.model.OwnerMapperImpl;
+import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
-import kr.co.hhjpetclinicstudy.service.model.mappers.OwnerMappers;
-import kr.co.hhjpetclinicstudy.service.service.OwnerService;
+import kr.co.hhjpetclinicstudy.service.model.mappers.OwnerMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +24,7 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * JUnit 5와 Mockito 프레임워크를 사용하여 OwnerService 클래스의 예외 처리에 대한 단위 테스트를 작성
+ *
  * @ExtendWith(MockitoExtension.class) : MockitoExtension 클래스를 사용하여 Mockito 프레임워크를 JUnit 5에 통합.
  * @InjectMocks : 의존성 주입을 수행하는 Mockito 어노테이션.
  * @Mock : mock 객체를 생성하는 Mockito 어노테이션.
@@ -39,7 +39,7 @@ public class OwnerServiceUnitTest {
     private OwnerRepository ownerRepository;
 
     @Mock
-    private OwnerMappers ownerMappers;
+    private OwnerMapper ownerMappers;
 
     @Test
     @DisplayName("Owner 등록 - 성공")
@@ -47,7 +47,7 @@ public class OwnerServiceUnitTest {
 
         //given
         final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
-        final Owner owner = OwnerMappersImpl.toOwnerEntity(create);
+        final Owner owner = OwnerMapperImpl.toOwnerEntity(create);
 
         given(ownerMappers.toOwnerEntity(any(OwnerReqDTO.CREATE.class))).willReturn(owner);
         given(ownerRepository.existsByTelephone(any(String.class))).willReturn(false);
@@ -58,12 +58,12 @@ public class OwnerServiceUnitTest {
 
     @Test
     @DisplayName("Owner 조회 - 성공")
-    void getOwnerById_success(){
+    void getOwnerById_success() {
 
         //given
         final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
-        final Owner owner = OwnerMappersImpl.toOwnerEntity(create);
-        final OwnerResDTO.READ read = OwnerMappersImpl.toReadDto(owner);
+        final Owner owner = OwnerMapperImpl.toOwnerEntity(create);
+        final OwnerResDTO.READ read = OwnerMapperImpl.toReadDto(owner);
 
         given(ownerRepository.findById(any(Long.class))).willReturn(Optional.of(owner));
         given(ownerMappers.toReadDto(any(Owner.class))).willReturn(read);
@@ -85,8 +85,7 @@ public class OwnerServiceUnitTest {
 
         //given
         final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
-        Owner owner = OwnerMappersImpl.toOwnerEntity(create);
-        ownerRepository.save(owner);
+        Owner owner = OwnerMapperImpl.toOwnerEntity(create);
 
         final OwnerReqDTO.UPDATE update = OwnerCreators.ownerReqDto_update_creators("010-7777-7777");
 
@@ -112,8 +111,7 @@ public class OwnerServiceUnitTest {
 
         // given
         final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
-        Owner owner = OwnerMappersImpl.toOwnerEntity(create);
-        ownerRepository.save(owner);
+        Owner owner = OwnerMapperImpl.toOwnerEntity(create);
 
         given(ownerRepository.findById(any(Long.class))).willReturn(Optional.of(owner));
 

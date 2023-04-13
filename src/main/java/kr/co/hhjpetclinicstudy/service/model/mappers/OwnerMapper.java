@@ -8,10 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public interface OwnerMappers {
-
-    //인터페이스의 구현체를 생성하고, 생성된 구현체를 담는 역할.
-    OwnerMappers INSTANCE = Mappers.getMapper(OwnerMappers.class);
+public interface OwnerMapper {
 
     @Mapping(target = "firstName", source = "create.firstName")
     @Mapping(target = "lastName", source = "create.lastName")

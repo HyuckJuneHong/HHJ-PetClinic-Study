@@ -21,23 +21,25 @@ public class PetController {
 
     /**
      * Pet Create API
+     *
      * @param create : Info for Create a Pet
      */
     @PostMapping
-    public ResponseFormat<Void> createPet(@RequestBody @Valid PetReqDTO.CREATE create){
+    public ResponseFormat<Void> createPet(@RequestBody @Valid PetReqDTO.CREATE create) {
 
-        try{
+        try {
             petService.createPet(create);
             return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * Pet Read API
+     *
      * @return : PetResDtp.READ
      */
     @GetMapping("/{owner_id}")
@@ -45,43 +47,45 @@ public class PetController {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetsByOwner(ownerId));
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * Pet Update API
+     *
      * @param update : Info for Update a Pet
      */
     @PutMapping
-    public ResponseFormat<Void> updatePet(@RequestBody @Valid PetReqDTO.UPDATE update){
+    public ResponseFormat<Void> updatePet(@RequestBody @Valid PetReqDTO.UPDATE update) {
 
         try {
             petService.updatePet(update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * Pet Delete API
+     *
      * @param petId : id for Delete a Pet
      */
     @DeleteMapping("/{pet_id}")
-    public ResponseFormat<Void> deletePetById(@PathVariable(name = "pet_id") Long petId){
+    public ResponseFormat<Void> deletePetById(@PathVariable(name = "pet_id") Long petId) {
 
         try {
             petService.deletePetById(petId);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }

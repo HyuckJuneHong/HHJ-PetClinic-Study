@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface VisitMappers {
+public interface VisitMapper {
 
     @Mapping(target = "visitDate", source = "create.visitDate")
     @Mapping(target = "description", source = "create.description")

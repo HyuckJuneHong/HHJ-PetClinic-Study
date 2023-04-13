@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
-public interface PetMappers {
+public interface PetMapper {
 
     @Mapping(target = "petName", source = "create.petName")
     @Mapping(target = "birthDate", source = "create.birthDate")

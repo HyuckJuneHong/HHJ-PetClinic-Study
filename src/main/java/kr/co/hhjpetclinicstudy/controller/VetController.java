@@ -19,21 +19,23 @@ public class VetController {
 
     /**
      * Vet Create API
+     *
      * @param create : info for Create a Vet
      */
     @PostMapping
-    public ResponseFormat<Void> createVet(@RequestBody @Valid VetReqDTO.CREATE create){
+    public ResponseFormat<Void> createVet(@RequestBody @Valid VetReqDTO.CREATE create) {
 
         try {
             vetService.createVet(create);
             return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * vet By id Read API
+     *
      * @return : VetResDTO.READ
      */
     @GetMapping("/{vet_id}")
@@ -41,43 +43,45 @@ public class VetController {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetById(vetId));
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * Vet Update API
+     *
      * @param update : Info for Update a Vet
      */
     @PutMapping
-    public ResponseFormat<Void> updateVet(@RequestBody VetReqDTO.UPDATE update){
+    public ResponseFormat<Void> updateVet(@RequestBody VetReqDTO.UPDATE update) {
 
         try {
             vetService.updateVet(update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
     /**
      * Vet Delete API
+     *
      * @param vetId : id for delete a vet
      */
     @DeleteMapping("/{vet_id}")
-    public ResponseFormat<Void> deleteVetById(@PathVariable(name = "vet_id") Long vetId){
+    public ResponseFormat<Void> deleteVetById(@PathVariable(name = "vet_id") Long vetId) {
 
         try {
             vetService.deleteVetById(vetId);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }

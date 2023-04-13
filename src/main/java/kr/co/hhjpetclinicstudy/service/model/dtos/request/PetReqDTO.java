@@ -12,7 +12,7 @@ public class PetReqDTO {
     @Builder
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class CREATE{
+    public static class CREATE {
 
         @NotBlank(message = "Need a Pet Name")
         private String petName;
