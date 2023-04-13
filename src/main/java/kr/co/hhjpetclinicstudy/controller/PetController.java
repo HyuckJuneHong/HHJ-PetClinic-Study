@@ -37,12 +37,24 @@ public class PetController {
         }
     }
 
+    @GetMapping("/{pet_id}")
+    public ResponseFormat<PetResDTO.READ_DETAIL> getPetById(@PathVariable(name = "pet_id") Long petId) {
+
+        try {
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetById(petId));
+        } catch (NotFoundException e) {
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e) {
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
+        }
+    }
+
     /**
      * Pet Read API
      *
      * @return : PetResDtp.READ
      */
-    @GetMapping("/{owner_id}")
+    @GetMapping("/owners/{owner_id}")
     public ResponseFormat<List<PetResDTO.READ>> getPetsByOwner(@PathVariable(name = "owner_id") Long ownerId) {
 
         try {

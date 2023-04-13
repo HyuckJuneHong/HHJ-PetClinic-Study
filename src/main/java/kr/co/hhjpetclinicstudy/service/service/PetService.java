@@ -42,6 +42,15 @@ public class PetService {
         petRepository.save(pet);
     }
 
+    public PetResDTO.READ_DETAIL getPetById(Long petId) {
+
+        final Pet pet = petRepository
+                .findById(petId)
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+
+        return petMapper.toReadDetailDto(pet);
+    }
+
     /**
      * pets get by owner service
      */
