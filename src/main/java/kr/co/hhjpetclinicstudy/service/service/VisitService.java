@@ -93,6 +93,19 @@ public class VisitService {
                 .collect(Collectors.toList());
     }
 
+    public List<VisitResDTO.READ> getVisitsByVet(Long vetId) {
+
+        final Vet vet = vetRepository
+                .findById(vetId)
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+
+        return visitRepository
+                .findByVet(vet)
+                .stream()
+                .map(visitMapper::toReadDto)
+                .collect(Collectors.toList());
+    }
+
     /**
      * visit get by id service
      */

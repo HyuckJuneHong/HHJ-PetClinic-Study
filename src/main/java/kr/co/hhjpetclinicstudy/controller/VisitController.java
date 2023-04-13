@@ -68,6 +68,22 @@ public class VisitController {
     }
 
     /**
+     * 수의사 담당 애완동물들 조회
+     */
+    @GetMapping("/vets/{vet_id}")
+    public ResponseFormat<List<VisitResDTO.READ>> getVisitsByVet(@PathVariable(name = "vet_id") Long vetId){
+
+        try {
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByVet(vetId));
+        } catch (NotFoundException e) {
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e) {
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
+        }
+    }
+
+
+    /**
      * 방문 기록 상세 조회
      */
     @GetMapping("/{visit_id}")
