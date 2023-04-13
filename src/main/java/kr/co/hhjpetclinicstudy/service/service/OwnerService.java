@@ -42,7 +42,8 @@ public class OwnerService {
      */
     public OwnerResDTO.READ getOwnerById(Long ownerId) {
 
-        final Owner owner = ownerRepository.findById(ownerId)
+        final Owner owner = ownerRepository
+                .findById(ownerId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return ownerMapper.toReadDto(owner);
@@ -55,7 +56,8 @@ public class OwnerService {
     @Transactional
     public void updateOwner(OwnerReqDTO.UPDATE update) {
 
-        Owner owner = ownerRepository.findById(update.getOwnerId())
+        Owner owner = ownerRepository
+                .findById(update.getOwnerId())
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         isTelephone(owner.getTelephone(), update.getTelephone());
@@ -70,7 +72,8 @@ public class OwnerService {
     @Transactional
     public void deleteOwnerById(Long ownerId) {
 
-        final Owner owner = ownerRepository.findById(ownerId)
+        final Owner owner = ownerRepository
+                .findById(ownerId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         ownerRepository.delete(owner);
