@@ -10,6 +10,8 @@ import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("/api/v1/vets")
 @RequiredArgsConstructor
@@ -34,9 +36,7 @@ public class VetController {
     }
 
     /**
-     * vet By id Read API
-     *
-     * @return : VetResDTO.READ
+     * 수의사 정보 조회
      */
     @GetMapping("/{vet_id}")
     public ResponseFormat<VetResDTO.READ> getVetById(@PathVariable(name = "vet_id") Long vetId) {
@@ -45,6 +45,19 @@ public class VetController {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetById(vetId));
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e) {
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * 수의사들이 가진 모든 전문분야 조회
+     */
+    @GetMapping("/specialties")
+    public ResponseFormat<Set<String>> getVetSpecialties() {
+
+        try {
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetSpecialties());
         } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }

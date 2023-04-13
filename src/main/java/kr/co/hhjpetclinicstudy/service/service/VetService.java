@@ -7,6 +7,7 @@ import kr.co.hhjpetclinicstudy.persistence.entity.Vet;
 import kr.co.hhjpetclinicstudy.persistence.entity.VetSpecialty;
 import kr.co.hhjpetclinicstudy.persistence.repository.SpecialtyRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.VetSpecialtyRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mappers.SpecialtyMapper;
@@ -29,6 +30,8 @@ public class VetService {
     private final VetRepository vetRepository;
 
     private final SpecialtyRepository specialtyRepository;
+
+    private final VetSpecialtyRepository vetSpecialtyRepository;
 
     private final VetMapper vetMapper;
 
@@ -63,6 +66,20 @@ public class VetService {
         final List<String> specialtiesName = getSpecialtiesNameByVet(vet);
 
         return vetMapper.toReadDto(vet, specialtiesName);
+    }
+
+    /**
+     * 펫클리닉에서 수의사들이 가지고 있는 모든 전문분야 반환
+     */
+    public Set<String> getVetSpecialties() {
+
+        final List<VetSpecialty> vetSpecialties = vetSpecialtyRepository.findAll();
+
+        return vetSpecialties
+                .stream()
+                .map(VetSpecialty::getSpecialty)
+                .map(Specialty::getSpecialtyName)
+                .collect(Collectors.toSet());
     }
 
     /**
