@@ -36,9 +36,6 @@ public class VisitReqDTO {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class UPDATE {
 
-        @NotNull(message = "Need a visit")
-        private Long visitId;
-
         private LocalDate visitDate;
 
         private String description;

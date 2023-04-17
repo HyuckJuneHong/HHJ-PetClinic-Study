@@ -55,8 +55,7 @@ public class VisitService {
                 .findById(create.getOwnerId())
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
-        final Visit visit = visitMapper
-                .toVisitEntity(create, pet, vet, owner);
+        final Visit visit = visitMapper.toVisitEntity(create, pet, vet, owner);
 
         visitRepository.save(visit);
     }
@@ -118,16 +117,12 @@ public class VisitService {
         return visitMapper.toReadDetailDto(visit);
     }
 
-    /**
-     * visit update service
-     *
-     * @param update : Info for Update a visit
-     */
     @Transactional
-    public void updateVisit(VisitReqDTO.UPDATE update) {
+    public void updateVisit(Long visitId,
+                            VisitReqDTO.UPDATE update) {
 
         Visit visit = visitRepository
-                .findById(update.getVisitId())
+                .findById(visitId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         visit.updateVisit(update);

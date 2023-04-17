@@ -98,16 +98,12 @@ public class VisitController {
         }
     }
 
-    /**
-     * Visit Update API
-     *
-     * @param update : Info for Update a Visit
-     */
     @PutMapping
-    public ResponseFormat<Void> updateVisit(@RequestBody @Validated VisitReqDTO.UPDATE update) {
+    public ResponseFormat<Void> updateVisit(@PathVariable(name = "visit_id") Long visitId,
+                                            @RequestBody @Validated VisitReqDTO.UPDATE update) {
 
         try {
-            visitService.updateVisit(update);
+            visitService.updateVisit(visitId, update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
