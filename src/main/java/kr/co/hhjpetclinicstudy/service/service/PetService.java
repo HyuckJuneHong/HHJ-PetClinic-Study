@@ -31,10 +31,11 @@ public class PetService {
      * pet create service
      */
     @Transactional
-    public void createPet(PetReqDTO.CREATE create) {
+    public void createPet(Long ownerId,
+                          PetReqDTO.CREATE create) {
 
         final Owner owner = ownerRepository
-                .findById(create.getOwnerId())
+                .findById(ownerId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         final Pet pet = petMapper.toPetEntity(create, owner);
@@ -61,7 +62,7 @@ public class PetService {
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         return petRepository
-                .findByOwner(owner)
+                .findByOwnerId(owner.getId())
                 .stream()
                 .map(petMapper::toReadDto)
                 .collect(Collectors.toList());
@@ -71,10 +72,11 @@ public class PetService {
      * pet update service
      */
     @Transactional
-    public void updatePet(PetReqDTO.UPDATE update) {
+    public void updatePet(Long petId,
+                          PetReqDTO.UPDATE update) {
 
         Pet pet = petRepository
-                .findById(update.getPetId())
+                .findById(petId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         pet.updatePetInfo(update);
