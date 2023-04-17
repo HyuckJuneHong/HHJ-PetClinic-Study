@@ -61,11 +61,12 @@ public class OwnerController {
      *
      * @param update : info for update an owner
      */
-    @PutMapping
-    public ResponseFormat<Void> updateOwner(@RequestBody @Valid OwnerReqDTO.UPDATE update) {
+    @PutMapping("/{owner_id}")
+    public ResponseFormat<Void> updateOwner(@PathVariable(name = "owner_id") Long ownerId,
+                                            @RequestBody @Valid OwnerReqDTO.UPDATE update) {
 
         try {
-            ownerService.updateOwner(update);
+            ownerService.updateOwner(ownerId, update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (DuplicatedException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);

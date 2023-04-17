@@ -3,9 +3,12 @@ package kr.co.hhjpetclinicstudy.persistence.repository;
 import kr.co.hhjpetclinicstudy.persistence.entity.Specialty;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * @Query를사용하기 전
@@ -27,8 +30,10 @@ public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
     @Query("" +
             "select s " +
             "from Specialty s " +
-            "where s.specialtyName in :spcialtiesNames")
-    List<Specialty> findAllBySpecialtyNameIn(List<String> specialtiesNames);
+            "where s.specialtyName in :specialtiesNames")
+    List<Specialty> findAllBySpecialtyNameIn(@Param("specialtiesNames") Set<String> specialtiesNames);
+
+    Optional<Specialty> findBySpecialtyName(String specialtyName);
 
     boolean existsBySpecialtyName(String specialtyName);
 }

@@ -2,10 +2,9 @@ package kr.co.hhjpetclinicstudy.service.model.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 public class VetReqDTO {
 
@@ -22,22 +21,15 @@ public class VetReqDTO {
         private String lastName;
 
         @NotEmpty(message = "Need a specialty")
-        private List<String> specialtiesName;
+        private Set<String> specialtiesName;
     }
 
     @Getter
     @Builder
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class UPDATE {
+    public static class ADD_DELETE {
 
-        @NotNull(message = "need a vet")
-        private Long vetId;
-
-        private String firstName;
-
-        private String lastName;
-
-        private List<String> specialtiesName;
+        private Set<String> specialtiesName;
     }
 }

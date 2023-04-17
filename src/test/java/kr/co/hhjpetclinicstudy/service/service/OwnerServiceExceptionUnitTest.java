@@ -90,7 +90,7 @@ public class OwnerServiceExceptionUnitTest {
         given(ownerRepository.findById(any(Long.class))).willReturn(Optional.empty());
 
         //when, then
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> ownerService.updateOwner(update));
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> ownerService.updateOwner(1L, update));
         assertEquals(ResponseStatus.FAIL_NOT_FOUND.getMessage(), exception.getMessage());
     }
 
@@ -111,7 +111,7 @@ public class OwnerServiceExceptionUnitTest {
         given(ownerRepository.existsByTelephone(any(String.class))).willReturn(true);
 
         //when, then
-        DuplicatedException exception = assertThrows(DuplicatedException.class, () -> ownerService.updateOwner(update));
+        DuplicatedException exception = assertThrows(DuplicatedException.class, () -> ownerService.updateOwner(1L, update));
         assertEquals(ResponseStatus.FAIL_TELEPHONE_DUPLICATED.getMessage(), exception.getMessage());
     }
 

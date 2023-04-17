@@ -21,9 +21,6 @@ public class PetReqDTO {
 
         @NotBlank(message = "Need a Pet Type")
         private String petType;
-
-        @NotNull(message = "Need a Owner")
-        private Long ownerId;
     }
 
     @Getter
@@ -31,9 +28,6 @@ public class PetReqDTO {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class UPDATE {
-
-        @NotNull(message = "Need a pet")
-        private Long petId;
 
         private String petName;
 

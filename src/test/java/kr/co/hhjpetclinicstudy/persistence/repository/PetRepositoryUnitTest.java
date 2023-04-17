@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,7 +20,7 @@ public class PetRepositoryUnitTest {
     public void findAllBySpecialtyNameIn_shouldReturnMatchingSpecialties() {
 
         // given
-        List<String> specialtyNames = List.of("testSpec1", "testSpec2");
+        Set<String> specialtyNames = Set.of("testSpec1", "testSpec2");
 
         final Specialty specialty1 = Specialty.builder()
                 .specialtyName("testSpec1")

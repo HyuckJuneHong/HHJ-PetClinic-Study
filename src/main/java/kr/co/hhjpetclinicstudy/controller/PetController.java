@@ -24,11 +24,12 @@ public class PetController {
      *
      * @param create : Info for Create a Pet
      */
-    @PostMapping
-    public ResponseFormat<Void> createPet(@RequestBody @Valid PetReqDTO.CREATE create) {
+    @PostMapping("/{owner_id}")
+    public ResponseFormat<Void> createPet(@PathVariable(name = "owner_id") Long ownerId,
+                                          @RequestBody @Valid PetReqDTO.CREATE create) {
 
         try {
-            petService.createPet(create);
+            petService.createPet(ownerId, create);
             return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
@@ -71,11 +72,12 @@ public class PetController {
      *
      * @param update : Info for Update a Pet
      */
-    @PutMapping
-    public ResponseFormat<Void> updatePet(@RequestBody @Valid PetReqDTO.UPDATE update) {
+    @PutMapping("/{pet_id}")
+    public ResponseFormat<Void> updatePet(@PathVariable(name = "pet_id") Long petId,
+                                          @RequestBody @Valid PetReqDTO.UPDATE update) {
 
         try {
-            petService.updatePet(update);
+            petService.updatePet(petId, update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);

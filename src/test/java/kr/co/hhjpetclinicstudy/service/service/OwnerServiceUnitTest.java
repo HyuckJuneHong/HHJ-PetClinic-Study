@@ -93,7 +93,7 @@ public class OwnerServiceUnitTest {
         given(ownerRepository.existsByTelephone(any(String.class))).willReturn(false);
 
         //when
-        ownerService.updateOwner(update);
+        ownerService.updateOwner(1L, update);
         final Owner updatedOwner = ownerRepository.findById(1L)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
