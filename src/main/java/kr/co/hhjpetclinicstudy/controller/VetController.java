@@ -63,16 +63,26 @@ public class VetController {
         }
     }
 
-    /**
-     * Vet Update API
-     *
-     * @param update : Info for Update a Vet
-     */
-    @PutMapping
-    public ResponseFormat<Void> updateVet(@RequestBody VetReqDTO.UPDATE update) {
+    @PutMapping("/specialties/{vet_id}")
+    public ResponseFormat<Void> addSpecialties(@PathVariable(name = "vet_id") Long vetId,
+                                               @RequestBody VetReqDTO.ADD_DELETE add) {
 
         try {
-            vetService.updateVet(update);
+            vetService.addSpecialties(vetId, add);
+            return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
+        } catch (NotFoundException e) {
+            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+        } catch (RuntimeException e) {
+            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/specialties/{vet_id}")
+    public ResponseFormat<Void> deleteSpecialties(@PathVariable(name = "vet_id") Long vetId,
+                                                  @RequestBody VetReqDTO.ADD_DELETE delete) {
+
+        try {
+            vetService.deleteSpecialties(vetId, delete);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
