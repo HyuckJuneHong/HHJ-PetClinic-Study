@@ -34,9 +34,6 @@ public class OwnerReqDTO {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class UPDATE {
 
-        @NotNull(message = "need an owner")
-        private Long ownerId;
-
         private String firstName;
 
         private String lastName;

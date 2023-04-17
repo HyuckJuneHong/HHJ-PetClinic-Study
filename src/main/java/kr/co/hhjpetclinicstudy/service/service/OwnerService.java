@@ -11,6 +11,7 @@ import kr.co.hhjpetclinicstudy.service.model.mapper.OwnerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 @RequiredArgsConstructor
@@ -54,10 +55,11 @@ public class OwnerService {
      * @param update : info for update an owner
      */
     @Transactional
-    public void updateOwner(OwnerReqDTO.UPDATE update) {
+    public void updateOwner(Long ownerId,
+                            OwnerReqDTO.UPDATE update) {
 
         Owner owner = ownerRepository
-                .findById(update.getOwnerId())
+                .findById(ownerId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         isTelephone(owner.getTelephone(), update.getTelephone());

@@ -29,7 +29,6 @@ public class OwnerCreators {
     public static OwnerReqDTO.UPDATE ownerReqDto_update_creators(String telephone){
 
         return OwnerReqDTO.UPDATE.builder()
-                .ownerId(1L)
                 .firstName("updateFirstName")
                 .lastName("updateLastName")
                 .address("updateAddress")

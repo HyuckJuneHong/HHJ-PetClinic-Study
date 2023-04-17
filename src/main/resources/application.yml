@@ -1,4 +1,6 @@
 spring:
+
+  #Database 설정
   h2:
     console:
       enabled: true
@@ -10,6 +12,7 @@ spring:
     username: sa
     password:
 
+  #Database JPA 설정
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
