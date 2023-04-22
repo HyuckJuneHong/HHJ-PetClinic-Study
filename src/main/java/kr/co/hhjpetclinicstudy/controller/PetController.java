@@ -50,11 +50,6 @@ public class PetController {
         }
     }
 
-    /**
-     * Pet Read API
-     *
-     * @return : PetResDtp.READ
-     */
     @GetMapping("/owners/{owner_id}")
     public ResponseFormat<List<PetResDTO.READ>> getPetsByOwner(@PathVariable(name = "owner_id") Long ownerId) {
 

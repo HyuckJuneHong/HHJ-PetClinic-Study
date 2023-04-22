@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * - 이를 이용해 HTTP 요청을 보내고, 그 결과를 검증이 가능.
  */
 @WebMvcTest(controllers = OwnerController.class)
-@AutoConfigureMockMvc
+//@AutoConfigureMockMvc
 public class OwnerControllerUnitTest {
 
     @MockBean(name = "ownerService")
@@ -63,7 +63,8 @@ public class OwnerControllerUnitTest {
                         post("/api/v1/owners")
                                 .content(jsonConvertor.writeValueAsString(create))
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
+                                .accept(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.successful").value(true))
