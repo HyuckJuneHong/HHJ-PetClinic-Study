@@ -2,12 +2,14 @@ package kr.co.hhjpetclinicstudy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
-public class HhjPetclinicStudyApplication {
+@EnableAspectJAutoProxy
+public class HhjPetClinicStudyApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(HhjPetclinicStudyApplication.class, args);
+        SpringApplication.run(HhjPetClinicStudyApplication.class, args);
     }
 
 }

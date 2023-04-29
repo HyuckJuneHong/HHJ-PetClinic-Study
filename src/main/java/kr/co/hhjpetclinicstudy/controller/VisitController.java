@@ -82,7 +82,6 @@ public class VisitController {
         }
     }
 
-
     /**
      * 방문 기록 상세 조회
      */
@@ -111,7 +110,6 @@ public class VisitController {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
-
 
     /**
      * Visit Delete API
