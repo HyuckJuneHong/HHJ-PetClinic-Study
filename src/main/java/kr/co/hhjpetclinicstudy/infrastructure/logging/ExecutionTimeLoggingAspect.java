@@ -16,7 +16,16 @@ public class ExecutionTimeLoggingAspect {
     @Pointcut("execution(* kr.co.hhjpetclinicstudy.service.service.OwnerService.*(..))")
     private void allOwnerService(){ }
 
-    @Around("allOwnerService()")
+    @Pointcut("execution(* kr.co.hhjpetclinicstudy.service.service.PetService.*(..))")
+    private void allPetService(){ }
+
+    @Pointcut("execution(* kr.co.hhjpetclinicstudy.service.service.VetService.*(..))")
+    private void allVetService(){ }
+
+    @Pointcut("execution(* kr.co.hhjpetclinicstudy.service.service.VisitService.*(..))")
+    private void allVisitService(){ }
+
+    @Around("allOwnerService() || allPetService() || allVetService() || allVisitService()")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable{
 
         String className = joinPoint.getTarget().getClass().getSimpleName();
