@@ -49,5 +49,4 @@ public class ExecutionTimeLoggingAspect {
 
         return result;
     }
-
 }
