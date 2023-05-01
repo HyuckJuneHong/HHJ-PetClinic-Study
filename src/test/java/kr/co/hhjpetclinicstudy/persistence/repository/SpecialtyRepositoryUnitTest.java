@@ -11,7 +11,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-public class PetRepositoryUnitTest {
+public class SpecialtyRepositoryUnitTest {
 
     @Autowired
     private SpecialtyRepository specialtyRepository;
