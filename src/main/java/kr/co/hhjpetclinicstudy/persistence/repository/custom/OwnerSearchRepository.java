@@ -1,13 +1,36 @@
 package kr.co.hhjpetclinicstudy.persistence.repository.custom;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
+import kr.co.hhjpetclinicstudy.persistence.entity.QOwner;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
 @Repository
-public interface OwnerSearchRepository {
+@RequiredArgsConstructor
+public class OwnerSearchRepository {
 
-    List<Owner> search(OwnerReqDTO.CONDITION condition);
+    private final JPAQueryFactory queryFactory;
+
+    private final QOwner qOwner = QOwner.owner;
+
+    public List<Owner> search(OwnerReqDTO.CONDITION condition) {
+
+        return queryFactory
+                .selectFrom(qOwner)
+                .where(
+                        ownerIdIn(condition.getOwnerIds())
+                )
+                .fetch();
+    }
+
+    private BooleanExpression ownerIdIn(List<Long> ownerIds) {
+
+        return CollectionUtils.isEmpty(ownerIds) ? null : qOwner.id.in(ownerIds);
+    }
 }
