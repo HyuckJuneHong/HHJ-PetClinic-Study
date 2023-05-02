@@ -6,6 +6,7 @@ import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.PetRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.PetSearchRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
@@ -24,9 +25,11 @@ public class PetService {
 
     private final PetRepository petRepository;
 
+    private final OwnerRepository ownerRepository;
+
     private final PetSearchRepository petSearchRepository;
 
-    private final OwnerRepository ownerRepository;
+    private final OwnerSearchRepository ownerSearchRepository;
 
     private final PetMapper petMapper;
 
@@ -55,17 +58,10 @@ public class PetService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * pets get by owner service
-     */
     public List<PetResDTO.READ> getPetsByOwner(Long ownerId) {
 
-        final Owner owner = ownerRepository
-                .findById(ownerId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
-
-        return petRepository
-                .findByOwnerId(owner.getId())
+        return petSearchRepository
+                .searchByOwnerId(ownerId)
                 .stream()
                 .map(petMapper::toReadDto)
                 .collect(Collectors.toList());

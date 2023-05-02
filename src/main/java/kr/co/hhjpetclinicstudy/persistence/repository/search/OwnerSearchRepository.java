@@ -23,9 +23,7 @@ public class OwnerSearchRepository {
 
         return queryFactory
                 .selectFrom(qOwner)
-                .where(
-                        ownerIdIn(condition.getOwnerIds())
-                )
+                .where(ownerIdIn(condition.getOwnerIds()))
                 .fetch();
     }
 

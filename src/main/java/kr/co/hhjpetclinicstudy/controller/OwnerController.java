@@ -40,7 +40,7 @@ public class OwnerController {
         }
     }
 
-    @GetMapping
+    @PostMapping("/read")
     public ResponseFormat<List<OwnerResDTO.READ>> getOwnersByIds(OwnerReqDTO.CONDITION condition) {
 
         try {

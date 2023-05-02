@@ -1,5 +1,6 @@
 package kr.co.hhjpetclinicstudy.persistence.repository.search;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
@@ -26,15 +27,27 @@ public class PetSearchRepository {
 
         return queryFactory
                 .selectFrom(qPet)
-                .join(qOwner).fetchJoin()
-                .where(
-                        petIdIn(condition.getPetIds())
-                )
+                .join(qPet.owner, qOwner).fetchJoin()
+                .where(petIdIn(condition.getPetIds()))
+                .fetch();
+    }
+
+    public List<Pet> searchByOwnerId(Long ownerId){
+
+        return queryFactory
+                .selectFrom(qPet)
+                .join(qPet.owner, qOwner).fetchJoin()
+                .where(ownerIdEq(ownerId))
                 .fetch();
     }
 
     private BooleanExpression petIdIn(List<Long> petIds) {
 
         return CollectionUtils.isEmpty(petIds) ? null : qPet.id.in(petIds);
+    }
+
+    private BooleanExpression ownerIdEq(Long ownerId) {
+
+        return qPet.owner.id.eq(ownerId);
     }
 }
