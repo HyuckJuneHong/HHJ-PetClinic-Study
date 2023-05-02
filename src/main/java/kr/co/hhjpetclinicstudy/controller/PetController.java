@@ -38,11 +38,11 @@ public class PetController {
         }
     }
 
-    @GetMapping("/{pet_id}")
-    public ResponseFormat<PetResDTO.READ_DETAIL> getPetById(@PathVariable(name = "pet_id") Long petId) {
+    @GetMapping
+    public ResponseFormat<List<PetResDTO.READ_DETAIL>> getPetsByIds(PetReqDTO.CONDITION condition) {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetById(petId));
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetsByIds(condition));
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e) {
