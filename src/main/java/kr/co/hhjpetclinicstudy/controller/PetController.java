@@ -38,8 +38,8 @@ public class PetController {
         }
     }
 
-    @GetMapping
-    public ResponseFormat<List<PetResDTO.READ_DETAIL>> getPetsByIds(PetReqDTO.CONDITION condition) {
+    @PostMapping("/search")
+    public ResponseFormat<List<PetResDTO.READ_DETAIL>> getPetsByIds(@RequestBody PetReqDTO.CONDITION condition) {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetsByIds(condition));

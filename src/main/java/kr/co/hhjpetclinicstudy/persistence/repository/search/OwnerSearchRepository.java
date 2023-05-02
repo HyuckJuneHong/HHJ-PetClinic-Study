@@ -23,11 +23,11 @@ public class OwnerSearchRepository {
 
         return queryFactory
                 .selectFrom(qOwner)
-                .where(ownerIdIn(condition.getOwnerIds()))
+                .where(ownerIdsIn(condition.getOwnerIds()))
                 .fetch();
     }
 
-    private BooleanExpression ownerIdIn(List<Long> ownerIds) {
+    private BooleanExpression ownerIdsIn(List<Long> ownerIds) {
 
         return CollectionUtils.isEmpty(ownerIds) ? null : qOwner.id.in(ownerIds);
     }

@@ -28,7 +28,7 @@ public class PetSearchRepository {
         return queryFactory
                 .selectFrom(qPet)
                 .join(qPet.owner, qOwner).fetchJoin()
-                .where(petIdIn(condition.getPetIds()))
+                .where(petIdsIn(condition.getPetIds()))
                 .fetch();
     }
 
@@ -41,7 +41,7 @@ public class PetSearchRepository {
                 .fetch();
     }
 
-    private BooleanExpression petIdIn(List<Long> petIds) {
+    private BooleanExpression petIdsIn(List<Long> petIds) {
 
         return CollectionUtils.isEmpty(petIds) ? null : qPet.id.in(petIds);
     }

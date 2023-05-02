@@ -29,8 +29,6 @@ public class PetService {
 
     private final PetSearchRepository petSearchRepository;
 
-    private final OwnerSearchRepository ownerSearchRepository;
-
     private final PetMapper petMapper;
 
     /**

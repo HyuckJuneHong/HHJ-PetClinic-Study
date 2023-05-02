@@ -40,8 +40,8 @@ public class OwnerController {
         }
     }
 
-    @PostMapping("/read")
-    public ResponseFormat<List<OwnerResDTO.READ>> getOwnersByIds(OwnerReqDTO.CONDITION condition) {
+    @PostMapping("/search")
+    public ResponseFormat<List<OwnerResDTO.READ>> getOwnersByIds(@RequestBody OwnerReqDTO.CONDITION condition) {
 
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnersByIds(condition));
