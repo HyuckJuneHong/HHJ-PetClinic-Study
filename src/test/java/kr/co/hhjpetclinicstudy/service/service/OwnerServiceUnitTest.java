@@ -57,29 +57,6 @@ public class OwnerServiceUnitTest {
     }
 
     @Test
-    @DisplayName("Owner 조회 - 성공")
-    void getOwnerById_success() {
-
-        //given
-        final OwnerReqDTO.CREATE create = OwnerCreators.ownerReqDto_create_creators();
-        final Owner owner = OwnerMapperImplTest.toOwnerEntity(create);
-        final OwnerResDTO.READ read = OwnerMapperImplTest.toReadDto(owner);
-
-        given(ownerRepository.findById(any(Long.class))).willReturn(Optional.of(owner));
-        given(ownersMapper.toReadDto(any(Owner.class))).willReturn(read);
-
-        //when
-        OwnerResDTO.READ findRead = ownerService.getOwnerById(1L);
-
-        //then
-        assertEquals(owner.getFirstName(), findRead.getFirstName());
-        assertEquals(owner.getLastName(), findRead.getLastName());
-        assertEquals(owner.getAddress(), findRead.getAddress());
-        assertEquals(owner.getCity(), findRead.getCity());
-        assertEquals(owner.getTelephone(), findRead.getTelephone());
-    }
-
-    @Test
     @DisplayName("Owner 수정 - 성공")
     void updateOwner_success() {
 

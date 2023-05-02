@@ -70,18 +70,6 @@ public class OwnerServiceExceptionUnitTest {
     }
 
     @Test
-    @DisplayName("Owner 조회 실패 - 해당 ID에 대한 조회 실패 - NotFoundException")
-    public void getOwnerById_error_id_NotFoundException() {
-
-        //given
-        given(ownerRepository.findById(any(Long.class))).willReturn(Optional.empty());
-
-        //when, then
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> ownerService.getOwnerById(1L));
-        assertEquals(ResponseStatus.FAIL_NOT_FOUND.getMessage(), exception.getMessage());
-    }
-
-    @Test
     @DisplayName("Owner 변경 실패 - 해당 ID에 대한 조회 실패 - NotFoundException")
     public void updateOwner_error_id_NotFoundException() {
 

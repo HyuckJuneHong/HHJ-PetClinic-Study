@@ -38,17 +38,11 @@ public class OwnerController {
         }
     }
 
-    /**
-     * owner get api
-     *
-     * @param ownerId : id for get an owner
-     * @return : OwnerResDTO.READ
-     */
-    @GetMapping("/{owner_id}")
-    public ResponseFormat<OwnerResDTO.READ> getOwnerById(@PathVariable(name = "owner_id") Long ownerId) {
+    @GetMapping
+    public ResponseFormat<?> getOwnerById(OwnerReqDTO.CONDITION condition) {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnerById(ownerId));
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnerById(condition));
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e) {

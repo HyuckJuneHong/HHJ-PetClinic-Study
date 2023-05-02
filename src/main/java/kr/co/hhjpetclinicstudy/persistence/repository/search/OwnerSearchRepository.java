@@ -1,4 +1,4 @@
-package kr.co.hhjpetclinicstudy.persistence.repository.custom;
+package kr.co.hhjpetclinicstudy.persistence.repository.search;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
