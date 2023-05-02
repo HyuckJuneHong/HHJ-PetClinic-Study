@@ -41,7 +41,7 @@ public class OwnerService {
         ownerRepository.save(owner);
     }
 
-    public List<OwnerResDTO.READ> getOwnerById(OwnerReqDTO.CONDITION condition) {
+    public List<OwnerResDTO.READ> getOwnersByIds(OwnerReqDTO.CONDITION condition) {
 
         final List<Owner> owners = ownerSearchRepository.search(condition);
 
