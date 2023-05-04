@@ -1,6 +1,5 @@
 package kr.co.hhjpetclinicstudy.persistence.repository.search;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;

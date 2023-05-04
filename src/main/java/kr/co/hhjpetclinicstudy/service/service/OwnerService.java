@@ -81,13 +81,13 @@ public class OwnerService {
         ownerRepository.delete(owner);
     }
 
-    private void isTelephone(String telephone){
+    public void isTelephone(String telephone){
 
         if(ownerRepository.existsByTelephone(telephone))
             throw new DuplicatedException(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
     }
 
-    private void isTelephone(String telephone,
+    public void isTelephone(String telephone,
                              String updateTelephone){
 
         if(!telephone.equals(updateTelephone)){

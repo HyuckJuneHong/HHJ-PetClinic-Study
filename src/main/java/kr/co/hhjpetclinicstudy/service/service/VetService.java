@@ -8,6 +8,7 @@ import kr.co.hhjpetclinicstudy.persistence.entity.VetSpecialty;
 import kr.co.hhjpetclinicstudy.persistence.repository.SpecialtyRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetSpecialtyRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.VetSearchRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.SpecialtyMapper;
@@ -34,6 +35,8 @@ public class VetService {
 
     private final VetSpecialtyRepository vetSpecialtyRepository;
 
+    private final VetSearchRepository vetSearchRepository;
+
     private final VetMapper vetMapper;
 
     private final SpecialtyMapper specialtyMapper;
@@ -57,14 +60,10 @@ public class VetService {
         vetRepository.save(vet);
     }
 
-    /**
-     * vet get by id service
-     */
-    public VetResDTO.READ getVetById(Long vetId) {
+    //TODO : List로 처리하기
+    public VetResDTO.READ getVetById(VetReqDTO.CONDITION condition) {
 
-        final Vet vet = vetRepository
-                .findById(vetId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final Vet vet = vetSearchRepository.search(condition).get(0);
 
         final List<String> specialtiesName = getSpecialtiesNameByVet(vet);
 
@@ -134,8 +133,7 @@ public class VetService {
         return vet
                 .getVetSpecialties()
                 .stream()
-                .map(VetSpecialty::getSpecialty)
-                .map(Specialty::getSpecialtyName)
+                .map(vetSpecialty -> vetSpecialty.getSpecialty().getSpecialtyName())
                 .collect(Collectors.toList());
     }
 

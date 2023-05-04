@@ -29,7 +29,7 @@ public class ExecutionTimeLoggingAspect {
     private void allVisitService() {
     }
 
-    //TODO : @issue - 현재 메소드 내부에서 다른 메소드를 호출하는 상황에서 내부 메도스에 해당 AOP가 적용되지 않는 이슈 발생.
+    //TODO : @issue - 현재 메소드 내부에서 다른 메소드를 호출하는 상황에서 내부 메소드에 해당 AOP가 적용되지 않는 이슈 발생.
     @Around("allOwnerService() || allPetService() || allVetService() || allVisitService()")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
 
