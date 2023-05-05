@@ -31,12 +31,6 @@ import java.util.List;
 @Repository
 public interface VisitRepository extends JpaRepository<Visit, Long> {
 
-    List<Visit> findByPet(Pet pet);
-
-    List<Visit> findByOwner(Owner owner);
-
-    List<Visit> findByVet(Vet vet);
-
     @Query("" +
             "select v " +
             "from Visit v " +

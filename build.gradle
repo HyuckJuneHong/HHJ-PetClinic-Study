@@ -23,7 +23,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-    //h2
+    //H2
     runtimeOnly 'com.h2database:h2'
 
     /** MySQL
@@ -35,20 +35,20 @@ dependencies {
     implementation 'org.hibernate:hibernate-core:6.1.6.Final'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
-    //lombok
+    //Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    //mapStruct
+    //MapStruct
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
-    //test
+    //Test
     testImplementation 'org.mockito:mockito-inline:3.4.4'
     testImplementation group: 'junit', name: 'junit'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    //validation
+    //Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     //JPA
@@ -56,6 +56,18 @@ dependencies {
 
     //AOP
     implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    /** QueryDSL
+     *
+     * - Spring Boot 3.0.0로 버전 업데이트되면서 Java EE가 아닌 Jakarta EE로 변경
+     * - 추가로 querydsl-apt jakarta 버전에선 javax.annotation.processing.Processor를 서비스로 제공.
+     * - 그리고 자바 컴파일가 이를 사용해 Q-Class를 생성.
+     * - 즉, querydsl-apt jakarta 버전부터 플러그인 설정이 필요없다.
+     */
+    implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
     /** Swagger
      *

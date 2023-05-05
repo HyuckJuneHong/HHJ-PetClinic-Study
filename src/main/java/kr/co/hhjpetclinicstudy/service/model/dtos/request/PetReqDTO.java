@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class PetReqDTO {
 
@@ -34,5 +35,14 @@ public class PetReqDTO {
         private LocalDate birthDate;
 
         private String petType;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class CONDITION {
+
+        private List<Long> petIds;
     }
 }

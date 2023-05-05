@@ -6,6 +6,8 @@ import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.PetRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.PetSearchRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.PetMapper;
@@ -25,6 +27,8 @@ public class PetService {
 
     private final OwnerRepository ownerRepository;
 
+    private final PetSearchRepository petSearchRepository;
+
     private final PetMapper petMapper;
 
     /**
@@ -43,26 +47,19 @@ public class PetService {
         petRepository.save(pet);
     }
 
-    public PetResDTO.READ_DETAIL getPetById(Long petId) {
+    public List<PetResDTO.READ_DETAIL> getPetsByIds(PetReqDTO.CONDITION condition) {
 
-        final Pet pet = petRepository
-                .findById(petId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final List<Pet> pets = petSearchRepository.search(condition);
 
-        return petMapper.toReadDetailDto(pet);
+        return pets.stream()
+                .map(petMapper::toReadDetailDto)
+                .collect(Collectors.toList());
     }
 
-    /**
-     * pets get by owner service
-     */
     public List<PetResDTO.READ> getPetsByOwner(Long ownerId) {
 
-        final Owner owner = ownerRepository
-                .findById(ownerId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
-
-        return petRepository
-                .findByOwnerId(owner.getId())
+        return petSearchRepository
+                .searchByOwnerId(ownerId)
                 .stream()
                 .map(petMapper::toReadDto)
                 .collect(Collectors.toList());

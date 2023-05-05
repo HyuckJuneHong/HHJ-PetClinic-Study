@@ -5,13 +5,16 @@ import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.OwnerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class OwnerService {
 
     private final OwnerRepository ownerRepository;
+
+    private final OwnerSearchRepository ownerSearchRepository;
 
     private final OwnerMapper ownerMapper;
 
@@ -36,18 +41,13 @@ public class OwnerService {
         ownerRepository.save(owner);
     }
 
-    /**
-     * owner get service
-     * @param ownerId : id for get an owner
-     * @return
-     */
-    public OwnerResDTO.READ getOwnerById(Long ownerId) {
+    public List<OwnerResDTO.READ> getOwnersByIds(OwnerReqDTO.CONDITION condition) {
 
-        final Owner owner = ownerRepository
-                .findById(ownerId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final List<Owner> owners = ownerSearchRepository.search(condition);
 
-        return ownerMapper.toReadDto(owner);
+        return owners.stream()
+                .map(ownerMapper::toReadDto)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -81,13 +81,13 @@ public class OwnerService {
         ownerRepository.delete(owner);
     }
 
-    private void isTelephone(String telephone){
+    public void isTelephone(String telephone){
 
         if(ownerRepository.existsByTelephone(telephone))
             throw new DuplicatedException(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
     }
 
-    private void isTelephone(String telephone,
+    public void isTelephone(String telephone,
                              String updateTelephone){
 
         if(!telephone.equals(updateTelephone)){

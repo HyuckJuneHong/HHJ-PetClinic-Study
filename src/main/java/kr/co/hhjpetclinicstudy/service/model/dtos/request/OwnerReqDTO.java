@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.List;
+
 public class OwnerReqDTO {
 
     @Getter
@@ -44,5 +46,14 @@ public class OwnerReqDTO {
 
         @NotBlank(message = "need a telephone")
         private String telephone;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class CONDITION{
+
+        private List<Long> ownerIds;
     }
 }

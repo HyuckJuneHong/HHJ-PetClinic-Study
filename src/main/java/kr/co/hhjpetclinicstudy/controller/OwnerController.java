@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/v1/owners")
@@ -38,17 +40,11 @@ public class OwnerController {
         }
     }
 
-    /**
-     * owner get api
-     *
-     * @param ownerId : id for get an owner
-     * @return : OwnerResDTO.READ
-     */
-    @GetMapping("/{owner_id}")
-    public ResponseFormat<OwnerResDTO.READ> getOwnerById(@PathVariable(name = "owner_id") Long ownerId) {
+    @PostMapping("/search")
+    public ResponseFormat<List<OwnerResDTO.READ>> getOwnersByIds(@RequestBody OwnerReqDTO.CONDITION condition) {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnerById(ownerId));
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnersByIds(condition));
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e) {

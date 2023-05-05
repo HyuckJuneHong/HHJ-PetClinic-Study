@@ -34,6 +34,4 @@ public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
     List<Specialty> findAllBySpecialtyNameIn(@Param("specialtiesNames") Set<String> specialtiesNames);
 
     Optional<Specialty> findBySpecialtyName(String specialtyName);
-
-    boolean existsBySpecialtyName(String specialtyName);
 }

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.service.VetService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
@@ -35,14 +36,11 @@ public class VetController {
         }
     }
 
-    /**
-     * 수의사 정보 조회
-     */
-    @GetMapping("/{vet_id}")
-    public ResponseFormat<VetResDTO.READ> getVetById(@PathVariable(name = "vet_id") Long vetId) {
+    @PostMapping("/search")
+    public ResponseFormat<VetResDTO.READ> getVetById(@RequestBody VetReqDTO.CONDITION condition) {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetById(vetId));
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetById(condition));
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e) {
