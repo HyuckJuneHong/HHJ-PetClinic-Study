@@ -73,16 +73,11 @@ public class OwnerController {
         }
     }
 
-    /**
-     * owner delete api
-     *
-     * @param ownerId : id for delete on owner
-     */
-    @DeleteMapping("/{owner_id}")
-    public ResponseFormat<Void> deleteOwnerById(@PathVariable(name = "owner_id") Long ownerId) {
+    @DeleteMapping
+    public ResponseFormat<Void> deleteOwnerById(@RequestBody OwnerReqDTO.CONDITION condition) {
 
         try {
-            ownerService.deleteOwnerById(ownerId);
+            ownerService.deleteOwnersByIds(condition);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
