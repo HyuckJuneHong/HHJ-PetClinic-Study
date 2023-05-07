@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @DataJpaTest : 스프링 부트 애플리케이션 컨텍스트의 일부만 로드되므로 레포지토리와 관련된 빈만 로드
  */
 @DataJpaTest
-public class OwnerRepositoryUnitTest {
+public class OwnerRepositoryTest {
 
     @Autowired
     private OwnerRepository ownerRepository;

@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -101,16 +102,5 @@ public class OwnerServiceExceptionUnitTest {
         //when, then
         DuplicatedException exception = assertThrows(DuplicatedException.class, () -> ownerService.updateOwner(1L, update));
         assertEquals(ResponseStatus.FAIL_TELEPHONE_DUPLICATED.getMessage(), exception.getMessage());
-    }
-
-    @Test
-    @DisplayName("Owner 삭제 실패 - 해당 ID에 대한 조회 실패 - NotFoundException")
-    void deleteOwnerById_error_id_NotFoundException() {
-
-        // given
-        given(ownerRepository.findById(any(Long.class))).willReturn(Optional.empty());
-
-        // when, then
-        assertThrows(NotFoundException.class, () -> ownerService.deleteOwnerById(1L));
     }
 }

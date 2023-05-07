@@ -67,18 +67,12 @@ public class OwnerService {
         owner.updateOwner(update);
     }
 
-    /**
-     * owner delete service
-     * @param ownerId : id for delete owner
-     */
     @Transactional
-    public void deleteOwnerById(Long ownerId) {
+    public void deleteOwnersByIds(OwnerReqDTO.CONDITION condition) {
 
-        final Owner owner = ownerRepository
-                .findById(ownerId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final List<Owner> owners = ownerSearchRepository.search(condition);
 
-        ownerRepository.delete(owner);
+        ownerRepository.deleteAll(owners);
     }
 
     public void isTelephone(String telephone){

@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * - EmbeddedDatabaseConnection에 설정된 임시의 H2 DB를 호출해서 문제 발생
  */
 @DataJpaTest
-public class SpecialtyRepositoryUnitTest {
+public class SpecialtyRepositoryTest {
 
     @Autowired
     private SpecialtyRepository specialtyRepository;

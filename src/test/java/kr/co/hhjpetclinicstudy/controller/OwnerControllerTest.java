@@ -30,8 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * - 이를 이용해 HTTP 요청을 보내고, 그 결과를 검증이 가능.
  */
 @WebMvcTest(controllers = OwnerController.class)
-//@AutoConfigureMockMvc
-public class OwnerControllerUnitTest {
+public class OwnerControllerTest {
 
     @MockBean(name = "ownerService")
     private OwnerService ownerService;
