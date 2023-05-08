@@ -75,7 +75,7 @@ public class OwnerController {
     }
 
     @DeleteMapping
-    public ResponseFormat<Void> deleteOwnerById(@RequestBody IdsReqDTO ownerIds) {
+    public ResponseFormat<Void> deleteOwnersByIds(@RequestBody IdsReqDTO ownerIds) {
 
         try {
             ownerService.deleteOwnersByIds(ownerIds);
