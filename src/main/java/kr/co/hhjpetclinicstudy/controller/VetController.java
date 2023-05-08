@@ -37,10 +37,10 @@ public class VetController {
     }
 
     @PostMapping("/search")
-    public ResponseFormat<VetResDTO.READ> getVetById(@RequestBody VetReqDTO.CONDITION condition) {
+    public ResponseFormat<VetResDTO.READ> getVetsByIds(@RequestBody VetReqDTO.CONDITION condition) {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetById(condition));
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetsByIds(condition));
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e) {
@@ -89,16 +89,11 @@ public class VetController {
         }
     }
 
-    /**
-     * Vet Delete API
-     *
-     * @param vetId : id for delete a vet
-     */
-    @DeleteMapping("/{vet_id}")
-    public ResponseFormat<Void> deleteVetById(@PathVariable(name = "vet_id") Long vetId) {
+    @DeleteMapping
+    public ResponseFormat<Void> deleteVetsByIds(@RequestBody VetReqDTO.CONDITION condition) {
 
         try {
-            vetService.deleteVetById(vetId);
+            vetService.deleteVetsByIds(condition);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);

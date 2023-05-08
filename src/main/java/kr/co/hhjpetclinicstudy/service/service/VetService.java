@@ -1,5 +1,6 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.InvalidRequestException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Specialty;
@@ -43,9 +44,6 @@ public class VetService {
 
     private final VetSpecialtyMapper vetspecialtyMapper;
 
-    /**
-     * vet create service
-     */
     @Transactional
     public void createVet(VetReqDTO.CREATE create) {
 
@@ -60,19 +58,15 @@ public class VetService {
         vetRepository.save(vet);
     }
 
-    //TODO : List로 처리하기
-    public VetResDTO.READ getVetById(VetReqDTO.CONDITION condition) {
+    public VetResDTO.READ getVetsByIds(VetReqDTO.CONDITION condition) {
 
-        final Vet vet = vetSearchRepository.search(condition).get(0);
+        final Vet vet = isVets(vetSearchRepository.search(condition));
 
         final List<String> specialtiesName = getSpecialtiesNameByVet(vet);
 
         return vetMapper.toReadDto(vet, specialtiesName);
     }
 
-    /**
-     * 펫클리닉에서 수의사들이 가지고 있는 모든 전문분야 반환
-     */
     public Set<String> getVetSpecialties() {
 
         final Set<VetSpecialty> vetSpecialties = new HashSet<>(vetSpecialtyRepository.findAll());
@@ -113,21 +107,14 @@ public class VetService {
         deleteBySpecialtiesWithoutVet(delete.getSpecialtiesName());
     }
 
-    /**
-     * vet delete service
-     */
     @Transactional
-    public void deleteVetById(Long vetId) {
+    public void deleteVetsByIds(VetReqDTO.CONDITION condition) {
 
-        final Vet vet = vetRepository.findById(vetId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final List<Vet> vets = vetSearchRepository.search(condition);
 
-        vetRepository.delete(vet);
+        vetRepository.deleteAll(vets);
     }
 
-    /**
-     * specialties name by vet service
-     */
     private List<String> getSpecialtiesNameByVet(Vet vet) {
 
         return vet
@@ -137,9 +124,6 @@ public class VetService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * specialty get or create service
-     */
     private Set<Specialty> getOrCreateSpecialtiesByNames(Set<String> specialtiesNames) {
 
         List<Specialty> specialties = specialtyRepository.findAllBySpecialtyNameIn(specialtiesNames);
@@ -162,9 +146,6 @@ public class VetService {
         return new HashSet<>(specialties);
     }
 
-    /**
-     * vetSpecialty get or create service
-     */
     private List<VetSpecialty> getOrCreateVetSpecialties(Set<String> specialtiesName,
                                                          Vet vet) {
 
@@ -185,5 +166,14 @@ public class VetService {
                         .findBySpecialtyName(specialtyName)
                         .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND)))
                 .forEach(specialtyRepository::delete);
+    }
+
+    private Vet isVets(List<Vet> vets) {
+
+        if (vets.size() != 1) {
+            throw new InvalidRequestException(ResponseStatus.FAIL_BAD_REQUEST);
+        }
+
+        return vets.get(0);
     }
 }

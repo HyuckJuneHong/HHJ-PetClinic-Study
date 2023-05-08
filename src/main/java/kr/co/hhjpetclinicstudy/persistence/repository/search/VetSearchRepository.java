@@ -23,19 +23,35 @@ public class VetSearchRepository {
 
     private final QVetSpecialty qVetSpecialty = QVetSpecialty.vetSpecialty;
 
+    /**
+     * [distinct() 를 사용하는 이유]
+     * - Vet A가 Specialty B, C, D를 가지고 있다고 가정.
+     * - VetSpecialty 테이블에는 A-B, A-C, A-D의 데이터가 저장.
+     * - 따라서 Vet A가 조회될 때 VetSpecialty와 Join하게 되면 결과로는 3개의 레코드가 나온다.
+     * - 결과적으로 Vet도 3번 중복 조회.
+     * - 이 경우 distinct() 키워드를 사용하여 중복을 제거할 수 있기 때문.
+     */
     public List<Vet> search(VetReqDTO.CONDITION condition) {
 
         return queryFactory
-                .select(qVet)
+                .selectDistinct(qVet)
                 .from(qVet)
-                .innerJoin(qVet.vetSpecialties, qVetSpecialty).fetchJoin()
-                .innerJoin(qVetSpecialty.specialty, qSpecialty).fetchJoin()
-                .where(vetIdsIn(condition.getVetIds()))
+                .join(qVetSpecialty).fetchJoin()
+                .join(qSpecialty).fetchJoin()
+                .where(
+                        vetIdsIn(condition.getVetIds()),
+                        vetIdEq(condition.getVetId())
+                )
                 .fetch();
     }
 
     private BooleanExpression vetIdsIn(List<Long> vetIds) {
 
         return CollectionUtils.isEmpty(vetIds) ? null : qVet.id.in(vetIds);
+    }
+
+    private BooleanExpression vetIdEq(Long vetId) {
+
+        return vetId == null ? null : qVet.id.eq(vetId);
     }
 }
