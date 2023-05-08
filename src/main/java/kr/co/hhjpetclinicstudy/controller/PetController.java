@@ -82,16 +82,11 @@ public class PetController {
         }
     }
 
-    /**
-     * Pet Delete API
-     *
-     * @param petId : id for Delete a Pet
-     */
-    @DeleteMapping("/{pet_id}")
-    public ResponseFormat<Void> deletePetById(@PathVariable(name = "pet_id") Long petId) {
+    @DeleteMapping
+    public ResponseFormat<Void> deletePetsByIds(@RequestBody PetReqDTO.CONDITION condition) {
 
         try {
-            petService.deletePetById(petId);
+            petService.deletePetsByIds(condition);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);

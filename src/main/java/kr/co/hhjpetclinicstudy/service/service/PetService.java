@@ -84,12 +84,10 @@ public class PetService {
      * pet delete service
      */
     @Transactional
-    public void deletePetById(Long petId) {
+    public void deletePetsByIds(PetReqDTO.CONDITION condition) {
 
-        final Pet pet = petRepository
-                .findById(petId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final List<Pet> pets = petSearchRepository.search(condition);
 
-        petRepository.delete(pet);
+        petRepository.deleteAll(pets);
     }
 }
