@@ -42,9 +42,9 @@ public class OwnerService {
         ownerRepository.save(owner);
     }
 
-    public List<OwnerResDTO.READ> getOwnersByIds(IdsReqDTO condition) {
+    public List<OwnerResDTO.READ> getOwnersByIds(IdsReqDTO ownerIds) {
 
-        final List<Owner> owners = ownerSearchRepository.search(condition);
+        final List<Owner> owners = ownerSearchRepository.search(ownerIds);
 
         return owners.stream()
                 .map(ownerMapper::toReadDto)
@@ -69,9 +69,9 @@ public class OwnerService {
     }
 
     @Transactional
-    public void deleteOwnersByIds(IdsReqDTO condition) {
+    public void deleteOwnersByIds(IdsReqDTO ownerIds) {
 
-        final List<Owner> owners = ownerSearchRepository.search(condition);
+        final List<Owner> owners = ownerSearchRepository.search(ownerIds);
 
         ownerRepository.deleteAll(owners);
     }

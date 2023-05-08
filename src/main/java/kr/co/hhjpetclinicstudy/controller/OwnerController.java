@@ -42,10 +42,10 @@ public class OwnerController {
     }
 
     @PostMapping("/search")
-    public ResponseFormat<List<OwnerResDTO.READ>> getOwnersByIds(@RequestBody IdsReqDTO condition) {
+    public ResponseFormat<List<OwnerResDTO.READ>> getOwnersByIds(@RequestBody IdsReqDTO ownerIds) {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnersByIds(condition));
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnersByIds(ownerIds));
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e) {
@@ -75,10 +75,10 @@ public class OwnerController {
     }
 
     @DeleteMapping
-    public ResponseFormat<Void> deleteOwnerById(@RequestBody IdsReqDTO condition) {
+    public ResponseFormat<Void> deleteOwnerById(@RequestBody IdsReqDTO ownerIds) {
 
         try {
-            ownerService.deleteOwnersByIds(condition);
+            ownerService.deleteOwnersByIds(ownerIds);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
