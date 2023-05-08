@@ -8,6 +8,7 @@ import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.PetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.PetSearchRepository;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.IdsReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.PetMapper;
@@ -56,10 +57,10 @@ public class PetService {
                 .collect(Collectors.toList());
     }
 
-    public List<PetResDTO.READ> getPetsByOwner(Long ownerId) {
+    public List<PetResDTO.READ> getPetsByOwner(PetReqDTO.CONDITION condition) {
 
         return petSearchRepository
-                .searchByOwnerId(ownerId)
+                .search(condition)
                 .stream()
                 .map(petMapper::toReadDto)
                 .collect(Collectors.toList());

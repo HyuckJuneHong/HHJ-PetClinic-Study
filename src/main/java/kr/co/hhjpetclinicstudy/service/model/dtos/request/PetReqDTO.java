@@ -44,5 +44,7 @@ public class PetReqDTO {
     public static class CONDITION {
 
         private List<Long> petIds;
+
+        private Long ownerId;
     }
 }
