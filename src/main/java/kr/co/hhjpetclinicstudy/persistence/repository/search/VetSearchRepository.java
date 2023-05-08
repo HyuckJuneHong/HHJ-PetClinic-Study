@@ -2,14 +2,17 @@ package kr.co.hhjpetclinicstudy.persistence.repository.search;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.co.hhjpetclinicstudy.persistence.entity.*;
-import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
+import kr.co.hhjpetclinicstudy.persistence.entity.QSpecialty;
+import kr.co.hhjpetclinicstudy.persistence.entity.QVet;
+import kr.co.hhjpetclinicstudy.persistence.entity.QVetSpecialty;
+import kr.co.hhjpetclinicstudy.persistence.entity.Vet;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 @RequiredArgsConstructor
@@ -47,11 +50,13 @@ public class VetSearchRepository {
 
     private BooleanExpression vetIdsIn(List<Long> vetIds) {
 
-        return CollectionUtils.isEmpty(vetIds) ? null : qVet.id.in(vetIds);
+        return CollectionUtils.isEmpty(vetIds)
+                ? null : qVet.id.in(vetIds);
     }
 
     private BooleanExpression vetIdEq(Long vetId) {
 
-        return vetId == null ? null : qVet.id.eq(vetId);
+        return vetId == null
+                ? null : qVet.id.eq(vetId);
     }
 }

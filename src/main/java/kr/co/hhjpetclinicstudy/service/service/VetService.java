@@ -10,6 +10,7 @@ import kr.co.hhjpetclinicstudy.persistence.repository.SpecialtyRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetSpecialtyRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.VetSearchRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.VetSpecialtySearchRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.SpecialtyMapper;
@@ -37,6 +38,8 @@ public class VetService {
     private final VetSpecialtyRepository vetSpecialtyRepository;
 
     private final VetSearchRepository vetSearchRepository;
+
+    private final VetSpecialtySearchRepository vetSpecialtySearchRepository;
 
     private final VetMapper vetMapper;
 
@@ -69,7 +72,7 @@ public class VetService {
 
     public Set<String> getVetSpecialties() {
 
-        final Set<VetSpecialty> vetSpecialties = new HashSet<>(vetSpecialtyRepository.findAll());
+        final Set<VetSpecialty> vetSpecialties = new HashSet<>(vetSpecialtySearchRepository.searchAll());
 
         return vetSpecialties
                 .stream()
@@ -82,9 +85,9 @@ public class VetService {
     public void addSpecialties(Long vetId,
                                VetReqDTO.ADD_DELETE add) {
 
-        Vet vet = vetRepository
-                .findById(vetId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final VetReqDTO.CONDITION condition = VetReqDTO.CONDITION.builder().vetId(vetId).build();
+
+        Vet vet = isVets(vetSearchRepository.search(condition));
 
         final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(add.getSpecialtiesName(), vet);
 
@@ -95,12 +98,12 @@ public class VetService {
     public void deleteSpecialties(Long vetId,
                                   VetReqDTO.ADD_DELETE delete) {
 
-        final Vet vet = vetRepository
-                .findById(vetId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final VetReqDTO.CONDITION condition = VetReqDTO.CONDITION.builder().vetId(vetId).build();
 
-        final Set<VetSpecialty> vetSpecialties = vetSpecialtyRepository
-                .findByVetAndSpecialty_SpecialtyNameIn(vet, delete.getSpecialtiesName());
+        final Vet vet = isVets(vetSearchRepository.search(condition));
+
+        final List<VetSpecialty> vetSpecialties = vetSpecialtySearchRepository
+                .searchAll(vet, delete.getSpecialtiesName());
 
         vetSpecialtyRepository.deleteAll(vetSpecialties);
 
@@ -159,12 +162,15 @@ public class VetService {
 
     private void deleteBySpecialtiesWithoutVet(Set<String> specialtiesName) {
 
-        specialtiesName
-                .stream()
-                .filter(specialtyName -> vetSpecialtyRepository.countBySpecialtyName(specialtyName) == 0)
+        specialtiesName.stream()
+
+                .filter(specialtyName -> vetSpecialtySearchRepository
+                        .searchCountBySpecialtyName(specialtyName) == 0)
+
                 .map(specialtyName -> specialtyRepository
                         .findBySpecialtyName(specialtyName)
                         .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND)))
+
                 .forEach(specialtyRepository::delete);
     }
 
