@@ -6,6 +6,7 @@ import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.IdsReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.OwnerMapper;
@@ -41,7 +42,7 @@ public class OwnerService {
         ownerRepository.save(owner);
     }
 
-    public List<OwnerResDTO.READ> getOwnersByIds(OwnerReqDTO.CONDITION condition) {
+    public List<OwnerResDTO.READ> getOwnersByIds(IdsReqDTO condition) {
 
         final List<Owner> owners = ownerSearchRepository.search(condition);
 
@@ -68,7 +69,7 @@ public class OwnerService {
     }
 
     @Transactional
-    public void deleteOwnersByIds(OwnerReqDTO.CONDITION condition) {
+    public void deleteOwnersByIds(IdsReqDTO condition) {
 
         final List<Owner> owners = ownerSearchRepository.search(condition);
 

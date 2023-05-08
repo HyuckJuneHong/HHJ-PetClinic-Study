@@ -7,6 +7,7 @@ import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchReposito
 import kr.co.hhjpetclinicstudy.service.model.OwnerCreators;
 import kr.co.hhjpetclinicstudy.service.model.OwnerMapperImplTest;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.IdsReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.OwnerMapper;
@@ -76,7 +77,7 @@ public class OwnerServiceUnitTest {
 
         ArrayList<Long> ownersIds = new ArrayList<>();
         ownersIds.add(1L);
-        OwnerReqDTO.CONDITION condition = OwnerReqDTO.CONDITION.builder().ownerIds(ownersIds).build();
+        IdsReqDTO condition = IdsReqDTO.builder().conditionIds(ownersIds).build();
 
         given(ownerSearchRepository.search(any())).willReturn(owners);
         given(ownersMapper.toReadDto(any(Owner.class))).willReturn(reads.get(0));
@@ -116,7 +117,7 @@ public class OwnerServiceUnitTest {
 
         ArrayList<Long> ownerIds = new ArrayList<>();
         ownerIds.add(1L);
-        OwnerReqDTO.CONDITION condition = OwnerReqDTO.CONDITION.builder().ownerIds(ownerIds).build();
+        IdsReqDTO condition = IdsReqDTO.builder().conditionIds(ownerIds).build();
 
         given(ownerSearchRepository.search(any())).willReturn(ownerList);
 
