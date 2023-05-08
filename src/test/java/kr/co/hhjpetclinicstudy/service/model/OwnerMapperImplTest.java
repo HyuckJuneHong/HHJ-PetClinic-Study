@@ -19,18 +19,4 @@ public class OwnerMapperImplTest {
             return owner.build();
         }
     }
-
-    public static OwnerResDTO.READ toReadDto(Owner owner) {
-        if (owner == null) {
-            return null;
-        } else {
-            OwnerResDTO.READ.READBuilder rEAD = OwnerResDTO.READ.builder();
-            rEAD.firstName(owner.getFirstName());
-            rEAD.lastName(owner.getLastName());
-            rEAD.address(owner.getAddress());
-            rEAD.city(owner.getCity());
-            rEAD.telephone(owner.getTelephone());
-            return rEAD.build();
-        }
-    }
 }
