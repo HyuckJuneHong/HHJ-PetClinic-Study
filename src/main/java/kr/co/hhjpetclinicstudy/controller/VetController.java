@@ -42,9 +42,9 @@ public class VetController {
         try {
             return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetsByIds(condition));
         } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
+            return ResponseFormat.error(e.toString(), ResponseStatus.FAIL_NOT_FOUND.getStatusCode());
         } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
+            return ResponseFormat.error(e.toString(), ResponseStatus.FAIL_BAD_REQUEST.getStatusCode());
         }
     }
 

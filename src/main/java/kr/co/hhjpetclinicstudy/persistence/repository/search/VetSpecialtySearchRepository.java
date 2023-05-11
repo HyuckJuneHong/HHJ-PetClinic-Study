@@ -3,7 +3,6 @@ package kr.co.hhjpetclinicstudy.persistence.repository.search;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.hhjpetclinicstudy.persistence.entity.*;
-import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

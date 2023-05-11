@@ -52,7 +52,8 @@ public class VetService {
 
         Vet vet = vetMapper.toVetEntity(create, Collections.emptyList());
 
-        final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(create.getSpecialtiesName(), vet);
+        final List<VetSpecialty> vetSpecialties =
+                getOrCreateVetSpecialties(create.getSpecialtiesName(), vet);
 
         vet.updateVetSpecialties(vetSpecialties);
 
@@ -61,6 +62,12 @@ public class VetService {
         vetRepository.save(vet);
     }
 
+    /**
+     * ID에 일치하는 수의사 한명 조회
+     *
+     * @param condition : vetId에 해당하는 eq()만 조회 가능
+     * @return : 한명에 대한 수의사
+     */
     public VetResDTO.READ getVetsByIds(VetReqDTO.CONDITION condition) {
 
         final Vet vet = isVets(vetSearchRepository.search(condition));
@@ -72,7 +79,8 @@ public class VetService {
 
     public Set<String> getVetSpecialties() {
 
-        final Set<VetSpecialty> vetSpecialties = new HashSet<>(vetSpecialtySearchRepository.searchAll());
+        final Set<VetSpecialty> vetSpecialties =
+                new HashSet<>(vetSpecialtySearchRepository.searchAll());
 
         return vetSpecialties
                 .stream()
@@ -85,11 +93,14 @@ public class VetService {
     public void addSpecialties(Long vetId,
                                VetReqDTO.ADD_DELETE add) {
 
-        final VetReqDTO.CONDITION condition = VetReqDTO.CONDITION.builder().vetId(vetId).build();
+        final VetReqDTO.CONDITION condition = VetReqDTO.CONDITION.builder()
+                .vetId(vetId)
+                .build();
 
         Vet vet = isVets(vetSearchRepository.search(condition));
 
-        final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(add.getSpecialtiesName(), vet);
+        final List<VetSpecialty> vetSpecialties =
+                getOrCreateVetSpecialties(add.getSpecialtiesName(), vet);
 
         vet.updateVetSpecialties(vetSpecialties);
     }
@@ -98,12 +109,14 @@ public class VetService {
     public void deleteSpecialties(Long vetId,
                                   VetReqDTO.ADD_DELETE delete) {
 
-        final VetReqDTO.CONDITION condition = VetReqDTO.CONDITION.builder().vetId(vetId).build();
+        final VetReqDTO.CONDITION condition = VetReqDTO.CONDITION.builder()
+                .vetId(vetId)
+                .build();
 
         final Vet vet = isVets(vetSearchRepository.search(condition));
 
-        final List<VetSpecialty> vetSpecialties = vetSpecialtySearchRepository
-                .searchAll(vet, delete.getSpecialtiesName());
+        final List<VetSpecialty> vetSpecialties =
+                vetSpecialtySearchRepository.searchAll(vet, delete.getSpecialtiesName());
 
         vetSpecialtyRepository.deleteAll(vetSpecialties);
 

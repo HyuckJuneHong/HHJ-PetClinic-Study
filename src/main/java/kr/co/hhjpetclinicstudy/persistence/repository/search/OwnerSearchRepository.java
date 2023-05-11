@@ -5,7 +5,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.QOwner;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.IdsReqDTO;
-import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
