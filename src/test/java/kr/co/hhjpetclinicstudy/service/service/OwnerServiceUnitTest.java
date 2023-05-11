@@ -1,12 +1,11 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
-import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
+import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
 import kr.co.hhjpetclinicstudy.service.model.OwnerCreators;
 import kr.co.hhjpetclinicstudy.service.model.OwnerMapperImplTest;
-import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.IdsReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.OwnerMapper;
@@ -16,13 +15,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.jmx.export.naming.IdentityNamingStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -65,7 +64,7 @@ public class OwnerServiceUnitTest {
 
     @Test
     @DisplayName("Owner 조회 - 성공")
-    void getOwner_success(){
+    void getOwner_success() {
 
         //given
         List<OwnerResDTO.READ> reads = new ArrayList<>();
@@ -76,7 +75,7 @@ public class OwnerServiceUnitTest {
 
         ArrayList<Long> ownersIds = new ArrayList<>();
         ownersIds.add(1L);
-        OwnerReqDTO.CONDITION condition = OwnerReqDTO.CONDITION.builder().ownerIds(ownersIds).build();
+        IdsReqDTO condition = IdsReqDTO.builder().conditionIds(ownersIds).build();
 
         given(ownerSearchRepository.search(any())).willReturn(owners);
         given(ownersMapper.toReadDto(any(Owner.class))).willReturn(reads.get(0));
@@ -116,7 +115,7 @@ public class OwnerServiceUnitTest {
 
         ArrayList<Long> ownerIds = new ArrayList<>();
         ownerIds.add(1L);
-        OwnerReqDTO.CONDITION condition = OwnerReqDTO.CONDITION.builder().ownerIds(ownerIds).build();
+        IdsReqDTO condition = IdsReqDTO.builder().conditionIds(ownerIds).build();
 
         given(ownerSearchRepository.search(any())).willReturn(ownerList);
 

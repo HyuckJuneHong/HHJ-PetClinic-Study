@@ -5,6 +5,7 @@ import kr.co.hhjpetclinicstudy.infrastructure.error.exception.DuplicatedExceptio
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.IdsReqDTO;
 import kr.co.hhjpetclinicstudy.service.service.OwnerService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
@@ -41,10 +42,10 @@ public class OwnerController {
     }
 
     @PostMapping("/search")
-    public ResponseFormat<List<OwnerResDTO.READ>> getOwnersByIds(@RequestBody OwnerReqDTO.CONDITION condition) {
+    public ResponseFormat<List<OwnerResDTO.READ>> getOwnersByIds(@RequestBody IdsReqDTO ownerIds) {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnersByIds(condition));
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, ownerService.getOwnersByIds(ownerIds));
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e) {
@@ -74,10 +75,10 @@ public class OwnerController {
     }
 
     @DeleteMapping
-    public ResponseFormat<Void> deleteOwnerById(@RequestBody OwnerReqDTO.CONDITION condition) {
+    public ResponseFormat<Void> deleteOwnersByIds(@RequestBody IdsReqDTO ownerIds) {
 
         try {
-            ownerService.deleteOwnersByIds(condition);
+            ownerService.deleteOwnersByIds(ownerIds);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);

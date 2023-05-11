@@ -47,13 +47,4 @@ public class OwnerReqDTO {
         @NotBlank(message = "need a telephone")
         private String telephone;
     }
-
-    @Getter
-    @Builder
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class CONDITION{
-
-        private List<Long> ownerIds;
-    }
 }

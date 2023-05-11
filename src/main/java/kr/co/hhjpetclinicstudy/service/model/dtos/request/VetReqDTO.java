@@ -41,5 +41,7 @@ public class VetReqDTO {
     public static class CONDITION {
 
         private List<Long> vetIds;
+
+        private Long vetId;
     }
 }

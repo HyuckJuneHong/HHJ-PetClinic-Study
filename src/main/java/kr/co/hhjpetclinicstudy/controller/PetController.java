@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.IdsReqDTO;
 import kr.co.hhjpetclinicstudy.service.service.PetService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
@@ -50,11 +51,11 @@ public class PetController {
         }
     }
 
-    @GetMapping("/owners/{owner_id}")
-    public ResponseFormat<List<PetResDTO.READ>> getPetsByOwner(@PathVariable(name = "owner_id") Long ownerId) {
+    @PostMapping("/owners/search")
+    public ResponseFormat<List<PetResDTO.READ>> getPetsByOwner(@RequestBody PetReqDTO.CONDITION condition) {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetsByOwner(ownerId));
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetsByOwner(condition));
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e) {
@@ -81,16 +82,11 @@ public class PetController {
         }
     }
 
-    /**
-     * Pet Delete API
-     *
-     * @param petId : id for Delete a Pet
-     */
-    @DeleteMapping("/{pet_id}")
-    public ResponseFormat<Void> deletePetById(@PathVariable(name = "pet_id") Long petId) {
+    @DeleteMapping
+    public ResponseFormat<Void> deletePetsByIds(@RequestBody PetReqDTO.CONDITION condition) {
 
         try {
-            petService.deletePetById(petId);
+            petService.deletePetsByIds(condition);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);

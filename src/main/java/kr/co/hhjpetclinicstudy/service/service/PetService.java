@@ -6,7 +6,6 @@ import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.PetRepository;
-import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.PetSearchRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
@@ -56,10 +55,10 @@ public class PetService {
                 .collect(Collectors.toList());
     }
 
-    public List<PetResDTO.READ> getPetsByOwner(Long ownerId) {
+    public List<PetResDTO.READ> getPetsByOwner(PetReqDTO.CONDITION condition) {
 
         return petSearchRepository
-                .searchByOwnerId(ownerId)
+                .search(condition)
                 .stream()
                 .map(petMapper::toReadDto)
                 .collect(Collectors.toList());
@@ -83,12 +82,10 @@ public class PetService {
      * pet delete service
      */
     @Transactional
-    public void deletePetById(Long petId) {
+    public void deletePetsByIds(PetReqDTO.CONDITION condition) {
 
-        final Pet pet = petRepository
-                .findById(petId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final List<Pet> pets = petSearchRepository.search(condition);
 
-        petRepository.delete(pet);
+        petRepository.deleteAll(pets);
     }
 }

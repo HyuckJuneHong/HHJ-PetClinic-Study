@@ -26,17 +26,11 @@ public class PetSearchRepository {
 
         return queryFactory
                 .selectFrom(qPet)
-                .join(qPet.owner, qOwner).fetchJoin()
-                .where(petIdsIn(condition.getPetIds()))
-                .fetch();
-    }
-
-    public List<Pet> searchByOwnerId(Long ownerId){
-
-        return queryFactory
-                .selectFrom(qPet)
-                .join(qPet.owner, qOwner).fetchJoin()
-                .where(ownerIdEq(ownerId))
+                .join(qOwner).fetchJoin()
+                .where(
+                        petIdsIn(condition.getPetIds()),
+                        ownerIdEq(condition.getOwnerId())
+                )
                 .fetch();
     }
 
@@ -47,6 +41,6 @@ public class PetSearchRepository {
 
     private BooleanExpression ownerIdEq(Long ownerId) {
 
-        return qPet.owner.id.eq(ownerId);
+        return ownerId == null ? null : qPet.owner.id.eq(ownerId);
     }
 }
