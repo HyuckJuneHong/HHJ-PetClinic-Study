@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
-import kr.co.hhjpetclinicstudy.service.model.dtos.request.IdsReqDTO;
 import kr.co.hhjpetclinicstudy.service.service.PetService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;

@@ -76,6 +76,7 @@ public class ResponseFormat <T> {
                 .build();
     }
 
+
     public static <T> ResponseFormat<T> error(String message,
                                               HttpStatus status){
 
