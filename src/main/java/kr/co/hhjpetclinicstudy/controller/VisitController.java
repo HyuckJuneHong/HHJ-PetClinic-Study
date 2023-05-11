@@ -19,11 +19,6 @@ public class VisitController {
 
     private final VisitService visitService;
 
-    /**
-     * Visit Create API
-     *
-     * @param create : info for Create a visit
-     */
     @PostMapping
     public ResponseFormat<Void> createVisit(@RequestBody @Validated VisitReqDTO.CREATE create) {
 

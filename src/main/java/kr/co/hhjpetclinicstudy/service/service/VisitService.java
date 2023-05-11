@@ -1,5 +1,6 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.InvalidRequestException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
@@ -10,7 +11,10 @@ import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.PetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VisitRepository;
-import kr.co.hhjpetclinicstudy.service.model.dtos.request.VisitReqDTO;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.PetSearchRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.VetSearchRepository;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.*;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VisitResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.VisitMapper;
 import lombok.RequiredArgsConstructor;
@@ -33,27 +37,34 @@ public class VisitService {
 
     private final OwnerRepository ownerRepository;
 
+    private final PetSearchRepository petSearchRepository;
+
+    private final VetSearchRepository vetSearchRepository;
+
+    private final OwnerSearchRepository ownerSearchRepository;
+
     private final VisitMapper visitMapper;
 
-    /**
-     * Visit Create Service
-     *
-     * @param create : Info for create a visit
-     */
     @Transactional
     public void createVisit(VisitReqDTO.CREATE create) {
 
-        final Pet pet = petRepository
-                .findById(create.getPetId())
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final PetReqDTO.CONDITION petId = PetReqDTO.CONDITION.builder()
+                .petId(create.getPetId())
+                .build();
 
-        final Vet vet = vetRepository
-                .findById(create.getVetId())
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final VetReqDTO.CONDITION vetId = VetReqDTO.CONDITION.builder()
+                .vetId(create.getVetId())
+                .build();
 
-        final Owner owner = ownerRepository
-                .findById(create.getOwnerId())
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final OwnerReqDTO.CONDITION ownerId = OwnerReqDTO.CONDITION.builder()
+                .ownerId(create.getOwnerId())
+                .build();
+
+        final Pet pet = isPets(petSearchRepository.search(petId));
+
+        final Vet vet = isVets(vetSearchRepository.search(vetId));
+
+        final Owner owner = isOwners(ownerSearchRepository.search(ownerId));
 
         final Visit visit = visitMapper.toVisitEntity(create, pet, vet, owner);
 
@@ -141,5 +152,32 @@ public class VisitService {
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         visitRepository.delete(visit);
+    }
+
+    private Vet isVets(List<Vet> vets) {
+
+        if (vets.size() != 1) {
+            throw new InvalidRequestException(ResponseStatus.FAIL_BAD_REQUEST);
+        }
+
+        return vets.get(0);
+    }
+
+    private Pet isPets(List<Pet> pets) {
+
+        if (pets.size() != 1) {
+            throw new InvalidRequestException(ResponseStatus.FAIL_BAD_REQUEST);
+        }
+
+        return pets.get(0);
+    }
+
+    private Owner isOwners(List<Owner> owners) {
+
+        if (owners.size() != 1) {
+            throw new InvalidRequestException(ResponseStatus.FAIL_BAD_REQUEST);
+        }
+
+        return owners.get(0);
     }
 }
