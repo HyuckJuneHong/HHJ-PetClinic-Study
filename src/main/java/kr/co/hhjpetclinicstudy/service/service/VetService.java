@@ -68,7 +68,7 @@ public class VetService {
      * @param condition : vetId에 해당하는 eq()만 조회 가능
      * @return : 한명에 대한 수의사
      */
-    public VetResDTO.READ getVetsByIds(VetReqDTO.CONDITION condition) {
+    public VetResDTO.READ getVetsById(VetReqDTO.CONDITION condition) {
 
         final Vet vet = isVets(vetSearchRepository.search(condition));
 
@@ -90,37 +90,27 @@ public class VetService {
     }
 
     @Transactional
-    public void addSpecialties(Long vetId,
-                               VetReqDTO.ADD_DELETE add) {
-
-        final VetReqDTO.CONDITION condition = VetReqDTO.CONDITION.builder()
-                .vetId(vetId)
-                .build();
+    public void addSpecialties(VetReqDTO.CONDITION condition) {
 
         Vet vet = isVets(vetSearchRepository.search(condition));
 
         final List<VetSpecialty> vetSpecialties =
-                getOrCreateVetSpecialties(add.getSpecialtiesName(), vet);
+                getOrCreateVetSpecialties(condition.getSpecialtiesName(), vet);
 
         vet.updateVetSpecialties(vetSpecialties);
     }
 
     @Transactional
-    public void deleteSpecialties(Long vetId,
-                                  VetReqDTO.ADD_DELETE delete) {
-
-        final VetReqDTO.CONDITION condition = VetReqDTO.CONDITION.builder()
-                .vetId(vetId)
-                .build();
+    public void deleteSpecialties(VetReqDTO.CONDITION condition) {
 
         final Vet vet = isVets(vetSearchRepository.search(condition));
 
         final List<VetSpecialty> vetSpecialties =
-                vetSpecialtySearchRepository.searchAll(vet, delete.getSpecialtiesName());
+                vetSpecialtySearchRepository.searchAll(vet, condition.getSpecialtiesName());
 
         vetSpecialtyRepository.deleteAll(vetSpecialties);
 
-        deleteBySpecialtiesWithoutVet(delete.getSpecialtiesName());
+        deleteBySpecialtiesWithoutVet(condition.getSpecialtiesName());
     }
 
     @Transactional
@@ -167,8 +157,7 @@ public class VetService {
 
         final Set<Specialty> specialties = getOrCreateSpecialtiesByNames(specialtiesName);
 
-        return specialties
-                .stream()
+        return specialties.stream()
                 .map(specialty -> vetspecialtyMapper.toVetSpecialtyEntity(specialty, vet))
                 .collect(Collectors.toList());
     }

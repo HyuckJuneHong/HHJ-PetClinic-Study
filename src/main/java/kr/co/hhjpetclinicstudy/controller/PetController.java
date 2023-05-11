@@ -50,7 +50,7 @@ public class PetController {
         }
     }
 
-    @PostMapping("/owners/search")
+    @PostMapping("/owners")
     public ResponseFormat<List<PetResDTO.READ>> getPetsByOwner(@RequestBody PetReqDTO.CONDITION condition) {
 
         try {

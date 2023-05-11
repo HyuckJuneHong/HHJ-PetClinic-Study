@@ -37,10 +37,10 @@ public class VetController {
     }
 
     @PostMapping("/search")
-    public ResponseFormat<VetResDTO.READ> getVetsByIds(@RequestBody VetReqDTO.CONDITION condition) {
+    public ResponseFormat<VetResDTO.READ> getVetsById(@RequestBody VetReqDTO.CONDITION condition) {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetsByIds(condition));
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetsById(condition));
         } catch (NotFoundException e) {
             return ResponseFormat.error(e.toString(), ResponseStatus.FAIL_NOT_FOUND.getStatusCode());
         } catch (RuntimeException e) {
@@ -61,12 +61,11 @@ public class VetController {
         }
     }
 
-    @PutMapping("/specialties/{vet_id}")
-    public ResponseFormat<Void> addSpecialties(@PathVariable(name = "vet_id") Long vetId,
-                                               @RequestBody VetReqDTO.ADD_DELETE add) {
+    @PutMapping("/specialties")
+    public ResponseFormat<Void> addSpecialties(@RequestBody VetReqDTO.CONDITION condition) {
 
         try {
-            vetService.addSpecialties(vetId, add);
+            vetService.addSpecialties(condition);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
@@ -75,12 +74,11 @@ public class VetController {
         }
     }
 
-    @DeleteMapping("/specialties/{vet_id}")
-    public ResponseFormat<Void> deleteSpecialties(@PathVariable(name = "vet_id") Long vetId,
-                                                  @RequestBody VetReqDTO.ADD_DELETE delete) {
+    @DeleteMapping("/specialties")
+    public ResponseFormat<Void> deleteSpecialties(@RequestBody VetReqDTO.CONDITION condition) {
 
         try {
-            vetService.deleteSpecialties(vetId, delete);
+            vetService.deleteSpecialties(condition);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);

@@ -43,5 +43,7 @@ public class VetReqDTO {
         private List<Long> vetIds;
 
         private Long vetId;
+
+        private Set<String> specialtiesName;
     }
 }
