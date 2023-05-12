@@ -29,10 +29,18 @@ public class PetSearchRepository {
                 .join(qOwner).fetchJoin()
                 .where(
                         petIdsIn(condition.getPetIds()),
-                        petIdEq(condition.getPetId()),
                         ownerIdEq(condition.getOwnerId())
                 )
                 .fetch();
+    }
+
+    public Pet searchById(Long petId) {
+
+        return queryFactory
+                .selectFrom(qPet)
+                .join(qOwner).fetchJoin()
+                .where(petIdEq(petId))
+                .fetchOne();
     }
 
     private BooleanExpression petIdsIn(List<Long> petIds) {

@@ -45,8 +45,6 @@ public class PetReqDTO {
 
         private List<Long> petIds;
 
-        private Long petId;
-
         private Long ownerId;
     }
 }

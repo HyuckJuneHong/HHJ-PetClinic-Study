@@ -5,6 +5,7 @@ import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.SpecialtyReqDTO;
 import kr.co.hhjpetclinicstudy.service.service.VetService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
@@ -21,21 +22,21 @@ public class VetController {
     private final VetService vetService;
 
     @PostMapping
-    public ResponseFormat<Void> createVet(@RequestBody @Valid VetReqDTO.CREATE create) {
+    public ResponseFormat<Void> createVetAndSpecialties(@RequestBody @Valid VetReqDTO.CREATE create) {
 
         try {
-            vetService.createVet(create);
+            vetService.createVetAndSpecialties(create);
             return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
         } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
-    @PostMapping("/search")
-    public ResponseFormat<VetResDTO.READ> getVetsById(@RequestBody VetReqDTO.CONDITION condition) {
+    @GetMapping("/{vet_id}")
+    public ResponseFormat<VetResDTO.READ> getVetsById(@PathVariable(name = "vet_id") Long vetId) {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetsById(condition));
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetsById(vetId));
         } catch (NotFoundException e) {
             return ResponseFormat.error(e.toString(), ResponseStatus.FAIL_NOT_FOUND.getStatusCode());
         } catch (RuntimeException e) {
@@ -43,21 +44,22 @@ public class VetController {
         }
     }
 
-    @GetMapping("/search/specialties")
-    public ResponseFormat<Set<String>> getVetSpecialties() {
+    @GetMapping("/specialties")
+    public ResponseFormat<Set<String>> getExistSpecialties() {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getVetSpecialties());
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, vetService.getExistSpecialties());
         } catch (RuntimeException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
         }
     }
 
-    @PutMapping("/specialties")
-    public ResponseFormat<Void> addSpecialtiesByVet(@RequestBody VetReqDTO.CONDITION condition) {
+    @PutMapping("/specialties/{vet_id}")
+    public ResponseFormat<Void> addSpecialtiesByVet(@PathVariable(name = "vet_id") Long vetId,
+                                                    @RequestBody SpecialtyReqDTO.UPDATE update) {
 
         try {
-            vetService.addSpecialtiesByVet(condition);
+            vetService.addSpecialtiesByVet(vetId, update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
@@ -66,11 +68,12 @@ public class VetController {
         }
     }
 
-    @DeleteMapping("/specialties")
-    public ResponseFormat<Void> deleteSpecialtiesByVet(@RequestBody VetReqDTO.CONDITION condition) {
+    @DeleteMapping("/specialties/{vet_id}")
+    public ResponseFormat<Void> deleteSpecialtiesByVet(@PathVariable(name = "vet_id") Long vetId,
+                                                       @RequestBody SpecialtyReqDTO.UPDATE update) {
 
         try {
-            vetService.deleteSpecialtiesByVet(condition);
+            vetService.deleteSpecialtiesByVet(vetId, update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);

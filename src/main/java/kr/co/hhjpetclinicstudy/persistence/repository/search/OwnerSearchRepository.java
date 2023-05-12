@@ -24,10 +24,17 @@ public class OwnerSearchRepository {
         return queryFactory
                 .selectFrom(qOwner)
                 .where(
-                        ownerIdsIn(condition.getOwnerIds()),
-                        ownerIdEq(condition.getOwnerId())
+                        ownerIdsIn(condition.getOwnerIds())
                 )
                 .fetch();
+    }
+
+    public Owner searchById(Long ownerId) {
+
+        return queryFactory
+                .selectFrom(qOwner)
+                .where(ownerIdEq(ownerId))
+                .fetchOne();
     }
 
     private BooleanExpression ownerIdsIn(List<Long> ownerIds) {

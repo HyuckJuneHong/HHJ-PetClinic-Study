@@ -1,6 +1,5 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.InvalidRequestException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Specialty;
@@ -11,6 +10,7 @@ import kr.co.hhjpetclinicstudy.persistence.repository.VetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetSpecialtyRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.VetSearchRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.VetSpecialtySearchRepository;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.SpecialtyReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.SpecialtyMapper;
@@ -48,12 +48,11 @@ public class VetService {
     private final VetSpecialtyMapper vetspecialtyMapper;
 
     @Transactional
-    public void createVet(VetReqDTO.CREATE create) {
+    public void createVetAndSpecialties(VetReqDTO.CREATE create) {
 
         Vet vet = vetMapper.toVetEntity(create, Collections.emptyList());
 
-        final List<VetSpecialty> vetSpecialties =
-                getOrCreateVetSpecialties(create.getSpecialtiesName(), vet);
+        final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(create.getSpecialtiesName(), vet);
 
         vet.updateVetSpecialties(vetSpecialties);
 
@@ -62,25 +61,18 @@ public class VetService {
         vetRepository.save(vet);
     }
 
-    /**
-     * ID에 일치하는 수의사 한명 조회
-     *
-     * @param condition : vetId에 해당하는 eq()만 조회 가능
-     * @return : 한명에 대한 수의사
-     */
-    public VetResDTO.READ getVetsById(VetReqDTO.CONDITION condition) {
+    public VetResDTO.READ getVetsById(Long vetId) {
 
-        final Vet vet = isVets(vetSearchRepository.search(condition));
+        final Vet vet = vetSearchRepository.searchById(vetId);
 
         final List<String> specialtiesName = getSpecialtiesNameByVet(vet);
 
         return vetMapper.toReadDto(vet, specialtiesName);
     }
 
-    public Set<String> getVetSpecialties() {
+    public Set<String> getExistSpecialties() {
 
-        final Set<VetSpecialty> vetSpecialties =
-                new HashSet<>(vetSpecialtySearchRepository.searchAll());
+        final Set<VetSpecialty> vetSpecialties = new HashSet<>(vetSpecialtySearchRepository.searchAll());
 
         return vetSpecialties
                 .stream()
@@ -90,27 +82,27 @@ public class VetService {
     }
 
     @Transactional
-    public void addSpecialtiesByVet(VetReqDTO.CONDITION condition) {
+    public void addSpecialtiesByVet(Long vetId,
+                                    SpecialtyReqDTO.UPDATE update) {
 
-        Vet vet = isVets(vetSearchRepository.search(condition));
+        Vet vet = vetSearchRepository.searchById(vetId);
 
-        final List<VetSpecialty> vetSpecialties =
-                getOrCreateVetSpecialties(condition.getSpecialtiesName(), vet);
+        final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(update.getSpecialtiesName(), vet);
 
         vet.updateVetSpecialties(vetSpecialties);
     }
 
     @Transactional
-    public void deleteSpecialtiesByVet(VetReqDTO.CONDITION condition) {
+    public void deleteSpecialtiesByVet(Long vetId,
+                                       SpecialtyReqDTO.UPDATE update) {
 
-        final Vet vet = isVets(vetSearchRepository.search(condition));
+        final Vet vet = vetSearchRepository.searchById(vetId);
 
-        final List<VetSpecialty> vetSpecialties =
-                vetSpecialtySearchRepository.searchAll(vet, condition.getSpecialtiesName());
+        final List<VetSpecialty> vetSpecialties = vetSpecialtySearchRepository.searchAll(vet, update.getSpecialtiesName());
 
         vetSpecialtyRepository.deleteAll(vetSpecialties);
 
-        deleteBySpecialtiesWithoutVet(condition.getSpecialtiesName());
+        deleteBySpecialtiesWithoutVet(update.getSpecialtiesName());
     }
 
     @Transactional
@@ -173,14 +165,5 @@ public class VetService {
                         .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND)))
 
                 .forEach(specialtyRepository::delete);
-    }
-
-    private Vet isVets(List<Vet> vets) {
-
-        if (vets.size() != 1) {
-            throw new InvalidRequestException(ResponseStatus.FAIL_BAD_REQUEST);
-        }
-
-        return vets.get(0);
     }
 }

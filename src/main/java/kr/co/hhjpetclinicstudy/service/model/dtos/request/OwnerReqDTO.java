@@ -55,7 +55,5 @@ public class OwnerReqDTO {
     public static class CONDITION {
 
         private List<Long> ownerIds;
-
-        private Long ownerId;
     }
 }

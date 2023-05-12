@@ -29,21 +29,8 @@ public class VetReqDTO {
     @Builder
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class ADD_DELETE {
-
-        private Set<String> specialtiesName;
-    }
-
-    @Getter
-    @Builder
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class CONDITION {
 
         private List<Long> vetIds;
-
-        private Long vetId;
-
-        private Set<String> specialtiesName;
     }
 }
