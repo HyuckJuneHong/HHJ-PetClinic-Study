@@ -35,19 +35,19 @@ public class VisitReqDTO {
     @Builder
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class UPDATE {
+    public static class CONDITION {
 
-        private LocalDate visitDate;
-
-        private String description;
+        private List<Long> visitIds;
     }
 
     @Getter
     @Builder
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class CONDITION {
+    public static class UPDATE {
 
-        private List<Long> visitIds;
+        private LocalDate visitDate;
+
+        private String description;
     }
 }

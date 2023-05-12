@@ -1,12 +1,14 @@
 package kr.co.hhjpetclinicstudy.persistence.repository.search;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.co.hhjpetclinicstudy.persistence.entity.QOwner;
-import kr.co.hhjpetclinicstudy.persistence.entity.QPet;
-import kr.co.hhjpetclinicstudy.persistence.entity.QVet;
-import kr.co.hhjpetclinicstudy.persistence.entity.QVisit;
+import kr.co.hhjpetclinicstudy.persistence.entity.*;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.VisitReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,4 +23,86 @@ public class VisitSearchRepository {
     private final QVet qVet = QVet.vet;
 
     private final QOwner qOwner = QOwner.owner;
+
+    public List<Visit> search(VisitReqDTO.CONDITION condition) {
+
+        return queryFactory
+                .selectFrom(qVisit)
+                .join(qPet).fetchJoin()
+                .join(qVet).fetchJoin()
+                .join(qOwner).fetchJoin()
+                .where(
+                        visitIdsIn(condition.getVisitIds())
+                )
+                .fetch();
+    }
+
+    public Visit searchById(Long visitId) {
+
+        return queryFactory
+                .selectFrom(qVisit)
+                .join(qPet).fetchJoin()
+                .join(qVet).fetchJoin()
+                .join(qOwner).fetchJoin()
+                .where(visitIdEq(visitId))
+                .fetchOne();
+    }
+
+    public List<Visit> searchAllByOwner(Long ownerId) {
+
+        return queryFactory
+                .selectFrom(qVisit)
+                .join(qPet).fetchJoin()
+                .join(qVet).fetchJoin()
+                .join(qOwner).fetchJoin()
+                .where(ownerIdEq(ownerId))
+                .fetch();
+    }
+
+    public List<Visit> searchAllByPet(Long petId) {
+
+        return queryFactory
+                .selectFrom(qVisit)
+                .join(qPet).fetchJoin()
+                .join(qVet).fetchJoin()
+                .join(qOwner).fetchJoin()
+                .where(petIdEq(petId))
+                .fetch();
+    }
+
+    public List<Visit> searchAllByVet(Long vetId) {
+
+        return queryFactory
+                .selectFrom(qVisit)
+                .join(qPet).fetchJoin()
+                .join(qVet).fetchJoin()
+                .join(qOwner).fetchJoin()
+                .where(vetIdEq(vetId))
+                .fetch();
+    }
+
+    private BooleanExpression visitIdsIn(List<Long> visitIds) {
+
+        return CollectionUtils.isEmpty(visitIds) ? null : qVisit.id.in(visitIds);
+    }
+
+    private BooleanExpression visitIdEq(Long visitId) {
+
+        return visitId == null ? null : qVisit.id.eq(visitId);
+    }
+
+    private BooleanExpression ownerIdEq(Long ownerId) {
+
+        return ownerId == null ? null : qVisit.owner.id.eq(ownerId);
+    }
+
+    private BooleanExpression petIdEq(Long petId) {
+
+        return petId == null ? null : qVisit.pet.id.eq(petId);
+    }
+
+    private BooleanExpression vetIdEq(Long vetId) {
+
+        return vetId == null ? null : qVisit.vet.id.eq(vetId);
+    }
 }

@@ -3,6 +3,9 @@ package kr.co.hhjpetclinicstudy.controller;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VisitReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VisitResDTO;
 import kr.co.hhjpetclinicstudy.service.service.VisitService;
@@ -20,10 +23,10 @@ public class VisitController {
     private final VisitService visitService;
 
     @PostMapping
-    public ResponseFormat<Void> createVisit(@RequestBody @Validated VisitReqDTO.CREATE create) {
+    public ResponseFormat<Void> createVisitByOwnerAndPetAndVet(@RequestBody @Validated VisitReqDTO.CREATE create) {
 
         try {
-            visitService.createVisit(create);
+            visitService.createVisitByOwnerAndPetAndVet(create);
             return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
@@ -32,9 +35,6 @@ public class VisitController {
         }
     }
 
-    /**
-     * 소유자에 대한 방문 기록들 조회
-     */
     @GetMapping("/owners/{owner_id}")
     public ResponseFormat<List<VisitResDTO.READ>> getVisitsByOwner(@PathVariable(name = "owner_id") Long ownerId) {
 
@@ -47,9 +47,6 @@ public class VisitController {
         }
     }
 
-    /**
-     * 애완동물에 대해 방문 기록들 조회
-     */
     @GetMapping("/pets/{pet_id}")
     public ResponseFormat<List<VisitResDTO.READ>> getVisitsByPet(@PathVariable(name = "pet_id") Long petId) {
 
@@ -62,9 +59,6 @@ public class VisitController {
         }
     }
 
-    /**
-     * 수의사 담당 애완동물들 조회
-     */
     @GetMapping("/vets/{vet_id}")
     public ResponseFormat<List<VisitResDTO.READ>> getVisitsByVet(@PathVariable(name = "vet_id") Long vetId){
 
@@ -77,14 +71,11 @@ public class VisitController {
         }
     }
 
-    /**
-     * 방문 기록 상세 조회
-     */
-    @GetMapping("/{visit_id}")
-    public ResponseFormat<VisitResDTO.READ_DETAIL> getVisitById(@PathVariable(name = "visit_id") Long visitId) {
+    @PostMapping("/search")
+    public ResponseFormat<List<VisitResDTO.READ_DETAIL>> getVisitsByIds(@RequestBody VisitReqDTO.CONDITION condition) {
 
         try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitById(visitId));
+            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByIds(condition));
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
         } catch (RuntimeException e) {
@@ -92,12 +83,12 @@ public class VisitController {
         }
     }
 
-    @PutMapping
-    public ResponseFormat<Void> updateVisit(@PathVariable(name = "visit_id") Long visitId,
-                                            @RequestBody @Validated VisitReqDTO.UPDATE update) {
+    @PutMapping("/{visit_id}")
+    public ResponseFormat<Void> updateVisitById(@PathVariable(name = "visit_id") Long visitId,
+                                                @RequestBody @Validated VisitReqDTO.UPDATE update) {
 
         try {
-            visitService.updateVisit(visitId, update);
+            visitService.updateVisitById(visitId, update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
@@ -106,16 +97,11 @@ public class VisitController {
         }
     }
 
-    /**
-     * Visit Delete API
-     *
-     * @param visitId : id for delete a visit
-     */
-    @DeleteMapping("/{visit_id}")
-    public ResponseFormat<Void> deleteVisitById(@PathVariable(name = "visit_id") Long visitId) {
+    @DeleteMapping
+    public ResponseFormat<Void> deleteVisitsByIds(@RequestBody VisitReqDTO.CONDITION condition) {
 
         try {
-            visitService.deleteVisitById(visitId);
+            visitService.deleteVisitsByIds(condition);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
