@@ -20,11 +20,6 @@ public class VetController {
 
     private final VetService vetService;
 
-    /**
-     * Vet Create API
-     *
-     * @param create : info for Create a Vet
-     */
     @PostMapping
     public ResponseFormat<Void> createVet(@RequestBody @Valid VetReqDTO.CREATE create) {
 
@@ -48,10 +43,7 @@ public class VetController {
         }
     }
 
-    /**
-     * 수의사들이 가진 모든 전문분야 조회
-     */
-    @GetMapping("/specialties")
+    @GetMapping("/search/specialties")
     public ResponseFormat<Set<String>> getVetSpecialties() {
 
         try {
@@ -62,10 +54,10 @@ public class VetController {
     }
 
     @PutMapping("/specialties")
-    public ResponseFormat<Void> addSpecialties(@RequestBody VetReqDTO.CONDITION condition) {
+    public ResponseFormat<Void> addSpecialtiesByVet(@RequestBody VetReqDTO.CONDITION condition) {
 
         try {
-            vetService.addSpecialties(condition);
+            vetService.addSpecialtiesByVet(condition);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
@@ -75,10 +67,10 @@ public class VetController {
     }
 
     @DeleteMapping("/specialties")
-    public ResponseFormat<Void> deleteSpecialties(@RequestBody VetReqDTO.CONDITION condition) {
+    public ResponseFormat<Void> deleteSpecialtiesByVet(@RequestBody VetReqDTO.CONDITION condition) {
 
         try {
-            vetService.deleteSpecialties(condition);
+            vetService.deleteSpecialtiesByVet(condition);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);

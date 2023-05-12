@@ -34,8 +34,8 @@ public class PetService {
      * pet create service
      */
     @Transactional
-    public void createPet(Long ownerId,
-                          PetReqDTO.CREATE create) {
+    public void createPetByOwner(Long ownerId,
+                                 PetReqDTO.CREATE create) {
 
         final Owner owner = ownerRepository
                 .findById(ownerId)
@@ -68,8 +68,8 @@ public class PetService {
      * pet update service
      */
     @Transactional
-    public void updatePet(Long petId,
-                          PetReqDTO.UPDATE update) {
+    public void updatePetById(Long petId,
+                              PetReqDTO.UPDATE update) {
 
         Pet pet = petRepository
                 .findById(petId)

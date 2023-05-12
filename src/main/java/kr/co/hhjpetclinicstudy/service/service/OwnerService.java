@@ -50,13 +50,9 @@ public class OwnerService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * owner update service
-     * @param update : info for update an owner
-     */
     @Transactional
-    public void updateOwner(Long ownerId,
-                            OwnerReqDTO.UPDATE update) {
+    public void updateOwnerById(Long ownerId,
+                                OwnerReqDTO.UPDATE update) {
 
         Owner owner = ownerRepository
                 .findById(ownerId)

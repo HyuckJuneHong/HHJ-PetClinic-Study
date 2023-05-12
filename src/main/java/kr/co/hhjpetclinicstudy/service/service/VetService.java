@@ -90,7 +90,7 @@ public class VetService {
     }
 
     @Transactional
-    public void addSpecialties(VetReqDTO.CONDITION condition) {
+    public void addSpecialtiesByVet(VetReqDTO.CONDITION condition) {
 
         Vet vet = isVets(vetSearchRepository.search(condition));
 
@@ -101,7 +101,7 @@ public class VetService {
     }
 
     @Transactional
-    public void deleteSpecialties(VetReqDTO.CONDITION condition) {
+    public void deleteSpecialtiesByVet(VetReqDTO.CONDITION condition) {
 
         final Vet vet = isVets(vetSearchRepository.search(condition));
 
@@ -165,7 +165,6 @@ public class VetService {
     private void deleteBySpecialtiesWithoutVet(Set<String> specialtiesName) {
 
         specialtiesName.stream()
-
                 .filter(specialtyName -> vetSpecialtySearchRepository
                         .searchCountBySpecialtyName(specialtyName) == 0)
 
