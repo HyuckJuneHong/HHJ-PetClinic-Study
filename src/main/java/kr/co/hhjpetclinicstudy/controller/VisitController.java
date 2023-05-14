@@ -25,88 +25,46 @@ public class VisitController {
     @PostMapping
     public ResponseFormat<Void> createVisitByOwnerAndPetAndVet(@RequestBody @Validated VisitReqDTO.CREATE create) {
 
-        try {
-            visitService.createVisitByOwnerAndPetAndVet(create);
-            return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+        visitService.createVisitByOwnerAndPetAndVet(create);
+        return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
     }
 
     @GetMapping("/owners/{owner_id}")
     public ResponseFormat<List<VisitResDTO.READ>> getVisitsByOwner(@PathVariable(name = "owner_id") Long ownerId) {
 
-        try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByOwner(ownerId));
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+        return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByOwner(ownerId));
     }
 
     @GetMapping("/pets/{pet_id}")
     public ResponseFormat<List<VisitResDTO.READ>> getVisitsByPet(@PathVariable(name = "pet_id") Long petId) {
 
-        try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByPet(petId));
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+        return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByPet(petId));
     }
 
     @GetMapping("/vets/{vet_id}")
     public ResponseFormat<List<VisitResDTO.READ>> getVisitsByVet(@PathVariable(name = "vet_id") Long vetId){
 
-        try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByVet(vetId));
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+        return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByVet(vetId));
     }
 
     @PostMapping("/search")
     public ResponseFormat<List<VisitResDTO.READ_DETAIL>> getVisitsByIds(@RequestBody VisitReqDTO.CONDITION condition) {
 
-        try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByIds(condition));
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+        return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, visitService.getVisitsByIds(condition));
     }
 
     @PutMapping("/{visit_id}")
     public ResponseFormat<Void> updateVisitById(@PathVariable(name = "visit_id") Long visitId,
                                                 @RequestBody @Validated VisitReqDTO.UPDATE update) {
 
-        try {
-            visitService.updateVisitById(visitId, update);
-            return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+        visitService.updateVisitById(visitId, update);
+        return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
     }
 
     @DeleteMapping
     public ResponseFormat<Void> deleteVisitsByIds(@RequestBody VisitReqDTO.CONDITION condition) {
 
-        try {
-            visitService.deleteVisitsByIds(condition);
-            return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+        visitService.deleteVisitsByIds(condition);
+        return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
     }
 }

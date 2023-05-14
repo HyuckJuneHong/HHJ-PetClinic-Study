@@ -28,64 +28,35 @@ public class PetController {
     public ResponseFormat<Void> createPetByOwner(@PathVariable(name = "owner_id") Long ownerId,
                                                  @RequestBody @Valid PetReqDTO.CREATE create) {
 
-        try {
-            petService.createPetByOwner(ownerId, create);
-            return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+
+        petService.createPetByOwner(ownerId, create);
+        return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
     }
 
     @PostMapping("/search")
     public ResponseFormat<List<PetResDTO.READ_DETAIL>> getPetsByIds(@RequestBody PetReqDTO.CONDITION condition) {
 
-        try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetsByIds(condition));
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+        return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetsByIds(condition));
     }
 
     @PostMapping("/search/owners")
     public ResponseFormat<List<PetResDTO.READ>> getPetsByOwner(@RequestBody PetReqDTO.CONDITION condition) {
 
-        try {
-            return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetsByOwner(condition));
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+        return ResponseFormat.successWithData(ResponseStatus.SUCCESS_OK, petService.getPetsByOwner(condition));
     }
 
     @PutMapping("/{pet_id}")
     public ResponseFormat<Void> updatePetById(@PathVariable(name = "pet_id") Long petId,
                                               @RequestBody @Valid PetReqDTO.UPDATE update) {
 
-        try {
-            petService.updatePetById(petId, update);
-            return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+        petService.updatePetById(petId, update);
+        return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
     }
 
     @DeleteMapping
     public ResponseFormat<Void> deletePetsByIds(@RequestBody PetReqDTO.CONDITION condition) {
 
-        try {
-            petService.deletePetsByIds(condition);
-            return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
-        } catch (NotFoundException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
-        } catch (RuntimeException e) {
-            return ResponseFormat.error(ResponseStatus.FAIL_BAD_REQUEST);
-        }
+        petService.deletePetsByIds(condition);
+        return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
     }
 }
