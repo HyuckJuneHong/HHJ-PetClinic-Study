@@ -1,18 +1,15 @@
 package kr.co.hhjpetclinicstudy.persistence.repository.search;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.co.hhjpetclinicstudy.infrastructure.util.DynamicQueryUtils;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
 import kr.co.hhjpetclinicstudy.persistence.entity.QOwner;
 import kr.co.hhjpetclinicstudy.persistence.entity.QPet;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-
-import static kr.co.hhjpetclinicstudy.infrastructure.util.DynamicQueryUtils.generateQueryCondition;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,8 +27,8 @@ public class PetSearchRepository {
                 .selectFrom(qPet)
                 .join(qOwner).fetchJoin()
                 .where(
-                        generateQueryCondition(condition.getPetIds(), qPet.id::in),
-                        ownerIdEq(condition.getOwnerId())
+                        DynamicQueryUtils.filterCondition(condition.getPetIds(), qPet.id::in),
+                        DynamicQueryUtils.generateEq(condition.getOwnerId(), qPet.owner.id::eq)
                 )
                 .fetch();
     }
@@ -41,17 +38,7 @@ public class PetSearchRepository {
         return queryFactory
                 .selectFrom(qPet)
                 .join(qOwner).fetchJoin()
-                .where(petIdEq(petId))
+                .where(DynamicQueryUtils.generateEq(petId, qPet.id::eq))
                 .fetchOne();
-    }
-
-    private BooleanExpression petIdEq(Long petId) {
-
-        return petId == null ? null : qPet.id.eq(petId);
-    }
-
-    private BooleanExpression ownerIdEq(Long ownerId) {
-
-        return ownerId == null ? null : qPet.owner.id.eq(ownerId);
     }
 }

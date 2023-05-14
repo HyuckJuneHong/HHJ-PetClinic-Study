@@ -6,12 +6,13 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 public class DynamicQueryUtils {
 
-    public static <T> BooleanExpression generateQueryCondition(T condition,
-                                                               Function<T, BooleanExpression> function) {
+    public static <T> BooleanExpression filterCondition(T condition,
+                                                        Function<T, BooleanExpression> function) {
 
         T tempCondition = condition;
 
@@ -23,8 +24,18 @@ public class DynamicQueryUtils {
             tempCondition = null;
         }
 
+        if (tempCondition instanceof Set c && CollectionUtils.isEmpty(c)) {
+            tempCondition = null;
+        }
+
         return Optional.ofNullable(tempCondition)
                 .map(function)
                 .orElse(null);
+    }
+
+    public static <T> BooleanExpression generateEq(T value,
+                                                   Function<T, BooleanExpression> function) {
+
+        return value == null ? null : function.apply(value);
     }
 }

@@ -1,16 +1,13 @@
 package kr.co.hhjpetclinicstudy.persistence.repository.search;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.co.hhjpetclinicstudy.infrastructure.util.DynamicQueryUtils;
 import kr.co.hhjpetclinicstudy.persistence.entity.*;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VisitReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-
-import static kr.co.hhjpetclinicstudy.infrastructure.util.DynamicQueryUtils.generateQueryCondition;
 
 @Repository
 @RequiredArgsConstructor
@@ -34,7 +31,7 @@ public class VisitSearchRepository {
                 .join(qVet).fetchJoin()
                 .join(qOwner).fetchJoin()
                 .where(
-                        generateQueryCondition(condition.getVisitIds(), qVisit.id::in)
+                        DynamicQueryUtils.filterCondition(condition.getVisitIds(), qVisit.id::in)
                 )
                 .fetch();
     }
@@ -46,7 +43,7 @@ public class VisitSearchRepository {
                 .join(qPet).fetchJoin()
                 .join(qVet).fetchJoin()
                 .join(qOwner).fetchJoin()
-                .where(visitIdEq(visitId))
+                .where(DynamicQueryUtils.generateEq(visitId, qVisit.id::eq))
                 .fetchOne();
     }
 
@@ -57,7 +54,7 @@ public class VisitSearchRepository {
                 .join(qPet).fetchJoin()
                 .join(qVet).fetchJoin()
                 .join(qOwner).fetchJoin()
-                .where(ownerIdEq(ownerId))
+                .where(DynamicQueryUtils.generateEq(ownerId, qOwner.id::eq))
                 .fetch();
     }
 
@@ -68,7 +65,7 @@ public class VisitSearchRepository {
                 .join(qPet).fetchJoin()
                 .join(qVet).fetchJoin()
                 .join(qOwner).fetchJoin()
-                .where(petIdEq(petId))
+                .where(DynamicQueryUtils.generateEq(petId, qPet.id::eq))
                 .fetch();
     }
 
@@ -79,27 +76,7 @@ public class VisitSearchRepository {
                 .join(qPet).fetchJoin()
                 .join(qVet).fetchJoin()
                 .join(qOwner).fetchJoin()
-                .where(vetIdEq(vetId))
+                .where(DynamicQueryUtils.generateEq(vetId, qVet.id::eq))
                 .fetch();
-    }
-
-    private BooleanExpression visitIdEq(Long visitId) {
-
-        return visitId == null ? null : qVisit.id.eq(visitId);
-    }
-
-    private BooleanExpression ownerIdEq(Long ownerId) {
-
-        return ownerId == null ? null : qVisit.owner.id.eq(ownerId);
-    }
-
-    private BooleanExpression petIdEq(Long petId) {
-
-        return petId == null ? null : qVisit.pet.id.eq(petId);
-    }
-
-    private BooleanExpression vetIdEq(Long vetId) {
-
-        return vetId == null ? null : qVisit.vet.id.eq(vetId);
     }
 }

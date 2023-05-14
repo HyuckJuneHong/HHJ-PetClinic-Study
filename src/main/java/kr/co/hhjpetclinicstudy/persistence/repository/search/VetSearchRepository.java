@@ -1,7 +1,7 @@
 package kr.co.hhjpetclinicstudy.persistence.repository.search;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.co.hhjpetclinicstudy.infrastructure.util.DynamicQueryUtils;
 import kr.co.hhjpetclinicstudy.persistence.entity.QSpecialty;
 import kr.co.hhjpetclinicstudy.persistence.entity.QVet;
 import kr.co.hhjpetclinicstudy.persistence.entity.QVetSpecialty;
@@ -9,11 +9,8 @@ import kr.co.hhjpetclinicstudy.persistence.entity.Vet;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-
-import static kr.co.hhjpetclinicstudy.infrastructure.util.DynamicQueryUtils.generateQueryCondition;
 
 @Repository
 @RequiredArgsConstructor
@@ -43,7 +40,7 @@ public class VetSearchRepository {
                 .join(qVetSpecialty).fetchJoin()
                 .join(qSpecialty).fetchJoin()
                 .where(
-                        generateQueryCondition(condition.getVetIds(), qVet.id::in)
+                        DynamicQueryUtils.filterCondition(condition.getVetIds(), qVet.id::in)
                 )
                 .fetch();
     }
@@ -55,12 +52,7 @@ public class VetSearchRepository {
                 .from(qVet)
                 .join(qVetSpecialty).fetchJoin()
                 .join(qSpecialty).fetchJoin()
-                .where(vetIdEq(vetId))
+                .where(DynamicQueryUtils.generateEq(vetId, qVet.id::eq))
                 .fetchOne();
-    }
-
-    private BooleanExpression vetIdEq(Long vetId) {
-
-        return vetId == null ? null : qVet.id.eq(vetId);
     }
 }
