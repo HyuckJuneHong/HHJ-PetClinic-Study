@@ -23,7 +23,10 @@ public enum ResponseStatus {
     FAIL_NOT_FOUND("클라이언트가 요청한 리소스를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     FAIL_METHOD_NOT_ALLOWED("클라이언트가 요청한 HTTP 메소드가 허용되지 않았습니다.", HttpStatus.METHOD_NOT_ALLOWED),
 
-    //owner
+    //custom : valid
+    FAIL_INVALID_PARAMETER("파라미터 값이 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
+
+    //custom : owner
     FAIL_TELEPHONE_DUPLICATED("클라이언트의 전화번호가 중복되었습니다.", HttpStatus.BAD_REQUEST);
 
     private String message;
