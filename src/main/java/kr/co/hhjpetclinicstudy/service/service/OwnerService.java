@@ -50,7 +50,7 @@ public class OwnerService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+        @Transactional
     public void updateOwnerById(Long ownerId,
                                 OwnerReqDTO.UPDATE update) {
 
