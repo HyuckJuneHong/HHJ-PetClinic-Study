@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +30,7 @@ public class OwnerService {
 
     /**
      * owner create service
+     *
      * @param create : Info for Create an Owner
      */
     @Transactional
@@ -45,12 +47,14 @@ public class OwnerService {
 
         final List<Owner> owners = ownerSearchRepository.search(condition);
 
+        isOwners(owners);
+
         return owners.stream()
                 .map(ownerMapper::toReadDto)
                 .collect(Collectors.toList());
     }
 
-        @Transactional
+    @Transactional
     public void updateOwnerById(Long ownerId,
                                 OwnerReqDTO.UPDATE update) {
 
@@ -68,20 +72,29 @@ public class OwnerService {
 
         final List<Owner> owners = ownerSearchRepository.search(condition);
 
+        isOwners(owners);
+
         ownerRepository.deleteAll(owners);
     }
 
-    public void isTelephone(String telephone){
+    public void isTelephone(String telephone) {
 
-        if(ownerRepository.existsByTelephone(telephone))
+        if (ownerRepository.existsByTelephone(telephone))
             throw new DuplicatedException(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
     }
 
     public void isTelephone(String telephone,
-                             String updateTelephone){
+                            String updateTelephone) {
 
-        if(!telephone.equals(updateTelephone)){
+        if (!telephone.equals(updateTelephone)) {
             isTelephone(updateTelephone);
+        }
+    }
+
+    public void isOwners(List<Owner> owners){
+
+        if(owners.isEmpty()){
+            throw new NotFoundException(ResponseStatus.FAIL_OWNER_NOT_FOUND);
         }
     }
 }
