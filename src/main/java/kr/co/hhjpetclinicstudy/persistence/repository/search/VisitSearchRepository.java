@@ -10,6 +10,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
+import static kr.co.hhjpetclinicstudy.infrastructure.util.DynamicQueryUtils.generateQueryCondition;
+
 @Repository
 @RequiredArgsConstructor
 public class VisitSearchRepository {
@@ -32,7 +34,7 @@ public class VisitSearchRepository {
                 .join(qVet).fetchJoin()
                 .join(qOwner).fetchJoin()
                 .where(
-                        visitIdsIn(condition.getVisitIds())
+                        generateQueryCondition(condition.getVisitIds(), qVisit.id::in)
                 )
                 .fetch();
     }
@@ -79,11 +81,6 @@ public class VisitSearchRepository {
                 .join(qOwner).fetchJoin()
                 .where(vetIdEq(vetId))
                 .fetch();
-    }
-
-    private BooleanExpression visitIdsIn(List<Long> visitIds) {
-
-        return CollectionUtils.isEmpty(visitIds) ? null : qVisit.id.in(visitIds);
     }
 
     private BooleanExpression visitIdEq(Long visitId) {

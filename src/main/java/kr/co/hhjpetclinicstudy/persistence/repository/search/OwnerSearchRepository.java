@@ -7,9 +7,10 @@ import kr.co.hhjpetclinicstudy.persistence.entity.QOwner;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+
+import static kr.co.hhjpetclinicstudy.infrastructure.util.DynamicQueryUtils.generateQueryCondition;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class OwnerSearchRepository {
         return queryFactory
                 .selectFrom(qOwner)
                 .where(
-                        ownerIdsIn(condition.getOwnerIds())
+                        generateQueryCondition(condition.getOwnerIds(), qOwner.id::in)
                 )
                 .fetch();
     }
@@ -37,15 +38,8 @@ public class OwnerSearchRepository {
                 .fetchOne();
     }
 
-    private BooleanExpression ownerIdsIn(List<Long> ownerIds) {
-
-        return CollectionUtils.isEmpty(ownerIds) ?
-                null : qOwner.id.in(ownerIds);
-    }
-
     private BooleanExpression ownerIdEq(Long ownerId) {
 
-        return ownerId == null
-                ? null : qOwner.id.eq(ownerId);
+        return ownerId == null ? null : qOwner.id.eq(ownerId);
     }
 }

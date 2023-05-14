@@ -13,6 +13,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
+import static kr.co.hhjpetclinicstudy.infrastructure.util.DynamicQueryUtils.generateQueryCondition;
+
 @Repository
 @RequiredArgsConstructor
 public class VetSearchRepository {
@@ -41,7 +43,7 @@ public class VetSearchRepository {
                 .join(qVetSpecialty).fetchJoin()
                 .join(qSpecialty).fetchJoin()
                 .where(
-                        vetIdsIn(condition.getVetIds())
+                        generateQueryCondition(condition.getVetIds(), qVet.id::in)
                 )
                 .fetch();
     }
@@ -55,11 +57,6 @@ public class VetSearchRepository {
                 .join(qSpecialty).fetchJoin()
                 .where(vetIdEq(vetId))
                 .fetchOne();
-    }
-
-    private BooleanExpression vetIdsIn(List<Long> vetIds) {
-
-        return CollectionUtils.isEmpty(vetIds) ? null : qVet.id.in(vetIds);
     }
 
     private BooleanExpression vetIdEq(Long vetId) {
