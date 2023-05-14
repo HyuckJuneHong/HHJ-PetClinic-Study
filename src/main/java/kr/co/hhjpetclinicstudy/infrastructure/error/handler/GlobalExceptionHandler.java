@@ -35,4 +35,15 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseErrorFormat);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    protected ResponseEntity<ResponseErrorFormat> handleRuntimeException(RuntimeException e) {
+
+        ResponseErrorFormat responseErrorFormat = ResponseErrorFormat.builder()
+                .message(e.getMessage())
+                .statusCode(ResponseStatus.FAIL_BAD_REQUEST.getStatusCode())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseErrorFormat);
+    }
 }
