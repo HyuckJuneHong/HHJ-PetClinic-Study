@@ -91,7 +91,7 @@ public class PetService {
         petRepository.deleteAll(pets);
     }
 
-    public <T> void isEmpty(List<T> list,
+    private <T> void isEmpty(List<T> list,
                             ResponseStatus responseStatus) {
 
         if (list.isEmpty()) {

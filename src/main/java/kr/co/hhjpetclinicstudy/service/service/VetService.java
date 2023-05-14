@@ -172,7 +172,7 @@ public class VetService {
                 .forEach(specialtyRepository::delete);
     }
 
-    public <T> void isEmpty(List<T> list,
+    private <T> void isEmpty(List<T> list,
                             ResponseStatus responseStatus) {
 
         if (list.isEmpty()) {
