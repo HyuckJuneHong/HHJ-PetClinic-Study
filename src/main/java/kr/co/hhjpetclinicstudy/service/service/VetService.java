@@ -20,10 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,7 +60,9 @@ public class VetService {
 
     public VetResDTO.READ getVetsById(Long vetId) {
 
-        final Vet vet = vetSearchRepository.searchById(vetId);
+        final Vet vet = Optional
+                .ofNullable(vetSearchRepository.searchById(vetId))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
 
         final List<String> specialtiesName = getSpecialtiesNameByVet(vet);
 
@@ -85,7 +84,9 @@ public class VetService {
     public void addSpecialtiesByVet(Long vetId,
                                     SpecialtyReqDTO.UPDATE update) {
 
-        Vet vet = vetSearchRepository.searchById(vetId);
+        Vet vet = Optional
+                .ofNullable(vetSearchRepository.searchById(vetId))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_VET_NOT_FOUND));
 
         final List<VetSpecialty> vetSpecialties = getOrCreateVetSpecialties(update.getSpecialtiesName(), vet);
 
@@ -96,7 +97,9 @@ public class VetService {
     public void deleteSpecialtiesByVet(Long vetId,
                                        SpecialtyReqDTO.UPDATE update) {
 
-        final Vet vet = vetSearchRepository.searchById(vetId);
+        final Vet vet = Optional
+                .ofNullable(vetSearchRepository.searchById(vetId))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_VET_NOT_FOUND));
 
         final List<VetSpecialty> vetSpecialties = vetSpecialtySearchRepository.searchAll(vet, update.getSpecialtiesName());
 
@@ -109,6 +112,8 @@ public class VetService {
     public void deleteVetsByIds(VetReqDTO.CONDITION condition) {
 
         final List<Vet> vets = vetSearchRepository.search(condition);
+
+        isEmpty(vets, ResponseStatus.FAIL_VET_NOT_FOUND);
 
         vetRepository.deleteAll(vets);
     }
@@ -165,5 +170,13 @@ public class VetService {
                         .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND)))
 
                 .forEach(specialtyRepository::delete);
+    }
+
+    public <T> void isEmpty(List<T> list,
+                            ResponseStatus responseStatus) {
+
+        if (list.isEmpty()) {
+            throw new NotFoundException(responseStatus);
+        }
     }
 }
