@@ -3,36 +3,31 @@ package kr.co.hhjpetclinicstudy.infrastructure.error.handler;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseErrorFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j
-public class ValidExceptionHandler extends ResponseEntityExceptionHandler {
+public class NotValidExceptionHandler {
 
-    @Override
-    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                               HttpHeaders headers,
-                                                               HttpStatusCode status,
-                                                               WebRequest request) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ResponseErrorFormat> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
-        log.warn("handleIllegalArgument", ex);
+        log.warn("handleMethodArgumentNotValidException : ", e);
 
         final ResponseStatus responseStatus = ResponseStatus.FAIL_INVALID_PARAMETER;
-        return handleExceptionInternal(ex, responseStatus);
+
+        return handleExceptionInternal(e, responseStatus);
     }
 
-    private ResponseEntity<Object> handleExceptionInternal(final BindException e,
-                                                           final ResponseStatus responseStatus) {
+    private ResponseEntity<ResponseErrorFormat> handleExceptionInternal(final BindException e,
+                                                                        final ResponseStatus responseStatus) {
 
         return ResponseEntity
                 .status(responseStatus.getStatusCode())

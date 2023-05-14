@@ -17,6 +17,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicatedException.class)
     protected ResponseEntity<ResponseErrorFormat> handleDuplicatedException(DuplicatedException e) {
 
+        log.warn("handleDuplicatedException : ", e);
+
         ResponseErrorFormat responseErrorFormat = ResponseErrorFormat.builder()
                 .message(e.getMessage())
                 .statusCode(ResponseStatus.FAIL_BAD_REQUEST.getStatusCode())
@@ -28,6 +30,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<ResponseErrorFormat> handleNotFoundException(NotFoundException e) {
 
+        log.warn("handleNotFoundException : ", e);
+
         ResponseErrorFormat responseErrorFormat = ResponseErrorFormat.builder()
                 .message(e.getMessage())
                 .statusCode(ResponseStatus.FAIL_NOT_FOUND.getStatusCode())
@@ -38,6 +42,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<ResponseErrorFormat> handleRuntimeException(RuntimeException e) {
+
+        log.warn("handleRuntimeException : ", e);
 
         ResponseErrorFormat responseErrorFormat = ResponseErrorFormat.builder()
                 .message(e.getMessage())
