@@ -4,7 +4,6 @@ import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
-import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.PetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.PetSearchRepository;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +38,9 @@ public class PetService {
     public void createPetByOwner(Long ownerId,
                                  PetReqDTO.CREATE create) {
 
-        final Owner owner = ownerSearchRepository.searchById(ownerId);
+        final Owner owner = Optional
+                .ofNullable(ownerSearchRepository.searchById(ownerId))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_OWNER_NOT_FOUND));
 
         final Pet pet = petMapper.toPetEntity(create, owner);
 
@@ -49,6 +51,8 @@ public class PetService {
 
         final List<Pet> pets = petSearchRepository.search(condition);
 
+        isEmpty(pets, ResponseStatus.FAIL_PET_NOT_FOUND);
+
         return pets.stream()
                 .map(petMapper::toReadDetailDto)
                 .collect(Collectors.toList());
@@ -56,8 +60,11 @@ public class PetService {
 
     public List<PetResDTO.READ> getPetsByOwner(PetReqDTO.CONDITION condition) {
 
-        return petSearchRepository
-                .search(condition)
+        final List<Pet> pets = petSearchRepository.search(condition);
+
+        isEmpty(pets, ResponseStatus.FAIL_PET_NOT_FOUND);
+
+        return pets
                 .stream()
                 .map(petMapper::toReadDto)
                 .collect(Collectors.toList());
@@ -67,7 +74,9 @@ public class PetService {
     public void updatePetById(Long petId,
                               PetReqDTO.UPDATE update) {
 
-        Pet pet = petSearchRepository.searchById(petId);
+        Pet pet = Optional
+                .ofNullable(petSearchRepository.searchById(petId))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_PET_NOT_FOUND));
 
         pet.updatePetInfo(update);
     }
@@ -77,6 +86,16 @@ public class PetService {
 
         final List<Pet> pets = petSearchRepository.search(condition);
 
+        isEmpty(pets, ResponseStatus.FAIL_PET_NOT_FOUND);
+
         petRepository.deleteAll(pets);
+    }
+
+    public <T> void isEmpty(List<T> list,
+                            ResponseStatus responseStatus) {
+
+        if (list.isEmpty()) {
+            throw new NotFoundException(responseStatus);
+        }
     }
 }

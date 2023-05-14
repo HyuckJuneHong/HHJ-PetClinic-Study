@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +46,7 @@ public class OwnerService {
 
         final List<Owner> owners = ownerSearchRepository.search(condition);
 
-        isOwners(owners);
+        isEmpty(owners, ResponseStatus.FAIL_OWNER_NOT_FOUND);
 
         return owners.stream()
                 .map(ownerMapper::toReadDto)
@@ -72,7 +71,7 @@ public class OwnerService {
 
         final List<Owner> owners = ownerSearchRepository.search(condition);
 
-        isOwners(owners);
+        isEmpty(owners, ResponseStatus.FAIL_OWNER_NOT_FOUND);
 
         ownerRepository.deleteAll(owners);
     }
@@ -91,10 +90,11 @@ public class OwnerService {
         }
     }
 
-    public void isOwners(List<Owner> owners){
+    public <T> void isEmpty(List<T> list,
+                            ResponseStatus responseStatus){
 
-        if(owners.isEmpty()){
-            throw new NotFoundException(ResponseStatus.FAIL_OWNER_NOT_FOUND);
+        if(list.isEmpty()){
+            throw new NotFoundException(responseStatus);
         }
     }
 }
