@@ -17,8 +17,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicatedException.class)
     protected ResponseEntity<ResponseErrorFormat> handleDuplicatedException(DuplicatedException e) {
 
-        log.warn("======= HandleDuplicatedException Start =======", e);
-        log.info("======= HandleDuplicatedException End =======");
+        log.warn("======= HandleDuplicatedException =======", e);
 
         ResponseErrorFormat responseErrorFormat = ResponseErrorFormat.builder()
                 .message(e.getMessage())
@@ -31,8 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<ResponseErrorFormat> handleNotFoundException(NotFoundException e) {
 
-        log.warn("======= HandleNotFoundException Start =======", e);
-        log.info("======= HandleNotFoundException End =======");
+        log.warn("======= HandleNotFoundException =======", e);
 
         ResponseErrorFormat responseErrorFormat = ResponseErrorFormat.builder()
                 .message(e.getMessage())
@@ -45,8 +43,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<ResponseErrorFormat> handleRuntimeException(RuntimeException e) {
 
-        log.warn("======= HandleRuntimeException Start =======", e);
-        log.info("======= HandleRuntimeException End =======");
+        log.warn("======= HandleRuntimeException =======", e);
 
         ResponseErrorFormat responseErrorFormat = ResponseErrorFormat.builder()
                 .message(e.getMessage())

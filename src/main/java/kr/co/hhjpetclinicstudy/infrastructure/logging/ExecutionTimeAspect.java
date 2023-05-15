@@ -11,7 +11,7 @@ import org.springframework.util.StopWatch;
 @Aspect
 @Component
 @Slf4j
-public class ExecutionTimeLoggingAspect {
+public class ExecutionTimeAspect {
 
     @Pointcut("execution(* kr.co.hhjpetclinicstudy.service.service.OwnerService.*(..))")
     private void allOwnerService() {
@@ -45,7 +45,7 @@ public class ExecutionTimeLoggingAspect {
 
         stopWatch.stop();
 
-        log.info("[ExecutionTime] {}.{} : {}ms", className, methodName, stopWatch.getTotalTimeMillis());
+        log.info("======= ExecutionTime -> {}.{} : {}ms =======", className, methodName, stopWatch.getTotalTimeMillis());
 
         return result;
     }
