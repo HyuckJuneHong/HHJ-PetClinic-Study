@@ -5,7 +5,6 @@ import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
 import kr.co.hhjpetclinicstudy.service.model.OwnerCreators;
 import kr.co.hhjpetclinicstudy.service.model.OwnerMapperImplTest;
-import kr.co.hhjpetclinicstudy.service.model.dtos.request.IdsReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.OwnerMapper;
@@ -73,9 +72,11 @@ public class OwnerServiceUnitTest {
         List<Owner> owners = new ArrayList<>();
         owners.add(OwnerCreators.owner_only_phone("010-1212-1212"));
 
-        ArrayList<Long> ownersIds = new ArrayList<>();
-        ownersIds.add(1L);
-        IdsReqDTO condition = IdsReqDTO.builder().conditionIds(ownersIds).build();
+        ArrayList<Long> ownerIds = new ArrayList<>();
+        ownerIds.add(1L);
+        OwnerReqDTO.CONDITION condition = OwnerReqDTO.CONDITION.builder()
+                .ownerIds(ownerIds)
+                .build();
 
         given(ownerSearchRepository.search(any())).willReturn(owners);
         given(ownersMapper.toReadDto(any(Owner.class))).willReturn(reads.get(0));
@@ -115,7 +116,9 @@ public class OwnerServiceUnitTest {
 
         ArrayList<Long> ownerIds = new ArrayList<>();
         ownerIds.add(1L);
-        IdsReqDTO condition = IdsReqDTO.builder().conditionIds(ownerIds).build();
+        OwnerReqDTO.CONDITION condition = OwnerReqDTO.CONDITION.builder()
+                .ownerIds(ownerIds)
+                .build();
 
         given(ownerSearchRepository.search(any())).willReturn(ownerList);
 

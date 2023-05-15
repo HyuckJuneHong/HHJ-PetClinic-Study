@@ -1,5 +1,6 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
+import kr.co.hhjpetclinicstudy.infrastructure.error.exception.InvalidRequestException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
@@ -10,7 +11,12 @@ import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.PetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VisitRepository;
-import kr.co.hhjpetclinicstudy.service.model.dtos.request.VisitReqDTO;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.PetSearchRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.VetSearchRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.VisitSearchRepository;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.*;
+import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VisitResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.VisitMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,66 +33,47 @@ public class VisitService {
 
     private final VisitRepository visitRepository;
 
-    private final PetRepository petRepository;
+    private final VisitSearchRepository visitSearchRepository;
 
-    private final VetRepository vetRepository;
+    private final PetSearchRepository petSearchRepository;
 
-    private final OwnerRepository ownerRepository;
+    private final VetSearchRepository vetSearchRepository;
+
+    private final OwnerSearchRepository ownerSearchRepository;
 
     private final VisitMapper visitMapper;
 
-    /**
-     * Visit Create Service
-     *
-     * @param create : Info for create a visit
-     */
     @Transactional
-    public void createVisit(VisitReqDTO.CREATE create) {
+    public void createVisitByOwnerAndPetAndVet(VisitReqDTO.CREATE create) {
 
-        final Pet pet = petRepository
-                .findById(create.getPetId())
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final Owner owner = ownerSearchRepository.searchById(create.getOwnerId());
 
-        final Vet vet = vetRepository
-                .findById(create.getVetId())
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final Pet pet = petSearchRepository.searchById(create.getPetId());
 
-        final Owner owner = ownerRepository
-                .findById(create.getOwnerId())
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final Vet vet = vetSearchRepository.searchById(create.getVetId());
 
         final Visit visit = visitMapper.toVisitEntity(create, pet, vet, owner);
 
         visitRepository.save(visit);
     }
 
-    /**
-     * visit get by pet service
-     */
-    public List<VisitResDTO.READ> getVisitsByPet(Long petId) {
+    public List<VisitResDTO.READ> getVisitsByOwner(Long ownerId) {
 
-        final Pet pet = petRepository
-                .findById(petId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final Owner owner = ownerSearchRepository.searchById(ownerId);
 
-        return visitRepository
-                .findByPetId(pet.getId())
+        return visitSearchRepository
+                .searchAllByOwner(owner.getId())
                 .stream()
                 .map(visitMapper::toReadDto)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * visit get by owner service
-     */
-    public List<VisitResDTO.READ> getVisitsByOwner(Long ownerId) {
+    public List<VisitResDTO.READ> getVisitsByPet(Long petId) {
 
-        final Owner owner = ownerRepository
-                .findById(ownerId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final Pet pet = petSearchRepository.searchById(petId);
 
-        return visitRepository
-                .findByOwnerId(owner.getId())
+        return visitSearchRepository
+                .searchAllByPet(pet.getId())
                 .stream()
                 .map(visitMapper::toReadDto)
                 .collect(Collectors.toList());
@@ -94,52 +81,38 @@ public class VisitService {
 
     public List<VisitResDTO.READ> getVisitsByVet(Long vetId) {
 
-        final Vet vet = vetRepository
-                .findById(vetId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final Vet vet = vetSearchRepository.searchById(vetId);
 
-        return visitRepository
-                .findByVetId(vet.getId())
+        return visitSearchRepository
+                .searchAllByVet(vet.getId())
                 .stream()
                 .map(visitMapper::toReadDto)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * visit get by id service
-     */
-    public VisitResDTO.READ_DETAIL getVisitById(Long visitId) {
+    public List<VisitResDTO.READ_DETAIL> getVisitsByIds(VisitReqDTO.CONDITION condition) {
 
-        final Visit visit = visitRepository
-                .findById(visitId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final List<Visit> visits = visitSearchRepository.search(condition);
 
-        return visitMapper.toReadDetailDto(visit);
+        return visits.stream()
+                .map(visitMapper::toReadDetailDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional
-    public void updateVisit(Long visitId,
-                            VisitReqDTO.UPDATE update) {
+    public void updateVisitById(Long visitId,
+                                VisitReqDTO.UPDATE update) {
 
-        Visit visit = visitRepository
-                .findById(visitId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        Visit visit = visitSearchRepository.searchById(visitId);
 
         visit.updateVisit(update);
     }
 
-    /**
-     * visit delete service
-     *
-     * @param visitId : id for delete a visit
-     */
     @Transactional
-    public void deleteVisitById(Long visitId) {
+    public void deleteVisitsByIds(VisitReqDTO.CONDITION condition) {
 
-        final Visit visit = visitRepository
-                .findById(visitId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final List<Visit> visits = visitSearchRepository.search(condition);
 
-        visitRepository.delete(visit);
+        visitRepository.deleteAll(visits);
     }
 }

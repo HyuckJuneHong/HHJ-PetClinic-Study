@@ -41,21 +41,29 @@ public class VetSearchRepository {
                 .join(qVetSpecialty).fetchJoin()
                 .join(qSpecialty).fetchJoin()
                 .where(
-                        vetIdsIn(condition.getVetIds()),
-                        vetIdEq(condition.getVetId())
+                        vetIdsIn(condition.getVetIds())
                 )
                 .fetch();
     }
 
+    public Vet searchById(Long vetId) {
+
+        return queryFactory
+                .selectDistinct(qVet)
+                .from(qVet)
+                .join(qVetSpecialty).fetchJoin()
+                .join(qSpecialty).fetchJoin()
+                .where(vetIdEq(vetId))
+                .fetchOne();
+    }
+
     private BooleanExpression vetIdsIn(List<Long> vetIds) {
 
-        return CollectionUtils.isEmpty(vetIds)
-                ? null : qVet.id.in(vetIds);
+        return CollectionUtils.isEmpty(vetIds) ? null : qVet.id.in(vetIds);
     }
 
     private BooleanExpression vetIdEq(Long vetId) {
 
-        return vetId == null
-                ? null : qVet.id.eq(vetId);
+        return vetId == null ? null : qVet.id.eq(vetId);
     }
 }

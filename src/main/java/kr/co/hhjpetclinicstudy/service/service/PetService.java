@@ -6,6 +6,7 @@ import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.PetRepository;
+import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.PetSearchRepository;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
@@ -24,9 +25,9 @@ public class PetService {
 
     private final PetRepository petRepository;
 
-    private final OwnerRepository ownerRepository;
-
     private final PetSearchRepository petSearchRepository;
+
+    private final OwnerSearchRepository ownerSearchRepository;
 
     private final PetMapper petMapper;
 
@@ -34,12 +35,10 @@ public class PetService {
      * pet create service
      */
     @Transactional
-    public void createPet(Long ownerId,
-                          PetReqDTO.CREATE create) {
+    public void createPetByOwner(Long ownerId,
+                                 PetReqDTO.CREATE create) {
 
-        final Owner owner = ownerRepository
-                .findById(ownerId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        final Owner owner = ownerSearchRepository.searchById(ownerId);
 
         final Pet pet = petMapper.toPetEntity(create, owner);
 
@@ -64,23 +63,15 @@ public class PetService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * pet update service
-     */
     @Transactional
-    public void updatePet(Long petId,
-                          PetReqDTO.UPDATE update) {
+    public void updatePetById(Long petId,
+                              PetReqDTO.UPDATE update) {
 
-        Pet pet = petRepository
-                .findById(petId)
-                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+        Pet pet = petSearchRepository.searchById(petId);
 
         pet.updatePetInfo(update);
     }
 
-    /**
-     * pet delete service
-     */
     @Transactional
     public void deletePetsByIds(PetReqDTO.CONDITION condition) {
 

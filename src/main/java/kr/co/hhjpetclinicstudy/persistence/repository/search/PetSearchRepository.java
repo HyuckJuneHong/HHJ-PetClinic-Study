@@ -34,9 +34,23 @@ public class PetSearchRepository {
                 .fetch();
     }
 
+    public Pet searchById(Long petId) {
+
+        return queryFactory
+                .selectFrom(qPet)
+                .join(qOwner).fetchJoin()
+                .where(petIdEq(petId))
+                .fetchOne();
+    }
+
     private BooleanExpression petIdsIn(List<Long> petIds) {
 
         return CollectionUtils.isEmpty(petIds) ? null : qPet.id.in(petIds);
+    }
+
+    private BooleanExpression petIdEq(Long petId) {
+
+        return petId == null ? null : qPet.id.eq(petId);
     }
 
     private BooleanExpression ownerIdEq(Long ownerId) {

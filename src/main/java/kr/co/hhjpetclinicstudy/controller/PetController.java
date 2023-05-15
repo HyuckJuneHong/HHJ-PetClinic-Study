@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseFormat;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
-import kr.co.hhjpetclinicstudy.service.model.dtos.request.IdsReqDTO;
 import kr.co.hhjpetclinicstudy.service.service.PetService;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.PetReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.PetResDTO;
@@ -26,11 +25,11 @@ public class PetController {
      * @param create : Info for Create a Pet
      */
     @PostMapping("/{owner_id}")
-    public ResponseFormat<Void> createPet(@PathVariable(name = "owner_id") Long ownerId,
-                                          @RequestBody @Valid PetReqDTO.CREATE create) {
+    public ResponseFormat<Void> createPetByOwner(@PathVariable(name = "owner_id") Long ownerId,
+                                                 @RequestBody @Valid PetReqDTO.CREATE create) {
 
         try {
-            petService.createPet(ownerId, create);
+            petService.createPetByOwner(ownerId, create);
             return ResponseFormat.success(ResponseStatus.SUCCESS_CREATE);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
@@ -51,7 +50,7 @@ public class PetController {
         }
     }
 
-    @PostMapping("/owners/search")
+    @PostMapping("/search/owners")
     public ResponseFormat<List<PetResDTO.READ>> getPetsByOwner(@RequestBody PetReqDTO.CONDITION condition) {
 
         try {
@@ -63,17 +62,12 @@ public class PetController {
         }
     }
 
-    /**
-     * Pet Update API
-     *
-     * @param update : Info for Update a Pet
-     */
     @PutMapping("/{pet_id}")
-    public ResponseFormat<Void> updatePet(@PathVariable(name = "pet_id") Long petId,
-                                          @RequestBody @Valid PetReqDTO.UPDATE update) {
+    public ResponseFormat<Void> updatePetById(@PathVariable(name = "pet_id") Long petId,
+                                              @RequestBody @Valid PetReqDTO.UPDATE update) {
 
         try {
-            petService.updatePet(petId, update);
+            petService.updatePetById(petId, update);
             return ResponseFormat.success(ResponseStatus.SUCCESS_NO_CONTENT);
         } catch (NotFoundException e) {
             return ResponseFormat.error(ResponseStatus.FAIL_NOT_FOUND);
