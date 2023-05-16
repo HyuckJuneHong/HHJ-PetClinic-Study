@@ -1,7 +1,7 @@
 package kr.co.hhjpetclinicstudy.persistence.repository.search;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.co.hhjpetclinicstudy.infrastructure.util.DynamicQueryUtils;
 import kr.co.hhjpetclinicstudy.persistence.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -38,8 +38,8 @@ public class VetSpecialtySearchRepository {
                 .join(qVet).fetchJoin()
                 .join(qSpecialty).fetchJoin()
                 .where(
-                        vetEq(vet),
-                        specialtyNamesIn(specialtyNames)
+                        DynamicQueryUtils.generateEq(vet, qVetSpecialty.vet::eq),
+                        DynamicQueryUtils.filterCondition(specialtyNames, qVetSpecialty.specialty.specialtyName::in)
                 )
                 .fetch();
     }
@@ -51,22 +51,7 @@ public class VetSpecialtySearchRepository {
                 .from(qVetSpecialty)
                 .join(qVet).fetchJoin()
                 .join(qSpecialty).fetchJoin()
-                .where(specialtyNameEq(specialtyName))
+                .where(DynamicQueryUtils.generateEq(specialtyName, qVetSpecialty.specialty.specialtyName::eq))
                 .fetchOne();
-    }
-
-    private BooleanExpression vetEq(Vet vet) {
-
-        return qVetSpecialty.vet.eq(vet);
-    }
-
-    private BooleanExpression specialtyNamesIn(Set<String> specialtyNames) {
-
-        return qVetSpecialty.specialty.specialtyName.in(specialtyNames);
-    }
-
-    private BooleanExpression specialtyNameEq(String specialtyNames) {
-
-        return qVetSpecialty.specialty.specialtyName.eq(specialtyNames);
     }
 }

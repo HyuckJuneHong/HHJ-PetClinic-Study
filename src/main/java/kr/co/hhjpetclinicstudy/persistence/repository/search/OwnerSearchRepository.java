@@ -1,13 +1,12 @@
 package kr.co.hhjpetclinicstudy.persistence.repository.search;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.co.hhjpetclinicstudy.infrastructure.util.DynamicQueryUtils;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
 import kr.co.hhjpetclinicstudy.persistence.entity.QOwner;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class OwnerSearchRepository {
         return queryFactory
                 .selectFrom(qOwner)
                 .where(
-                        ownerIdsIn(condition.getOwnerIds())
+                        DynamicQueryUtils.filterCondition(condition.getOwnerIds(), qOwner.id::in)
                 )
                 .fetch();
     }
@@ -33,19 +32,7 @@ public class OwnerSearchRepository {
 
         return queryFactory
                 .selectFrom(qOwner)
-                .where(ownerIdEq(ownerId))
+                .where(DynamicQueryUtils.generateEq(ownerId, qOwner.id::eq))
                 .fetchOne();
-    }
-
-    private BooleanExpression ownerIdsIn(List<Long> ownerIds) {
-
-        return CollectionUtils.isEmpty(ownerIds) ?
-                null : qOwner.id.in(ownerIds);
-    }
-
-    private BooleanExpression ownerIdEq(Long ownerId) {
-
-        return ownerId == null
-                ? null : qOwner.id.eq(ownerId);
     }
 }
