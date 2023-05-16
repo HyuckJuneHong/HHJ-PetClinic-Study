@@ -29,6 +29,7 @@ public class OwnerService {
 
     /**
      * owner create service
+     *
      * @param create : Info for Create an Owner
      */
     @Transactional
@@ -45,12 +46,14 @@ public class OwnerService {
 
         final List<Owner> owners = ownerSearchRepository.search(condition);
 
+        isEmpty(owners, ResponseStatus.FAIL_OWNER_NOT_FOUND);
+
         return owners.stream()
                 .map(ownerMapper::toReadDto)
                 .collect(Collectors.toList());
     }
 
-        @Transactional
+    @Transactional
     public void updateOwnerById(Long ownerId,
                                 OwnerReqDTO.UPDATE update) {
 
@@ -68,20 +71,30 @@ public class OwnerService {
 
         final List<Owner> owners = ownerSearchRepository.search(condition);
 
+        isEmpty(owners, ResponseStatus.FAIL_OWNER_NOT_FOUND);
+
         ownerRepository.deleteAll(owners);
     }
 
-    public void isTelephone(String telephone){
+    public void isTelephone(String telephone) {
 
-        if(ownerRepository.existsByTelephone(telephone))
+        if (ownerRepository.existsByTelephone(telephone))
             throw new DuplicatedException(ResponseStatus.FAIL_TELEPHONE_DUPLICATED);
     }
 
     public void isTelephone(String telephone,
-                             String updateTelephone){
+                            String updateTelephone) {
 
-        if(!telephone.equals(updateTelephone)){
+        if (!telephone.equals(updateTelephone)) {
             isTelephone(updateTelephone);
+        }
+    }
+
+    private <T> void isEmpty(List<T> list,
+                            ResponseStatus responseStatus){
+
+        if(list.isEmpty()){
+            throw new NotFoundException(responseStatus);
         }
     }
 }

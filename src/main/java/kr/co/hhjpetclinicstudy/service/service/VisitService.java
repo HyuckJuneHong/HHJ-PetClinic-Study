@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,11 +47,17 @@ public class VisitService {
     @Transactional
     public void createVisitByOwnerAndPetAndVet(VisitReqDTO.CREATE create) {
 
-        final Owner owner = ownerSearchRepository.searchById(create.getOwnerId());
+        final Owner owner = Optional
+                .ofNullable(ownerSearchRepository.searchById(create.getOwnerId()))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_OWNER_NOT_FOUND));
 
-        final Pet pet = petSearchRepository.searchById(create.getPetId());
+        final Pet pet = Optional
+                .ofNullable(petSearchRepository.searchById(create.getPetId()))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_PET_NOT_FOUND));
 
-        final Vet vet = vetSearchRepository.searchById(create.getVetId());
+        final Vet vet = Optional
+                .ofNullable(vetSearchRepository.searchById(create.getVetId()))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_VET_NOT_FOUND));
 
         final Visit visit = visitMapper.toVisitEntity(create, pet, vet, owner);
 
@@ -59,7 +66,9 @@ public class VisitService {
 
     public List<VisitResDTO.READ> getVisitsByOwner(Long ownerId) {
 
-        final Owner owner = ownerSearchRepository.searchById(ownerId);
+        final Owner owner = Optional
+                .ofNullable(ownerSearchRepository.searchById(ownerId))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_OWNER_NOT_FOUND));
 
         return visitSearchRepository
                 .searchAllByOwner(owner.getId())
@@ -70,7 +79,9 @@ public class VisitService {
 
     public List<VisitResDTO.READ> getVisitsByPet(Long petId) {
 
-        final Pet pet = petSearchRepository.searchById(petId);
+        final Pet pet = Optional
+                .ofNullable(petSearchRepository.searchById(petId))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_PET_NOT_FOUND));
 
         return visitSearchRepository
                 .searchAllByPet(pet.getId())
@@ -81,7 +92,9 @@ public class VisitService {
 
     public List<VisitResDTO.READ> getVisitsByVet(Long vetId) {
 
-        final Vet vet = vetSearchRepository.searchById(vetId);
+        final Vet vet = Optional
+                .ofNullable(vetSearchRepository.searchById(vetId))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_VET_NOT_FOUND));
 
         return visitSearchRepository
                 .searchAllByVet(vet.getId())
@@ -94,6 +107,8 @@ public class VisitService {
 
         final List<Visit> visits = visitSearchRepository.search(condition);
 
+        isEmpty(visits, ResponseStatus.FAIL_VISIT_NOT_FOUND);
+
         return visits.stream()
                 .map(visitMapper::toReadDetailDto)
                 .collect(Collectors.toList());
@@ -103,7 +118,9 @@ public class VisitService {
     public void updateVisitById(Long visitId,
                                 VisitReqDTO.UPDATE update) {
 
-        Visit visit = visitSearchRepository.searchById(visitId);
+        Visit visit = Optional
+                .ofNullable(visitSearchRepository.searchById(visitId))
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_VISIT_NOT_FOUND));
 
         visit.updateVisit(update);
     }
@@ -113,6 +130,16 @@ public class VisitService {
 
         final List<Visit> visits = visitSearchRepository.search(condition);
 
+        isEmpty(visits, ResponseStatus.FAIL_VISIT_NOT_FOUND);
+
         visitRepository.deleteAll(visits);
+    }
+
+    private <T> void isEmpty(List<T> list,
+                            ResponseStatus responseStatus) {
+
+        if (list.isEmpty()) {
+            throw new NotFoundException(responseStatus);
+        }
     }
 }

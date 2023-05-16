@@ -27,7 +27,17 @@ public enum ResponseStatus {
     FAIL_INVALID_PARAMETER("파라미터 값이 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
 
     //custom : owner
-    FAIL_TELEPHONE_DUPLICATED("클라이언트의 전화번호가 중복되었습니다.", HttpStatus.BAD_REQUEST);
+    FAIL_OWNER_NOT_FOUND("클라이언트가 요청한 소유자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    FAIL_TELEPHONE_DUPLICATED("클라이언트의 전화번호가 중복되었습니다.", HttpStatus.BAD_REQUEST),
+
+    //custom : pet
+    FAIL_PET_NOT_FOUND("클라이언트가 요청한 반려동물을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
+    //custom : vet, specialty, vetSpecialty
+    FAIL_VET_NOT_FOUND("클라이언트가 요청한 수의사를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
+    //custom : visit
+    FAIL_VISIT_NOT_FOUND("클라이언트가 요청한 방문기록을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
 
     private String message;
 
