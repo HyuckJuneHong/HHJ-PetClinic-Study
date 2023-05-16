@@ -19,7 +19,7 @@ public class NotValidExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseErrorFormat> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
-        log.warn("handleMethodArgumentNotValidException : ", e);
+        log.warn("======= HandleMethodArgumentNotValidException =======", e);
 
         final ResponseStatus responseStatus = ResponseStatus.FAIL_INVALID_PARAMETER;
 
