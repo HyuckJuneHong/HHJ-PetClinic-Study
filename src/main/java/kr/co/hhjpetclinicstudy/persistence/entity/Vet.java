@@ -12,13 +12,16 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "tbl_vets")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@Table(
+        name = "tbl_vets",
+        indexes = @Index(name = "i_vets", columnList = "vet_id")
+)
 @AttributeOverride(
         name = "id",
         column = @Column(name = "vet_id", length = 4)
 )
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Vet extends BaseEntity {
 
     @Column(name = "first_name", length = 30)

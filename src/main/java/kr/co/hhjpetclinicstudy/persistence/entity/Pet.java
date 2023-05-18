@@ -12,13 +12,16 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tbl_pets")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@Table(
+        name = "tbl_pets",
+        indexes = @Index(name = "i_pets", columnList = "pet_id")
+)
 @AttributeOverride(
         name = "id",
         column = @Column(name = "pet_id", length = 4)
 )
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Pet extends BaseEntity {
 
     @Column(name = "pet_name", length = 30)

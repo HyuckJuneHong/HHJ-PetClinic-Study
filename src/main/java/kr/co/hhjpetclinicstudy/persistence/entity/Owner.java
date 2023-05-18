@@ -1,9 +1,6 @@
 package kr.co.hhjpetclinicstudy.persistence.entity;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import kr.co.hhjpetclinicstudy.persistence.BaseEntity;
 import kr.co.hhjpetclinicstudy.service.model.dtos.request.OwnerReqDTO;
 import lombok.AccessLevel;
@@ -12,13 +9,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tbl_owners")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@Table(
+        name = "tbl_owners",
+        indexes = @Index(name = "i_owners", columnList = "owner_id")
+)
 @AttributeOverride(
         name = "id",
         column = @Column(name = "owner_id", length = 4)
 )
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Owner extends BaseEntity {
 
     @Column(name = "first_name", length = 30)
