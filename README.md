@@ -10,7 +10,7 @@
 - 사용 기술  
   - Spring Data JPA, @Query, QueryDSL
   - MapStruct, Exception Handling
-  - Spring AOP
+  - Spring Swagger, Spring AOP
 
 ## ERD
 ![img.png](readme_image/img.png)

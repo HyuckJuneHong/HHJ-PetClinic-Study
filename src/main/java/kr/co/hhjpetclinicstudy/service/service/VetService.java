@@ -173,7 +173,7 @@ public class VetService {
     }
 
     private <T> void isEmpty(List<T> list,
-                            ResponseStatus responseStatus) {
+                             ResponseStatus responseStatus) {
 
         if (list.isEmpty()) {
             throw new NotFoundException(responseStatus);
