@@ -11,4 +11,10 @@ public class TestController {
 
         return "Hello World";
     }
+
+    @GetMapping("login-page")
+    public String loginPage(){
+
+        return "login-page";
+    }
 }
