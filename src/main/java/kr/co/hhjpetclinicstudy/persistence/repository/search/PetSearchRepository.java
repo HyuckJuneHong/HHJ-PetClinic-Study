@@ -25,7 +25,7 @@ public class PetSearchRepository {
 
         return queryFactory
                 .selectFrom(qPet)
-                .join(qOwner).fetchJoin()
+                .join(qPet.owner, qOwner).fetchJoin()
                 .where(
                         DynamicQueryUtils.filterCondition(condition.getPetIds(), qPet.id::in),
                         DynamicQueryUtils.generateEq(condition.getOwnerId(), qPet.owner.id::eq)
@@ -37,7 +37,7 @@ public class PetSearchRepository {
 
         return queryFactory
                 .selectFrom(qPet)
-                .join(qOwner).fetchJoin()
+                .join(qPet.owner, qOwner).fetchJoin()
                 .where(DynamicQueryUtils.generateEq(petId, qPet.id::eq))
                 .fetchOne();
     }

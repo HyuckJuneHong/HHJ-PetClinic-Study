@@ -35,6 +35,8 @@ public enum ResponseStatus {
 
     //custom : vet, specialty, vetSpecialty
     FAIL_VET_NOT_FOUND("클라이언트가 요청한 수의사를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    FAIL_SPECIALTY_NOT_FOUND("클라이언트가 요청한 학위를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    FAIL_VET_SPECIALTY_NOT_FOUND("클라이언트가 요청한 연관된 수의사와 학위들을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
     //custom : visit
     FAIL_VISIT_NOT_FOUND("클라이언트가 요청한 방문기록을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);

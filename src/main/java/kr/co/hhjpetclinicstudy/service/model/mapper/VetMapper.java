@@ -12,10 +12,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface VetMapper {
 
-    @Mapping(target = "firstName", source = "create.firstName")
-    @Mapping(target = "lastName", source = "create.lastName")
-    @Mapping(target = "vetSpecialties", source = "vetSpecialties")
-    Vet toVetEntity(VetReqDTO.CREATE create, List<VetSpecialty> vetSpecialties);
+    @Mapping(target = "firstName", source = "firstName")
+    @Mapping(target = "lastName", source = "lastName")
+    Vet toVetEntity(String firstName, String lastName);
 
     @Mapping(target = "firstName", source = "vet.firstName")
     @Mapping(target = "lastName", source = "vet.lastName")

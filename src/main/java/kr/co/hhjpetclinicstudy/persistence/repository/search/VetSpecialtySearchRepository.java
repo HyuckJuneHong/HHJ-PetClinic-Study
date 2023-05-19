@@ -21,12 +21,39 @@ public class VetSpecialtySearchRepository {
 
     private final QVetSpecialty qVetSpecialty = QVetSpecialty.vetSpecialty;
 
+    public List<VetSpecialty> searchAllByVetId(Long vetId){
+
+        return queryFactory
+                .selectDistinct(qVetSpecialty)
+                .from(qVetSpecialty)
+                .join(qVetSpecialty.vet, qVet).fetchJoin()
+                .join(qVetSpecialty.specialty, qSpecialty).fetchJoin()
+                .where(
+                        DynamicQueryUtils.generateEq(vetId, qVetSpecialty.vet.id::eq)
+                )
+                .fetch();
+    }
+
     public List<VetSpecialty> searchAll() {
 
         return queryFactory
-                .selectFrom(qVetSpecialty)
-                .join(qVet).fetchJoin()
-                .join(qSpecialty).fetchJoin()
+                .selectDistinct(qVetSpecialty)
+                .from(qVetSpecialty)
+                .join(qVetSpecialty.vet, qVet).fetchJoin()
+                .join(qVetSpecialty.specialty, qSpecialty).fetchJoin()
+                .fetch();
+    }
+
+    public List<VetSpecialty> searchAll(List<Vet> vets) {
+
+        return queryFactory
+                .selectDistinct(qVetSpecialty)
+                .from(qVetSpecialty)
+                .join(qVetSpecialty.vet, qVet).fetchJoin()
+                .join(qVetSpecialty.specialty, qSpecialty).fetchJoin()
+                .where(
+                        DynamicQueryUtils.filterCondition(vets, qVetSpecialty.vet::in)
+                )
                 .fetch();
     }
 
@@ -34,24 +61,14 @@ public class VetSpecialtySearchRepository {
                                         Set<String> specialtyNames) {
 
         return queryFactory
-                .selectFrom(qVetSpecialty)
-                .join(qVet).fetchJoin()
-                .join(qSpecialty).fetchJoin()
+                .selectDistinct(qVetSpecialty)
+                .from(qVetSpecialty)
+                .join(qVetSpecialty.vet, qVet).fetchJoin()
+                .join(qVetSpecialty.specialty, qSpecialty).fetchJoin()
                 .where(
                         DynamicQueryUtils.generateEq(vet, qVetSpecialty.vet::eq),
                         DynamicQueryUtils.filterCondition(specialtyNames, qVetSpecialty.specialty.specialtyName::in)
                 )
                 .fetch();
-    }
-
-    public Long searchCountBySpecialtyName(String specialtyName) {
-
-        return queryFactory
-                .select(qVetSpecialty.count())
-                .from(qVetSpecialty)
-                .join(qVet).fetchJoin()
-                .join(qSpecialty).fetchJoin()
-                .where(DynamicQueryUtils.generateEq(specialtyName, qVetSpecialty.specialty.specialtyName::eq))
-                .fetchOne();
     }
 }

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class OwnerService {
+public class OwnerService implements ICommonService{
 
     private final OwnerRepository ownerRepository;
 
@@ -87,14 +87,6 @@ public class OwnerService {
 
         if (!telephone.equals(updateTelephone)) {
             isTelephone(updateTelephone);
-        }
-    }
-
-    private <T> void isEmpty(List<T> list,
-                             ResponseStatus responseStatus){
-
-        if(list.isEmpty()){
-            throw new NotFoundException(responseStatus);
         }
     }
 }

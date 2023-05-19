@@ -27,12 +27,4 @@ public class OwnerSearchRepository {
                 )
                 .fetch();
     }
-
-    public Owner searchById(Long ownerId) {
-
-        return queryFactory
-                .selectFrom(qOwner)
-                .where(DynamicQueryUtils.generateEq(ownerId, qOwner.id::eq))
-                .fetchOne();
-    }
 }

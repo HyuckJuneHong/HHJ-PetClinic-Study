@@ -11,5 +11,5 @@ public interface VetSpecialtyMapper {
 
     @Mapping(target = "vet", source = "vet")
     @Mapping(target = "specialty", source = "specialty")
-    VetSpecialty toVetSpecialtyEntity(Specialty specialty, Vet vet);
+    VetSpecialty toVetSpecialtyEntity(Vet vet, Specialty specialty);
 }
