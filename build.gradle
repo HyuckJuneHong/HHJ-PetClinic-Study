@@ -26,14 +26,8 @@ dependencies {
     //H2
     runtimeOnly 'com.h2database:h2'
 
-    /** MySQL
-     * Version 업그레이드를 하면서 MySQL 의존을 위한 하이버네이트 코어도 주입을 해야하는 이슈 발생.
-     *
-     * 호환되는 하이버네이트 버전을 사용하지 않아서 해당 클래스를 생성하지 않는 이슈 발생 -> 버전 명시
-     * SpringHibernateJpaPersistenceProvider does not implement the requested interface jakarta.persistence.spi.PersistenceProvider
-     */
-    implementation 'org.hibernate:hibernate-core:6.1.6.Final'
-    runtimeOnly 'com.mysql:mysql-connector-j'
+    //MySQL
+    implementation 'com.mysql:mysql-connector-j:8.0.31'
 
     //Lombok
     compileOnly 'org.projectlombok:lombok'
@@ -80,6 +74,9 @@ dependencies {
      * - 주소 : http://localhost:8080/swagger-ui/index.html
      */
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+    //Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 tasks.named('test') {

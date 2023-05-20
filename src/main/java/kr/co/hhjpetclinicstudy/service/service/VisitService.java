@@ -1,6 +1,5 @@
 package kr.co.hhjpetclinicstudy.service.service;
 
-import kr.co.hhjpetclinicstudy.infrastructure.error.exception.InvalidRequestException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.exception.NotFoundException;
 import kr.co.hhjpetclinicstudy.infrastructure.error.model.ResponseStatus;
 import kr.co.hhjpetclinicstudy.persistence.entity.Owner;
@@ -8,15 +7,11 @@ import kr.co.hhjpetclinicstudy.persistence.entity.Pet;
 import kr.co.hhjpetclinicstudy.persistence.entity.Vet;
 import kr.co.hhjpetclinicstudy.persistence.entity.Visit;
 import kr.co.hhjpetclinicstudy.persistence.repository.OwnerRepository;
-import kr.co.hhjpetclinicstudy.persistence.repository.PetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VisitRepository;
-import kr.co.hhjpetclinicstudy.persistence.repository.search.OwnerSearchRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.PetSearchRepository;
-import kr.co.hhjpetclinicstudy.persistence.repository.search.VetSearchRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.VisitSearchRepository;
-import kr.co.hhjpetclinicstudy.service.model.dtos.request.*;
-import kr.co.hhjpetclinicstudy.service.model.dtos.response.OwnerResDTO;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.VisitReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.dtos.response.VisitResDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.VisitMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,33 +25,31 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class VisitService {
+public class VisitService implements ICommonService{
 
     private final VisitRepository visitRepository;
+
+    private final OwnerRepository ownerRepository;
+
+    private final VetRepository vetRepository;
 
     private final VisitSearchRepository visitSearchRepository;
 
     private final PetSearchRepository petSearchRepository;
-
-    private final VetSearchRepository vetSearchRepository;
-
-    private final OwnerSearchRepository ownerSearchRepository;
 
     private final VisitMapper visitMapper;
 
     @Transactional
     public void createVisitByOwnerAndPetAndVet(VisitReqDTO.CREATE create) {
 
-        final Owner owner = Optional
-                .ofNullable(ownerSearchRepository.searchById(create.getOwnerId()))
+        final Owner owner = ownerRepository.findById(create.getOwnerId())
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_OWNER_NOT_FOUND));
 
         final Pet pet = Optional
                 .ofNullable(petSearchRepository.searchById(create.getPetId()))
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_PET_NOT_FOUND));
 
-        final Vet vet = Optional
-                .ofNullable(vetSearchRepository.searchById(create.getVetId()))
+        final Vet vet = vetRepository.findById(create.getVetId())
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_VET_NOT_FOUND));
 
         final Visit visit = visitMapper.toVisitEntity(create, pet, vet, owner);
@@ -66,8 +59,7 @@ public class VisitService {
 
     public List<VisitResDTO.READ> getVisitsByOwner(Long ownerId) {
 
-        final Owner owner = Optional
-                .ofNullable(ownerSearchRepository.searchById(ownerId))
+        final Owner owner = ownerRepository.findById(ownerId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_OWNER_NOT_FOUND));
 
         return visitSearchRepository
@@ -92,8 +84,7 @@ public class VisitService {
 
     public List<VisitResDTO.READ> getVisitsByVet(Long vetId) {
 
-        final Vet vet = Optional
-                .ofNullable(vetSearchRepository.searchById(vetId))
+        final Vet vet = vetRepository.findById(vetId)
                 .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_VET_NOT_FOUND));
 
         return visitSearchRepository
@@ -133,13 +124,5 @@ public class VisitService {
         isEmpty(visits, ResponseStatus.FAIL_VISIT_NOT_FOUND);
 
         visitRepository.deleteAll(visits);
-    }
-
-    private <T> void isEmpty(List<T> list,
-                            ResponseStatus responseStatus) {
-
-        if (list.isEmpty()) {
-            throw new NotFoundException(responseStatus);
-        }
     }
 }

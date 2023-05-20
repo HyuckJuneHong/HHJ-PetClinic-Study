@@ -8,13 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tbl_vets_specialties")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@Table(
+        name = "tbl_vets_specialties",
+        indexes = @Index(name = "i_vets_specialties", columnList = "vet_specialty_id")
+)
 @AttributeOverride(
         name = "id",
         column = @Column(name = "vet_specialty_id", length = 4)
 )
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class VetSpecialty extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

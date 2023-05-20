@@ -27,9 +27,9 @@ public class VisitSearchRepository {
 
         return queryFactory
                 .selectFrom(qVisit)
-                .join(qPet).fetchJoin()
-                .join(qVet).fetchJoin()
-                .join(qOwner).fetchJoin()
+                .join(qVisit.owner, qOwner).fetchJoin()
+                .join(qVisit.pet, qPet).fetchJoin()
+                .join(qVisit.vet, qVet).fetchJoin()
                 .where(
                         DynamicQueryUtils.filterCondition(condition.getVisitIds(), qVisit.id::in)
                 )
@@ -40,9 +40,9 @@ public class VisitSearchRepository {
 
         return queryFactory
                 .selectFrom(qVisit)
-                .join(qPet).fetchJoin()
-                .join(qVet).fetchJoin()
-                .join(qOwner).fetchJoin()
+                .join(qVisit.owner, qOwner).fetchJoin()
+                .join(qVisit.pet, qPet).fetchJoin()
+                .join(qVisit.vet, qVet).fetchJoin()
                 .where(DynamicQueryUtils.generateEq(visitId, qVisit.id::eq))
                 .fetchOne();
     }
@@ -51,9 +51,9 @@ public class VisitSearchRepository {
 
         return queryFactory
                 .selectFrom(qVisit)
-                .join(qPet).fetchJoin()
-                .join(qVet).fetchJoin()
-                .join(qOwner).fetchJoin()
+                .join(qVisit.owner, qOwner).fetchJoin()
+                .join(qVisit.pet, qPet).fetchJoin()
+                .join(qVisit.vet, qVet).fetchJoin()
                 .where(DynamicQueryUtils.generateEq(ownerId, qOwner.id::eq))
                 .fetch();
     }
@@ -62,9 +62,9 @@ public class VisitSearchRepository {
 
         return queryFactory
                 .selectFrom(qVisit)
-                .join(qPet).fetchJoin()
-                .join(qVet).fetchJoin()
-                .join(qOwner).fetchJoin()
+                .join(qVisit.owner, qOwner).fetchJoin()
+                .join(qVisit.pet, qPet).fetchJoin()
+                .join(qVisit.vet, qVet).fetchJoin()
                 .where(DynamicQueryUtils.generateEq(petId, qPet.id::eq))
                 .fetch();
     }
@@ -73,9 +73,9 @@ public class VisitSearchRepository {
 
         return queryFactory
                 .selectFrom(qVisit)
-                .join(qPet).fetchJoin()
-                .join(qVet).fetchJoin()
-                .join(qOwner).fetchJoin()
+                .join(qVisit.owner, qOwner).fetchJoin()
+                .join(qVisit.pet, qPet).fetchJoin()
+                .join(qVisit.vet, qVet).fetchJoin()
                 .where(DynamicQueryUtils.generateEq(vetId, qVet.id::eq))
                 .fetch();
     }

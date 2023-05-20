@@ -8,13 +8,9 @@ import kr.co.hhjpetclinicstudy.persistence.entity.VetSpecialty;
 import kr.co.hhjpetclinicstudy.persistence.repository.SpecialtyRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.VetSpecialtyRepository;
-import kr.co.hhjpetclinicstudy.persistence.repository.search.VetSearchRepository;
 import kr.co.hhjpetclinicstudy.persistence.repository.search.VetSpecialtySearchRepository;
-import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetReqDTO;
-import kr.co.hhjpetclinicstudy.service.model.dtos.request.VetSpecialtyReqDTO;
-import kr.co.hhjpetclinicstudy.service.model.dtos.response.VetResDTO;
+import kr.co.hhjpetclinicstudy.service.model.dtos.request.SpecialtyReqDTO;
 import kr.co.hhjpetclinicstudy.service.model.mapper.SpecialtyMapper;
-import kr.co.hhjpetclinicstudy.service.model.mapper.VetMapper;
 import kr.co.hhjpetclinicstudy.service.model.mapper.VetSpecialtyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,73 +24,59 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class VetService implements IVetSpecialtyService, ICommonService{
+public class SpecialtyService implements IVetSpecialtyService, ICommonService{
+
+    private final VetSpecialtyRepository vetSpecialtyRepository;
 
     private final VetRepository vetRepository;
 
     private final SpecialtyRepository specialtyRepository;
 
-    private final VetSpecialtyRepository vetSpecialtyRepository;
-
-    private final VetSearchRepository vetSearchRepository;
-
     private final VetSpecialtySearchRepository vetSpecialtySearchRepository;
-
-    private final VetMapper vetMapper;
-
-    private final SpecialtyMapper specialtyMapper;
 
     private final VetSpecialtyMapper vetSpecialtyMapper;
 
+    private final SpecialtyMapper specialtyMapper;
+
+    public Set<String> getExistSpecialties() {
+
+        final Set<VetSpecialty> vetSpecialties = new HashSet<>(vetSpecialtySearchRepository.searchAll());
+
+        return vetSpecialties
+                .stream()
+                .map(VetSpecialty::getSpecialty)
+                .map(Specialty::getSpecialtyName)
+                .collect(Collectors.toSet());
+    }
+
     @Transactional
-    public void createVetAndSpecialties(VetSpecialtyReqDTO.CREATE create) {
+    public void addSpecialtiesByVet(Long vetId,
+                                    SpecialtyReqDTO.UPDATE update) {
 
-        final Vet vet = vetMapper.toVetEntity(create.getFirstName(), create.getLastName());
+        final Vet vet = vetRepository.findById(vetId)
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_VET_NOT_FOUND));
 
-        final HashSet<Specialty> specialties = getOrCreateSpecialtiesByNames(create.getSpecialtiesName());
+        final HashSet<Specialty> specialties = getOrCreateSpecialtiesByNames(update.getSpecialtiesName());
 
         final List<VetSpecialty> vetSpecialties = specialties.stream()
                 .map(specialty -> vetSpecialtyMapper.toVetSpecialtyEntity(vet, specialty))
                 .collect(Collectors.toList());
 
-        vetRepository.save(vet);
-
         vetSpecialtyRepository.saveAll(vetSpecialties);
     }
 
-    public VetResDTO.READ getVetById(Long vetId) {
-
-        final List<VetSpecialty> vetSpecialties = vetSpecialtySearchRepository.searchAllByVetId(vetId);
-
-        isEmpty(vetSpecialties, ResponseStatus.FAIL_VET_NOT_FOUND);
-
-        final List<String> specialtiesName = vetSpecialties.stream()
-                .map(vetSpecialty -> vetSpecialty.getSpecialty().getSpecialtyName())
-                .collect(Collectors.toList());
-
-        return vetMapper.toReadDto(vetSpecialties.get(0).getVet(), specialtiesName);
-    }
-
     @Transactional
-    public void deleteVetsByIds(VetReqDTO.CONDITION condition) {
+    public void deleteSpecialtiesByVet(Long vetId,
+                                       SpecialtyReqDTO.UPDATE update) {
 
-        final List<Vet> vets = vetSearchRepository.search(condition);
+        final Vet vet = vetRepository.findById(vetId)
+                .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_VET_NOT_FOUND));
 
-        isEmpty(vets, ResponseStatus.FAIL_VET_NOT_FOUND);
-
-        final List<VetSpecialty> vetSpecialties = vetSpecialtySearchRepository.searchAll(vets);
-
-        isEmpty(vetSpecialties, ResponseStatus.FAIL_VET_SPECIALTY_NOT_FOUND);
-
-        final Set<String> specialtiesName = vetSpecialties.stream()
-                .map(vetSpecialty -> vetSpecialty.getSpecialty().getSpecialtyName())
-                .collect(Collectors.toSet());
+        final List<VetSpecialty> vetSpecialties = vetSpecialtySearchRepository.searchAll(vet, update.getSpecialtiesName());
 
         vetSpecialtyRepository.deleteAll(vetSpecialties);
 
-        vetRepository.deleteAll(vets);
-
-        deleteBySpecialtiesWithoutVet(specialtiesName);
+        deleteBySpecialtiesWithoutVet(update.getSpecialtiesName());
     }
 
     @Override
@@ -115,9 +97,7 @@ public class VetService implements IVetSpecialtyService, ICommonService{
 
         specialtyRepository.saveAll(createSpecialties);
 
-        specialties.addAll(createSpecialties);
-
-        return new HashSet<>(specialties);
+        return new HashSet<>(createSpecialties);
     }
 
     @Override
@@ -127,7 +107,7 @@ public class VetService implements IVetSpecialtyService, ICommonService{
                 .filter(specialtyName -> !vetSpecialtyRepository.existsBySpecialty_SpecialtyName(specialtyName))
                 .forEach(specialtyName -> {
                     Specialty specialty = specialtyRepository.findBySpecialtyName(specialtyName)
-                            .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+                            .orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_SPECIALTY_NOT_FOUND));
 
                     specialtyRepository.delete(specialty);
                 });
