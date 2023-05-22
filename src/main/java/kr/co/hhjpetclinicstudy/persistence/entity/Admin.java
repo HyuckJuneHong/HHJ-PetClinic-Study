@@ -24,10 +24,10 @@ public class Admin extends BaseEntity {
     @Column(name = "identity", length = 50, nullable = false, unique = true)
     private String identity;
 
-    @Column(name = "identity", length = 50, nullable = false)
+    @Column(name = "password", length = 50, nullable = false)
     private String password;
 
-    @Column(name = "identity", length = 50)
+    @Column(name = "name", length = 50)
     private String name;
 
     @Column(name = "user_role", length = 20, nullable = false)
@@ -36,10 +36,12 @@ public class Admin extends BaseEntity {
     @Builder
     private Admin(String identity,
                   String password,
-                  String name) {
+                  String name,
+                  UserRole userRole) {
 
         this.identity = identity;
         this.password = password;
         this.name = name;
+        this.userRole = userRole;
     }
 }

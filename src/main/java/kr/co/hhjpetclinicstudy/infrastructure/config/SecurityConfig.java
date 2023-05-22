@@ -27,8 +27,7 @@ public class SecurityConfig {
                 .failureUrl("/login")
                 .loginProcessingUrl("/login_proc")
                 .successHandler(authenticationSuccessHandler())
-                .failureHandler(authenticationFailureHandler())
-        ;
+                .failureHandler(authenticationFailureHandler());
 
         return http.build();
     }
