@@ -47,6 +47,7 @@ public class Visit extends BaseEntity {
                   Pet pet,
                   Vet vet,
                   Owner owner) {
+
         this.visitDate = visitDate;
         this.description = description;
         this.pet = pet;
