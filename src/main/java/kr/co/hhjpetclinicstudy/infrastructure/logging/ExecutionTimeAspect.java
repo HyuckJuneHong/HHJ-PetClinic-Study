@@ -21,6 +21,10 @@ public class ExecutionTimeAspect {
     private void allPetService() {
     }
 
+    @Pointcut("execution(* kr.co.hhjpetclinicstudy.service.service.SpecialtyService.*(..))")
+    private void allSpecialtyService() {
+    }
+
     @Pointcut("execution(* kr.co.hhjpetclinicstudy.service.service.VetService.*(..))")
     private void allVetService() {
     }
@@ -30,7 +34,7 @@ public class ExecutionTimeAspect {
     }
 
     //TODO : @issue - 현재 메소드 내부에서 다른 메소드를 호출하는 상황에서 내부 메소드에 해당 AOP가 적용되지 않는 이슈 발생.
-    @Around("allOwnerService() || allPetService() || allVetService() || allVisitService()")
+    @Around("allOwnerService() || allPetService() || allSpecialtyService() || allVetService() || allVisitService()")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
 
         String className = joinPoint.getTarget().getClass().getSimpleName();

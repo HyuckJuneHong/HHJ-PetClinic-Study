@@ -1,12 +1,13 @@
 package kr.co.hhjpetclinicstudy.infrastructure.config;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -22,28 +23,31 @@ public class SecurityConfig {
 
         //인증 정책
         http
-                .formLogin()
-                .defaultSuccessUrl("/")
-                .failureUrl("/login")
-                .loginProcessingUrl("/login_proc")
-                .successHandler(authenticationSuccessHandler())
-                .failureHandler(authenticationFailureHandler());
+                .formLogin();
+
+        //로그아웃
+        http
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .addLogoutHandler(logoutHandler())
+                .logoutSuccessHandler(logoutSuccessHandler())
+                .deleteCookies("remember-me");
 
         return http.build();
     }
 
-    private AuthenticationSuccessHandler authenticationSuccessHandler() {
+    private LogoutHandler logoutHandler() {
 
         return (request, response, authentication) -> {
-            System.out.println("Authentication : " + authentication.getName());
-            response.sendRedirect("/");
+            HttpSession session = request.getSession();
+            session.invalidate();
         };
     }
 
-    private AuthenticationFailureHandler authenticationFailureHandler() {
+    private LogoutSuccessHandler logoutSuccessHandler() {
 
-        return (request, response, exception) -> {
-            System.out.println("Exception : " + exception.getMessage());
+        return (request, response, authentication) -> {
             response.sendRedirect("/login");
         };
     }
