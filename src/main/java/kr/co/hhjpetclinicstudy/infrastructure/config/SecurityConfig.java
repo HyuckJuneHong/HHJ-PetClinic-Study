@@ -1,6 +1,5 @@
 package kr.co.hhjpetclinicstudy.infrastructure.config;
 
-import jakarta.servlet.http.HttpSession;
 import kr.co.hhjpetclinicstudy.service.model.enums.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
@@ -24,10 +22,10 @@ public class SecurityConfig {
 
         //인가 정책
         http
-                .securityMatcher("/admin/**")
+                .securityMatcher("/api/v1/admins/**")
                 .authorizeHttpRequests()
-                    .requestMatchers("/admin/login").permitAll()
-                    .requestMatchers("/admin/**").hasRole(UserRole.ADMIN_ROLE.getUserRole())
+                    .requestMatchers("/api/v1/admins/login").permitAll()
+                    .requestMatchers("/api/v1/admins/**").hasRole(UserRole.ADMIN_ROLE.getUserRole())
                 .anyRequest().authenticated();
 
         //인증 정책
