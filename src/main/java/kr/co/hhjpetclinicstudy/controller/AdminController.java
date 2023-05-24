@@ -12,14 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
     @GetMapping("/hello")
-    public String hello(){
+    public String hello() {
 
         return "Hello World";
     }
 
-    @PostMapping("/login")
-    public String loginPage(){
+    @GetMapping("/denied")
+    public String denied() {
 
-        return "login-page";
+        return "Access is denied";
+    }
+
+    @PostMapping("/login")
+    public String login() {
+
+        return "login";
     }
 }
