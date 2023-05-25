@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(
         name = "tbl_admins",
-        indexes = @Index(name = "i_admins", columnList = "admin_id")
+        indexes = @Index(name = "members", columnList = "member_id")
 )
 @AttributeOverride(
         name = "id",
-        column = @Column(name = "admin_id", length = 4)
+        column = @Column(name = "member_id", length = 4)
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Admin extends BaseEntity {
+public class Member extends BaseEntity {
 
     @Column(name = "identity", length = 50, nullable = false, unique = true)
     private String identity;
@@ -34,7 +34,7 @@ public class Admin extends BaseEntity {
     private UserRole userRole;
 
     @Builder
-    private Admin(String identity,
+    private Member(String identity,
                   String password,
                   String name,
                   UserRole userRole) {

@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -28,10 +27,10 @@ public class SecurityConfig {
 
         //인가 정책
         http
-                .securityMatcher("/api/v1/admins/**")
+                .securityMatcher("/api/v1/members/**")
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/admins/login", "/api/v1/admins/denied").permitAll()
-                .requestMatchers("/api/v1/admins/**").hasRole(UserRole.ADMIN_ROLE.getUserRole())
+                .requestMatchers("/api/v1/members/login").permitAll()
+                .requestMatchers("/api/v1/members/**").hasRole(UserRole.ADMIN_ROLE.getUserRole())
                 .anyRequest().authenticated();
 
         //인증 정책
@@ -42,15 +41,14 @@ public class SecurityConfig {
         //로그아웃
         http
                 .logout()
-                .logoutSuccessUrl("/login")
+                .logoutSuccessUrl("/api/v1/members/login")
                 .logoutSuccessHandler(logoutSuccessHandler())
                 .deleteCookies("remember-me");
 
         //예외 처리
         http
                 .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint())
-                .accessDeniedHandler(accessDeniedHandler());
+                .authenticationEntryPoint(authenticationEntryPoint());
 
         return http.build();
     }
@@ -68,21 +66,14 @@ public class SecurityConfig {
     private AuthenticationEntryPoint authenticationEntryPoint() {
 
         return (request, response, authException) -> {
-            response.sendRedirect("/api/v1/admins/login");
-        };
-    }
-
-    private AccessDeniedHandler accessDeniedHandler() {
-
-        return (request, response, accessDeniedException) -> {
-            response.sendRedirect("/api/v1/admins/denied");
+            response.sendRedirect("/api/v1/members/login");
         };
     }
 
     private LogoutSuccessHandler logoutSuccessHandler() {
 
         return (request, response, authentication) -> {
-            response.sendRedirect("/api/v1/admins/login");
+            response.sendRedirect("/api/v1/members/login");
         };
     }
 }
