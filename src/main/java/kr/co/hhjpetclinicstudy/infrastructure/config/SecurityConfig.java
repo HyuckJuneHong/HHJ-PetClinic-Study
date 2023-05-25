@@ -7,13 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.RequestCache;
-import org.springframework.security.web.savedrequest.SavedRequest;
 
 @Configuration
 @EnableWebSecurity
@@ -27,53 +22,32 @@ public class SecurityConfig {
 
         //인가 정책
         http
-                .securityMatcher("/api/v1/members/**")
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/members/login").permitAll()
-                .requestMatchers("/api/v1/members/**").hasRole(UserRole.ADMIN_ROLE.getUserRole())
-                .anyRequest().authenticated();
+                .requestMatchers("/api/v1/members/fail").permitAll()
+                .requestMatchers("/api/v1/members/hello").hasRole(UserRole.ADMIN_ROLE.getUserRole())
+                .requestMatchers("/api/v1/members/**").authenticated();
+
 
         //인증 정책
         http
-                .formLogin()
-                .successHandler(successHandler());
+                .formLogin().permitAll()
+                .defaultSuccessUrl("/api/v1/members")
+                .failureUrl("/api/v1/members/fail");
 
         //로그아웃
         http
                 .logout()
-                .logoutSuccessUrl("/api/v1/members/login")
+                .logoutSuccessUrl("/login")
                 .logoutSuccessHandler(logoutSuccessHandler())
                 .deleteCookies("remember-me");
 
-        //예외 처리
-        http
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint());
-
         return http.build();
-    }
-
-    private AuthenticationSuccessHandler successHandler() {
-
-        return (request, response, authentication) -> {
-            RequestCache requestCache = new HttpSessionRequestCache();
-            SavedRequest savedRequest = requestCache.getRequest(request, response);
-            String redirectUrl = savedRequest.getRedirectUrl();
-            response.sendRedirect(redirectUrl);
-        };
-    }
-
-    private AuthenticationEntryPoint authenticationEntryPoint() {
-
-        return (request, response, authException) -> {
-            response.sendRedirect("/api/v1/members/login");
-        };
     }
 
     private LogoutSuccessHandler logoutSuccessHandler() {
 
         return (request, response, authentication) -> {
-            response.sendRedirect("/api/v1/members/login");
+            response.sendRedirect("/login");
         };
     }
 }

@@ -1,6 +1,7 @@
 package kr.co.hhjpetclinicstudy.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,21 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MemberController {
 
+    @GetMapping
+    public String main() {
+
+        return "main-page";
+    }
+
     @GetMapping("/hello")
     public String hello() {
 
         return "Hello World";
     }
 
-    @GetMapping("/denied")
-    public String denied() {
+    @GetMapping("/fail")
+    public String fail() {
 
-        return "Access is denied";
-    }
-
-    @PostMapping("/login")
-    public String login() {
-
-        return "login";
+        return "login-fail";
     }
 }
