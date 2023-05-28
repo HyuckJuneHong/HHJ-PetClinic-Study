@@ -32,6 +32,7 @@ public enum ResponseStatus {
 
     //custom : pet
     FAIL_PET_NOT_FOUND("클라이언트가 요청한 반려동물을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    FAIL_PET_TYPE_NOT_FOUND("클라이언트가 요청한 반려동울 종류는 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
     //custom : vet, specialty, vetSpecialty
     FAIL_VET_NOT_FOUND("클라이언트가 요청한 수의사를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
@@ -39,7 +40,11 @@ public enum ResponseStatus {
     FAIL_VET_SPECIALTY_NOT_FOUND("클라이언트가 요청한 연관된 수의사와 학위들을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
     //custom : visit
-    FAIL_VISIT_NOT_FOUND("클라이언트가 요청한 방문기록을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+    FAIL_VISIT_NOT_FOUND("클라이언트가 요청한 방문기록을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
+    //custom : admin
+    FAIL_USER_ROLE_NOT_FOUND("클라이언트가 요청한 권한을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    ;
 
     private String message;
 

@@ -27,6 +27,6 @@ public enum PetType {
 
         return Arrays.stream(PetType.values())
                 .filter(type -> type.toString().equalsIgnoreCase(petType))
-                .findAny().orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_NOT_FOUND));
+                .findAny().orElseThrow(() -> new NotFoundException(ResponseStatus.FAIL_PET_TYPE_NOT_FOUND));
     }
 }

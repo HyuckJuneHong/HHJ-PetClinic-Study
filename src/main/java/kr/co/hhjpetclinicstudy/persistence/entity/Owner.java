@@ -33,7 +33,7 @@ public class Owner extends BaseEntity {
     @Column(name = "city", length = 80)
     private String city;
 
-    @Column(name = "telephone", unique = true, length = 20)
+    @Column(name = "telephone", length = 20, nullable = false, unique = true)
     private String telephone;
 
     @Builder

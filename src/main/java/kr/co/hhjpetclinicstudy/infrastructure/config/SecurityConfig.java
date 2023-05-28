@@ -1,15 +1,17 @@
 package kr.co.hhjpetclinicstudy.infrastructure.config;
 
+import kr.co.hhjpetclinicstudy.service.model.enums.UserRole;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     @Bean
@@ -18,33 +20,30 @@ public class SecurityConfig {
         //인가 정책
         http
                 .authorizeHttpRequests()
-                .anyRequest().authenticated();
+                .requestMatchers("/api/v1/members/fail").permitAll()
+                .requestMatchers("/api/v1/members/hello").hasRole(UserRole.ADMIN_ROLE.getUserRole())
+                .requestMatchers("/api/v1/members/**").authenticated();
+
 
         //인증 정책
         http
-                .formLogin()
-                .defaultSuccessUrl("/")
-                .failureUrl("/login")
-                .loginProcessingUrl("/login_proc")
-                .successHandler(authenticationSuccessHandler())
-                .failureHandler(authenticationFailureHandler())
-        ;
+                .formLogin().permitAll()
+                .defaultSuccessUrl("/api/v1/members")
+                .failureUrl("/api/v1/members/fail");
+
+        //로그아웃
+        http
+                .logout()
+                .logoutSuccessUrl("/login")
+                .logoutSuccessHandler(logoutSuccessHandler())
+                .deleteCookies("remember-me");
 
         return http.build();
     }
 
-    private AuthenticationSuccessHandler authenticationSuccessHandler() {
+    private LogoutSuccessHandler logoutSuccessHandler() {
 
         return (request, response, authentication) -> {
-            System.out.println("Authentication : " + authentication.getName());
-            response.sendRedirect("/");
-        };
-    }
-
-    private AuthenticationFailureHandler authenticationFailureHandler() {
-
-        return (request, response, exception) -> {
-            System.out.println("Exception : " + exception.getMessage());
             response.sendRedirect("/login");
         };
     }
