@@ -24,7 +24,6 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/members/hello").hasRole(UserRole.ADMIN_ROLE.getUserRole())
                 .requestMatchers("/api/v1/members/**").authenticated();
 
-
         //인증 정책
         http
                 .formLogin().permitAll()
