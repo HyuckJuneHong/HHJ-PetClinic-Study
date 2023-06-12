@@ -11,6 +11,4 @@
   - Spring Data JPA, @Query, QueryDSL
   - MapStruct, Exception Handling
   - Spring Swagger, Spring AOP
-
-## ERD
-![img.png](readme_image/img.png)
+  - Spring Security
